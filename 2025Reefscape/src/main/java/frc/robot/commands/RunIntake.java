@@ -8,23 +8,23 @@ import java.util.function.DoubleSupplier;
 
 public class RunIntake extends Command {
    private final Intake intake;
-   private final DoubleSupplier speedSupplier;
+   private final double speed;
 
-   public RunIntake(Intake intake, DoubleSupplier speedSupplier) {
+   public RunIntake(Intake intake, double speed) {
       this.intake = intake;
-      this.speedSupplier = speedSupplier;
-      this.addRequirements(new Subsystem[]{intake});
+      this.speed = speed;
+      addRequirements(intake);
    }
 
    public void execute() {
-      this.intake.setMotors(this.speedSupplier.getAsDouble());
+      intake.setMotors(speed);
    }
 
    public void end(boolean interrupted) {
-      this.intake.stopMotors();
+      intake.stopMotors();
    }
 
    public boolean isFinished() {
-      return false;
+    return intake.isBroken();
    }
 }

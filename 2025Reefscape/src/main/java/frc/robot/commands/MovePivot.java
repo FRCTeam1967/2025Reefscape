@@ -6,27 +6,34 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Pivot;
 
 public class MovePivot extends Command {
-   private final Pivot m_pivot;
-   private final double m_targetPosition;
+   private Pivot pivot;
+   private double targetPosition;
 
-   public MovePivot(Pivot pivot, double targetPosition) {
-      this.m_pivot = pivot;
-      this.m_targetPosition = targetPosition;
-      this.addRequirements(new Subsystem[]{this.m_pivot});
+   public MovePivot(Pivot pivot, double targetPosition ) {
+      this.pivot = pivot;
+      this.targetPosition = targetPosition;
+      addRequirements(this.pivot);
    }
 
    public void initialize() {
-      this.m_pivot.moveTo(this.m_targetPosition);
+      pivot.moveTo(targetPosition);
    }
 
    public void execute() {
    }
 
    public boolean isFinished() {
-      return this.m_pivot.isReached();
+      return pivot.isReached();
    }
 
    public void end(boolean interrupted) {
-      this.m_pivot.stop();
+      pivot.stop();
    }
 }
+
+
+
+
+
+
+
