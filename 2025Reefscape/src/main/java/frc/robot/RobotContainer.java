@@ -42,12 +42,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    operatorController.rightTrigger().whileTrue(new MoveElevator(elevator, Constants.Elevator.UP));
-    operatorController.leftTrigger().whileTrue(new MoveElevator(elevator, Constants.Elevator.MIDDLE));
-
-    operatorController.rightTrigger().whileFalse(new MoveElevator(elevator, Constants.Elevator.SAFE));
-    operatorController.leftTrigger().whileFalse(new MoveElevator(elevator, Constants.Elevator.SAFE));
-
+    operatorController.y().onTrue(new MoveElevator(elevator, Constants.Elevator.UP));
+    operatorController.x().onTrue(new MoveElevator(elevator, Constants.Elevator.MIDDLE));
+    operatorController.a().onTrue(new MoveElevator(elevator, Constants.Elevator.SAFE));
 
 
     //operatorController.a().whileTrue(new LateralElevatorMove(lateralElevator, Constants.LateralElevator.SPEED));
