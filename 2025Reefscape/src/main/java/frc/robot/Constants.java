@@ -71,5 +71,32 @@ public final class Constants {
 
     // public static final double EXTEND_HEIGHT = 1000; //need to check
   }
+  public static class Extender{
+    public static final int MOTOR_IDX = 13;
+    public static final int SENSOR_ID = 8000;
+
+    public static final double kP = 0.55;
+    public static final double kI = 0;
+    public static final double kD = 0;
+
+    public static final double GEAR_RATIO = 5; //Need to check
+    public static final double FEED_FORWARD = 0.07;  //Need to check
+    public static final double SPROCKET_PITCH_CIRCUMFERENCE = 0; //Need to check
+
+    public static final double ELEVATOR_MAX_HEIGHT = 0.07; //Need to check
+    public static final int SLOT_IDX_VALUE = 0; //Need to check
+
+    public static final double CRUISE_VELOCITY = 0; //Need to check value
+    public static final double ACCELERATION = 0; //Need to check value
+    public static final double JERK = 0; //Need to check
+
+    public static final int CANSPARKMAX_ENCODER_TICKS_PER_REVOLUTION = 42;
+
+    public static final double ERROR_THRESHOLD = 0.5; //need to check
+
+    public static final double EXTEND_DISTANCE = 1000; //need to check
+    public static final double SAFE = 100000000;
+
+  }
   public static final double ROBOT_PERIOD = 0;
 }

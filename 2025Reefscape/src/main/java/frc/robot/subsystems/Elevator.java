@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,12 +22,15 @@ public class Elevator extends SubsystemBase {
   private TalonFX leftMotor;
   private TalonFX rightMotor;
   private double rotations;
+  private DigitalInput sensor;
+  private boolean atZero;
   //private TalonFX rightMotor;
 
   /** Creates a new Elevator. */
   public Elevator() {
     leftMotor = new TalonFX(Constants.Elevator.LEFT_MOTOR_IDX);
     rightMotor = new TalonFX(Constants.Elevator.RIGHT_MOTOR_IDX);
+    sensor = new DigitalInput(Constants.Elevator.SENSOR_ID);
     var talonFXConfigs = new TalonFXConfiguration();
 
     // set slot 0 gains
