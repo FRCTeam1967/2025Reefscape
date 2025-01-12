@@ -17,7 +17,7 @@ public final class Constants {
     public static final int PIVOT_ID = 14;
     public static final int ENCODER_ID = 15;
     
-    public static final double GEAR_RATIO = 50.0;
+    public static final double GEAR_RATIO = 16/1.0;
     public static final double CRUISE_VELOCITY = 100.0;
     public static final double ACCELERATION = 200.0;
     public static final double JERK = 1600.0;
@@ -50,6 +50,10 @@ public final class Constants {
 
     public static final int BEAM_ID = 8;
    }
+   
+   public static class Xbox { 
+    public static final int DRIVER_CONTROLLER_PORT = 0, OPERATOR_CONTROLLER_PORT = 1;
+  }
     
  
 }

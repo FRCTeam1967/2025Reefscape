@@ -50,13 +50,13 @@ public class Pivot extends SubsystemBase {
    }
 
    public void moveTo(double revolutions) {
-      revsToMove = revolutions;
+      revsToMove = revolutions; 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(0.0);
       pivotMotor.setControl(request);
    }
 
    public void setRelToAbs() {
-      pivotMotor.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble() * 50.0);
+      pivotMotor.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble() * Constants.Pivot.GEAR_RATIO); //multiplying by updated gear ratio 
    }
 
    public boolean isReached() {
