@@ -23,8 +23,8 @@ public final class Constants {
     public static final double JERK = 1600.0;
 
     public static final double CONVERSION_FACTOR = 0.002777777777777778;
-    public static final double INTAKE_SAFE = 0.31666666666666665;
-    public static final double INTAKE_DOWN = 0.02777777777777778;
+    //public static final double INTAKE_SAFE = 0.31666666666666665;
+    //public static final double INTAKE_DOWN = 0.02777777777777778;
 
     public static final double kP = 4.8;
     public static final double kI = 0.0;
@@ -33,12 +33,14 @@ public final class Constants {
     public static final double kV = 0.12;
     public static final double kA = 0.01;
 
-    public static final double ERROR_THRESHOLD = 5.0;
+    public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double UP = 100.0;
-    public static final double MIDDLE = 50.0;
-    public static final double SAFE = 0.0;
+    public static final double UP = 100.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double MIDDLE = 50.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 0.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+
+    public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
   }
 
   public class Intake {

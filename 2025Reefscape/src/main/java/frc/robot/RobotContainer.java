@@ -23,10 +23,6 @@ public class RobotContainer {
       this.configureBindings();
    }
 
-   public void maintainPivotPosition() {
-      this.pivot.setRelToAbs();
-   }
-
    private void configureBindings() {
       operatorController.y().onTrue(new MovePivot(pivot, Constants.Pivot.UP));
       operatorController.x().onTrue(new MovePivot(pivot, Constants.Pivot.MIDDLE));

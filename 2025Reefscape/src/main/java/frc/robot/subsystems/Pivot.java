@@ -15,11 +15,11 @@ import frc.robot.Constants;
 
 public class Pivot extends SubsystemBase {
    private TalonFX pivotMotor;
-   private CANcoder absEncoder;
+   //private CANcoder absEncoder; 
    public double revsToMove;
 
    public Pivot() {
-      absEncoder = new CANcoder(Constants.Pivot.ENCODER_ID);
+      //absEncoder = new CANcoder(Constants.Pivot.ENCODER_ID); 
       pivotMotor = new TalonFX(Constants.Pivot.PIVOT_ID);
 
       var talonFXConfigs = new TalonFXConfiguration();
@@ -42,6 +42,7 @@ public class Pivot extends SubsystemBase {
       
       pivotMotor.getConfigurator().apply(talonFXConfigs);
 
+      resetEncoders(); 
       pivotMotor.setNeutralMode(NeutralModeValue.Brake);
    }
 
@@ -50,21 +51,25 @@ public class Pivot extends SubsystemBase {
    }
 
    public void moveTo(double revolutions) {
-      revsToMove = revolutions; 
+      revsToMove = revolutions*Constants.Pivot.GEAR_RATIO; 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(0.0);
       pivotMotor.setControl(request);
    }
 
-   public void setRelToAbs() {
-      pivotMotor.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble() * Constants.Pivot.GEAR_RATIO); //multiplying by updated gear ratio 
+   //public void setRelToAbs() {
+      //pivotMotor.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble() * Constants.Pivot.GEAR_RATIO); //removed this
+   //}
+
+   public void resetEncoders() { //made a new method for resetting encoders
+      pivotMotor.setPosition(0);
    }
 
    public boolean isReached() {
-      return Math.abs(pivotMotor.getRotorPosition().getValueAsDouble() - revsToMove) < 5.0;
+      return Math.abs(((pivotMotor.getRotorPosition().getValueAsDouble()/ Constants.Pivot.GEAR_RATIO)*360) - revsToMove) < 5.0;
    }
 
    public void periodic() {
-      SmartDashboard.putNumber("Pivot Abs Position", absEncoder.getAbsolutePosition().getValueAsDouble() * 50.0);
+      //SmartDashboard.putNumber("Pivot Abs Position", absEncoder.getAbsolutePosition().getValueAsDouble() * 50.0); //removed this
       SmartDashboard.putNumber("Pivot Rel Position", pivotMotor.getRotorPosition().getValueAsDouble());
       SmartDashboard.putNumber("Pivot Target", revsToMove);
       SmartDashboard.putBoolean("Pivot At Target", isReached());
