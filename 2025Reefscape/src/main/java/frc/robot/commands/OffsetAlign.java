@@ -5,28 +5,27 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.ctre.phoenix6.swerve.SwerveRequest.*;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.*;
 
-public class VisionAlign extends Command {
+/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+public class OffsetAlign extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
   private SlewRateLimiter xLimiter, yLimiter;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
 
-
-  public VisionAlign(CommandSwerveDrivetrain drivetrain, Vision vision) {
+  /** Creates a new OffsetAlign. */
+  public OffsetAlign(CommandSwerveDrivetrain drivetrain, Vision vision) {
     this.drivetrain = drivetrain;
     this.vision = vision;
     addRequirements(drivetrain, vision);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
+
   private double cleanAndScaleInput(double deadband, double input, SlewRateLimiter limiter, double speedScaling){
     input = Math.pow(input, 3);
     input = Math.abs(input)> deadband ? input : 0;
@@ -42,26 +41,22 @@ public class VisionAlign extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(vision.getOffset());
-    if (vision.getOffset() >= 5.0){
-      double xSpeed = cleanAndScaleInput(0.0, 0.7, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
-      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
+    if ((vision.getOffset()-5.0) >= 3.0){
+      double ySpeed = cleanAndScaleInput(0.0, 0.7, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
+      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, ySpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
-    } else if (vision.getOffset() < 5.0 && vision.getOffset() >= -5.0) {
+    } else if ((vision.getOffset()-5.0) < 3.0 && (vision.getOffset()-5.0) >= -3.0) {
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
     } else{
-      double xSpeed = cleanAndScaleInput(0.0, -0.7, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
-      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, xSpeed, 0.0);
+      double ySpeed = cleanAndScaleInput(0.0, -0.7, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
+      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, ySpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
-
-      //SwerveModuleState[] moduleState = Constants.Swerve.SWERVE_DRIVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-      //swerve.setModuleStates(moduleState);
     }
   }
 

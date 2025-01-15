@@ -69,11 +69,11 @@ public class Vision extends SubsystemBase {
   public void alignAngleX(){
     updateValues();
     if (xOffset > -Constants.Vision.DEGREE_ERROR && xOffset < Constants.Vision.DEGREE_ERROR){
-      isInRange = true;
-      SmartDashboard.putString("Range", "yes");
-    } else {
       isInRange = false;
-      SmartDashboard.putString("Range", "yes");
+      SmartDashboard.putBoolean("Range", false);
+    } else {
+      isInRange = true;
+      SmartDashboard.putBoolean("Range", true);
     }
   }
 
@@ -86,7 +86,7 @@ public class Vision extends SubsystemBase {
 
   /** @return whether limelight is in range */
   public boolean getIsInRange(){
-    return isInRange;
+    return false;
   }
 
   /** @return value of xOffset */

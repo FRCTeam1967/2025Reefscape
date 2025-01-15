@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.OffsetAlign;
 import frc.robot.commands.VisionAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -37,7 +38,7 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final Vision vision = new Vision("1967"); //double check what the real hostname is
+    public final Vision vision = new Vision("limelight-janky"); 
 
     private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
@@ -60,9 +61,9 @@ public class RobotContainer {
         );
 
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
+        //joystick.b().whileTrue(drivetrain.applyRequest(() ->
+            //point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        //));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -77,7 +78,8 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         //vision
-        joystick.x().whileTrue(new VisionAlign(drivetrain, vision));
+        joystick.rightBumper().whileTrue(new VisionAlign(drivetrain, vision));
+        joystick.rightTrigger().whileTrue(new OffsetAlign(drivetrain, vision));
     }
 
     public Command getAutonomousCommand() {
@@ -94,7 +96,7 @@ public class RobotContainer {
         double kD = 0.2; //test -> slow down when reaching target (stability)
         
         //TX -> x-axis offset in degrees, multiply by angular speed to be radians/second
-        double targetingAngularVelocity = (LimelightHelpers.getTX("limelight") * kP) * CommandSwerveDrivetrain.kMaxAngularSpeed;
+        double targetingAngularVelocity = (LimelightHelpers.getTX("limelight-janky") * kP) * CommandSwerveDrivetrain.kMaxAngularSpeed;
         
         targetingAngularVelocity *= 1.0;
         return targetingAngularVelocity;
@@ -105,7 +107,7 @@ public class RobotContainer {
         double kP = 0.02; //test
 
         //TY -> y-axis offset in degrees, multiply by angular speed to be raidans/second
-        double targetingForwardSpeed = (LimelightHelpers.getTY("limelight") * kP) * CommandSwerveDrivetrain.kMaxSpeed;
+        double targetingForwardSpeed = (LimelightHelpers.getTY("limelight-janky") * kP) * CommandSwerveDrivetrain.kMaxSpeed;
 
         targetingForwardSpeed *= -1.0;
         return targetingForwardSpeed;
@@ -118,18 +120,18 @@ public class RobotContainer {
         var rot = -m_rotLimiter.calculate(MathUtil.applyDeadband(joystick.getRightX(), 0.02)) * CommandSwerveDrivetrain.kMaxAngularSpeed;
 
         // while the left-bumper is pressed, overwrite some of the driving values with the output of limelight override method
-        if (joystick.leftBumper().getAsBoolean()){
-        final var rot_limelight = limelight_aim_proportional();
-        rot = rot_limelight;
+        if (joystick.rightTrigger().getAsBoolean()){
+            final var rot_limelight = limelight_aim_proportional();
+            rot = rot_limelight;
 
-        final var forward_limelight = limelight_range_proportional();
-        xSpeed = forward_limelight;
+            final var forward_limelight = limelight_range_proportional();
+            xSpeed = forward_limelight;
 
-        //turn off field relative
-        fieldRelative = false;
+            //turn off field relative
+            fieldRelative = false;
         }
 
-        drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative, 10); //TODO: figure the seconds out?
+        drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative, 1);
 
     }
 }
