@@ -16,10 +16,10 @@ public class MovePivot extends Command {
    }
 
    public void initialize() {
-      pivot.moveTo(targetPosition);
    }
 
    public void execute() {
+      pivot.moveTo(targetPosition);
    }
 
    public boolean isFinished() {

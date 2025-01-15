@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
   public class Pivot {
     public static final int PIVOT_ID = 14;
-    public static final int ENCODER_ID = 15;
+    //public static final int ENCODER_ID = 15;
     
     public static final double GEAR_RATIO = 16/1.0;
     public static final double CRUISE_VELOCITY = 100.0;
