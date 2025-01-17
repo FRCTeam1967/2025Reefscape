@@ -57,11 +57,7 @@ public class Pivot extends SubsystemBase {
       pivotMotor.setControl(request);
    }
 
-   //public void setRelToAbs() {
-      //pivotMotor.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble() * Constants.Pivot.GEAR_RATIO); //removed this
-   //}
-
-   public void resetEncoders() { //made a new method for resetting encoders
+   public void resetEncoders() { 
       pivotMotor.setPosition(0);
    }
 
@@ -70,7 +66,6 @@ public class Pivot extends SubsystemBase {
    }
 
    public void periodic() {
-      //SmartDashboard.putNumber("Pivot Abs Position", absEncoder.getAbsolutePosition().getValueAsDouble() * 50.0); //removed this
       SmartDashboard.putNumber("Pivot Rel Position Degrees",(pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       SmartDashboard.putBoolean("Pivot At Target", isReached());
    }
