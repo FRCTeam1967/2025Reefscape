@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 
 public class Pivot extends SubsystemBase {
@@ -51,7 +52,7 @@ public class Pivot extends SubsystemBase {
    }
 
    public void moveTo(double revolutions) {
-      revsToMove = revolutions*Constants.Pivot.GEAR_RATIO; 
+      revsToMove = revolutions*(Constants.Pivot.GEAR_RATIO); 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(0.0);
       pivotMotor.setControl(request);
    }
@@ -65,13 +66,12 @@ public class Pivot extends SubsystemBase {
    }
 
    public boolean isReached() {
-      return Math.abs(((pivotMotor.getRotorPosition().getValueAsDouble()/ Constants.Pivot.GEAR_RATIO)*360) - revsToMove) < 5.0;
+      return Math.abs(((pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360) - (revsToMove*360)) < 5.0;
    }
 
    public void periodic() {
       //SmartDashboard.putNumber("Pivot Abs Position", absEncoder.getAbsolutePosition().getValueAsDouble() * 50.0); //removed this
-      SmartDashboard.putNumber("Pivot Rel Position", pivotMotor.getRotorPosition().getValueAsDouble());
-      SmartDashboard.putNumber("Pivot Target", revsToMove);
+      SmartDashboard.putNumber("Pivot Rel Position Degrees",(pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       SmartDashboard.putBoolean("Pivot At Target", isReached());
    }
 }

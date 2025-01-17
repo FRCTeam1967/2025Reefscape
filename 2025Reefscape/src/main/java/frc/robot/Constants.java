@@ -17,7 +17,9 @@ public final class Constants {
     public static final int PIVOT_ID = 14;
     //public static final int ENCODER_ID = 15;
     
-    public static final double GEAR_RATIO = 16/1.0;
+    //public static final double GEAR_RATIO = 16/1.0;
+    //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
+    public static final double GEAR_RATIO = 27/1.0;
     public static final double CRUISE_VELOCITY = 100.0;
     public static final double ACCELERATION = 200.0;
     public static final double JERK = 1600.0;
@@ -36,8 +38,8 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double UP = 100.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double MIDDLE = 50.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double UP = 150.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double MIDDLE = 120.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 0.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
