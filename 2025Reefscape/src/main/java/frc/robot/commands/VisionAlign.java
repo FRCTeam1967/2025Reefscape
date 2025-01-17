@@ -42,26 +42,22 @@ public class VisionAlign extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(vision.getOffset());
-    if (vision.getOffset() >= 5.0){
-      double xSpeed = cleanAndScaleInput(0.0, 0.7, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
+    if (vision.getOffset() >= 2.5){
+      double xSpeed = cleanAndScaleInput(0.0, 0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
-    } else if (vision.getOffset() < 5.0 && vision.getOffset() >= -5.0) {
+    } else if (vision.getOffset() < 2.5 && vision.getOffset() >= -1.0) {
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
     } else{
-      double xSpeed = cleanAndScaleInput(0.0, -0.7, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
+      double xSpeed = cleanAndScaleInput(0.0, -0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, xSpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
-
-      //SwerveModuleState[] moduleState = Constants.Swerve.SWERVE_DRIVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-      //swerve.setModuleStates(moduleState);
     }
   }
 

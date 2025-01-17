@@ -119,7 +119,7 @@ public final class Constants {
   public static class Vision {
     public static final double DEGREE_ERROR = 4.0;
 
-    public static final double LIMELIGHT_ANGLE_DEGREES = 42; //need to verify
+    public static final double LIMELIGHT_ANGLE_DEGREES = 0; //need to verify
     public static final double LIMELIGHT_HEIGHT_INCHES = 25.125; //need to verify
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
   }

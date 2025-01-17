@@ -120,7 +120,7 @@ public class RobotContainer {
         var rot = -m_rotLimiter.calculate(MathUtil.applyDeadband(joystick.getRightX(), 0.02)) * CommandSwerveDrivetrain.kMaxAngularSpeed;
 
         // while the left-bumper is pressed, overwrite some of the driving values with the output of limelight override method
-        if (joystick.rightTrigger().getAsBoolean()){
+        if (joystick.leftTrigger().getAsBoolean()){
             final var rot_limelight = limelight_aim_proportional();
             rot = rot_limelight;
 

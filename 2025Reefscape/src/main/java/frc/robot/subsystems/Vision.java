@@ -19,6 +19,7 @@ import frc.robot.Constants;
 
 public class Vision extends SubsystemBase {
   //https://readthedocs.org/projects/limelight/downloads/pdf/latest/
+
   private NetworkTable limelightTable;
   private double xOffset = -100000;
   private boolean isInRange = false;
@@ -26,6 +27,8 @@ public class Vision extends SubsystemBase {
   public double verticalOffset, angleToGoalDegrees, angleToGoalRadians;
   public double limelightToGoalInches = 0.0;
   private String limelightHostname;
+
+  private double[] targetPose = new double[6];
 
   /** Creates new Vision */
   public Vision(String hostname) {
@@ -36,8 +39,12 @@ public class Vision extends SubsystemBase {
 
   /** Update x offset value */
   public void updateValues() {
-    NetworkTableEntry tx = limelightTable.getEntry("tx");
+    //targetPose = limelightTable.getEntry("targetpose_robotspace").getDoubleArray(targetPose);
+    //double xOffset = targetPose[0];
+    //double verticalOffset = targetPose[0];
+    NetworkTableEntry tx = limelightTable.getEntry("ty");
     NetworkTableEntry ty = limelightTable.getEntry("ty");
+
     xOffset = tx.getDouble(0.0);
     verticalOffset = ty.getDouble(0.0);
     SmartDashboard.putNumber("X Offset", xOffset);
