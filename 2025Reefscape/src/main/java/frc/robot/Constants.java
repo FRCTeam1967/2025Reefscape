@@ -38,8 +38,8 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double UP = 150.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double MIDDLE = 120.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double UP = 194.6 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double MIDDLE = 158.9* Constants.Pivot.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 0.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
@@ -58,6 +58,5 @@ public final class Constants {
    public static class Xbox { 
     public static final int DRIVER_CONTROLLER_PORT = 0, OPERATOR_CONTROLLER_PORT = 1;
   }
-    
  
 }
