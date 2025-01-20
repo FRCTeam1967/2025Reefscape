@@ -12,7 +12,9 @@ import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
@@ -28,16 +30,27 @@ import frc.robot.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
+//NEW
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import frc.robot.Telemetry;
+
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
+ * 
  * Subsystem so it can easily be used in command-based projects.
  */
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
+    //NEW
+    // public final SwerveDrivePoseEstimator m_poseEstimator;
+    // private Pose2d pose;
+
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     public static double kMaxSpeed = 12.0; // 3 meters per second
     public static double kMaxAngularSpeed = 2 * Math.PI; // 2pi radians (360 degrees) per second
+    
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -136,6 +149,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
+
+        //NEW
+        //  m_poseEstimator = new SwerveDrivePoseEstimator(
+        //     Constants.Swerve.SWERVE_DRIVE_KINEMATICS, 
+        //     getRotation2d(), 
+        //     getModulePositions(), 
+        //     new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0)));
     }
 
     /**
@@ -257,6 +277,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         setControl(request.withSpeeds(stopSpeed));
     }
 
+    //NEW
+    // // public SwerveModulePosition[] getModulePositions() {
+    // //     return new SwerveModulePosition[] {
+    // //       new SwerveModulePosition(2.0, TunerConstants.FrontLeft.getRotation2d())
+    // //     }
+
+    // }
+    //TODO: SwerveModulePosition needed
+
     @Override
     public void periodic() {
         /*
@@ -276,6 +305,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+        // Rotation2d gyroAngle = getRotation2d();
+        // pose = m_poseEstimator.update(gyroAngle, new SwerveModulePosition[] {
+        //        frontLeft.getPosition(), frontRight.getPosition(), backLeft.getPosition(), backRight.getPosition()
+        //          });
+
+
     }
 
     private void startSimThread() {

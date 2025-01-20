@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.*;
 
 public class VisionAlign extends Command {
@@ -37,7 +38,9 @@ public class VisionAlign extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    LimelightHelpers.setFiducial3DOffset("limelight-janky", 0.0,0.0, 0.0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

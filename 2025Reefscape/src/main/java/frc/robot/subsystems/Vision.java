@@ -1,21 +1,20 @@
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
-import frc.robot.RobotContainer;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import java.util.Optional;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.LimelightResults;
+import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 
 public class Vision extends SubsystemBase {
   //https://readthedocs.org/projects/limelight/downloads/pdf/latest/
@@ -27,28 +26,39 @@ public class Vision extends SubsystemBase {
   public double verticalOffset, angleToGoalDegrees, angleToGoalRadians;
   public double limelightToGoalInches = 0.0;
   private String limelightHostname;
+  public LimelightTarget_Fiducial limelightTargetFiducial = new LimelightTarget_Fiducial();
+  
 
-  private double[] targetPose = new double[6];
-
+  public Pose3d targetPose = new Pose3d();
+  public LimelightResults results = new LimelightResults();
+  
+  
+  
   /** Creates new Vision */
   public Vision(String hostname) {
     limelightHostname = hostname;
     limelightTable = NetworkTableInstance.getDefault().getTable(limelightHostname);
+    targetPose = limelightTargetFiducial.getTargetPose_RobotSpace();
     updateValues();
   }
 
+  
   /** Update x offset value */
   public void updateValues() {
-    //targetPose = limelightTable.getEntry("targetpose_robotspace").getDoubleArray(targetPose);
-    //double xOffset = targetPose[0];
-    //double verticalOffset = targetPose[0];
-    NetworkTableEntry tx = limelightTable.getEntry("ty");
-    NetworkTableEntry ty = limelightTable.getEntry("ty");
 
-    xOffset = tx.getDouble(0.0);
-    verticalOffset = ty.getDouble(0.0);
+    //targetPose = limelightTable.getEntry("targetpose_robotspace").getDoubleArray(targetPose);
+    //double xOffset = targetPose.getX();
+    //double verticalOffset = targetPose.getY();
+
+    xOffset = limelightTable.getEntry("tx").getDouble(0.0);
+    verticalOffset = limelightTable.getEntry("ty").getDouble(0.0);
+
     SmartDashboard.putNumber("X Offset", xOffset);
     SmartDashboard.putNumber("Y Offset", verticalOffset);
+    SmartDashboard.putNumber("Blue X", getBlueFieldX());
+    SmartDashboard.putNumber("Blue Y", getBlueFieldY());
+    SmartDashboard.putNumber("Blue ROT", getBlueFieldRot());
+
   }
 
   /**
@@ -81,6 +91,7 @@ public class Vision extends SubsystemBase {
     } else {
       isInRange = true;
       SmartDashboard.putBoolean("Range", true);
+      
     }
   }
 
@@ -109,9 +120,30 @@ public class Vision extends SubsystemBase {
      return isRedAlliance;
    }
 
+
+   //NEW
+   public double getBlueFieldRot(){
+    return results.getBotPose3d_wpiBlue().getRotation().getX(); //yaw?
+    //return (limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[6])[5]);
+  }
+
+  public double getBlueFieldX() {
+    //return results.getBotPose3d_wpiBlue().getX();
+    return LimelightHelpers.pose3dToArray(results.getBotPose3d_wpiBlue())[0];
+    //(limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[6])[0]);
+  }
+
+  public double getBlueFieldY() {
+    return results.getBotPose3d_wpiBlue().getY();
+    //(limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[6])[1]);
+  }
+
   @Override
   public void periodic() {
     alignAngleX();
     alignAngleZ();
+  
+    //m_field.setRobotPose(1.0,1.0, new Rotation2d(.5));
+  
   }
 }

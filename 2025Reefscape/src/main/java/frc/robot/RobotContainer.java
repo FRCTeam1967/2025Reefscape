@@ -21,6 +21,7 @@ import frc.robot.commands.VisionAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionUpdate;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -37,12 +38,14 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final Vision vision = new Vision("limelight-janky"); 
+    public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public static final Vision vision = new Vision("limelight-janky"); 
 
     private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+
+    private final VisionUpdate visionUpdate = new VisionUpdate();
 
     public RobotContainer() {
         configureBindings();
