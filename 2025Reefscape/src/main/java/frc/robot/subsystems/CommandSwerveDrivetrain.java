@@ -278,10 +278,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     //NEW
-    // // public SwerveModulePosition[] getModulePositions() {
-    // //     return new SwerveModulePosition[] {
-    // //       new SwerveModulePosition(2.0, TunerConstants.FrontLeft.getRotation2d())
-    // //     }
+    // public SwerveModulePosition[] getModulePositions() {
+    //     return new SwerveModulePosition[] {
+    //       new SwerveModulePosition(2.0, TunerConstants.FrontLeft.())
+    //     }
 
     // }
     //TODO: SwerveModulePosition needed

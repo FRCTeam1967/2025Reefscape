@@ -45,7 +45,7 @@ public class RobotContainer {
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
-    private final VisionUpdate visionUpdate = new VisionUpdate();
+    private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain);
 
     public RobotContainer() {
         configureBindings();

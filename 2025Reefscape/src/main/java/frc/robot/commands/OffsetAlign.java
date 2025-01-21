@@ -38,7 +38,7 @@ public class OffsetAlign extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight-janky", 0.0,0.305, 0.0);
+    LimelightHelpers.setFiducial3DOffset("limelight-janky", 0.0, 0.305, 0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

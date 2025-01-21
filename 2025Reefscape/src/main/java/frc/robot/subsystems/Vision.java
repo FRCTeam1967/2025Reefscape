@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -57,8 +58,7 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("Y Offset", verticalOffset);
     SmartDashboard.putNumber("Blue X", getBlueFieldX());
     SmartDashboard.putNumber("Blue Y", getBlueFieldY());
-    SmartDashboard.putNumber("Blue ROT", getBlueFieldRot());
-
+    SmartDashboard.putNumber("Blue ROT", getBlueFieldRot().getAngle());
   }
 
   /**
@@ -122,8 +122,8 @@ public class Vision extends SubsystemBase {
 
 
    //NEW
-   public double getBlueFieldRot(){
-    return results.getBotPose3d_wpiBlue().getRotation().getX(); //yaw?
+   public Rotation3d getBlueFieldRot(){
+    return results.getBotPose3d_wpiBlue().getRotation(); //yaw?
     //return (limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[6])[5]);
   }
 
