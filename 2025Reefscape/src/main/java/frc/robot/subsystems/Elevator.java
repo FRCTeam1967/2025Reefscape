@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import com.ctre.phoenix6.*;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -28,8 +29,8 @@ public class Elevator extends SubsystemBase {
 
   /** Creates a new Elevator. */
   public Elevator() {
-    leftMotor = new TalonFX(Constants.Elevator.LEFT_MOTOR_IDX);
-    rightMotor = new TalonFX(Constants.Elevator.RIGHT_MOTOR_IDX);
+    leftMotor = new TalonFX(Constants.Elevator.LEFT_MOTOR_IDX, "Canivore");
+    rightMotor = new TalonFX(Constants.Elevator.RIGHT_MOTOR_IDX, "Canivore");
     sensor = new DigitalInput(Constants.Elevator.SENSOR_ID);
     var talonFXConfigs = new TalonFXConfiguration();
 
@@ -44,14 +45,13 @@ public class Elevator extends SubsystemBase {
 
     // set Motion Magic settings
     var motionMagicConfigs = talonFXConfigs.MotionMagic;
-    motionMagicConfigs.MotionMagicCruiseVelocity = Constants.Elevator.CRUISE_VELOCITY; // Target cruise velocity of 80 rps
-    motionMagicConfigs.MotionMagicAcceleration = Constants.Elevator.ACCELERATION; // Target acceleration of 160 rps/s (0.5 seconds)
-    motionMagicConfigs.MotionMagicJerk = Constants.Elevator.JERK; // Target jerk of 1600 rps/s/s (0.1 seconds)
-    
+    motionMagicConfigs.MotionMagicCruiseVelocity = Constants.Elevator.CRUISE_VELOCITY;
+    motionMagicConfigs.MotionMagicAcceleration = Constants.Elevator.ACCELERATION;
+    motionMagicConfigs.MotionMagicJerk = Constants.Elevator.JERK;
+
     talonFXConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
     talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-    
     leftMotor.getConfigurator().apply(talonFXConfigs);
     rightMotor.getConfigurator().apply(talonFXConfigs);
 

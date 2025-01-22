@@ -24,6 +24,7 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController operatorController = new CommandXboxController(Xbox.OPERATOR_CONTROLLER_PORT);
   public final Elevator elevator = new Elevator();
+  public final AlgaeMechanism algaeMechanism = new AlgaeMechanism();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -45,6 +46,8 @@ public class RobotContainer {
     operatorController.y().onTrue(new MoveElevator(elevator, Constants.Elevator.UP));
     operatorController.x().onTrue(new MoveElevator(elevator, Constants.Elevator.MIDDLE));
     operatorController.a().onTrue(new MoveElevator(elevator, Constants.Elevator.SAFE));
+
+    operatorController.rightTrigger().whileTrue(new RunAlgaeIntake(algaeMechanism, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED));
 
 
     //operatorController.a().whileTrue(new LateralElevatorMove(lateralElevator, Constants.LateralElevator.SPEED));
