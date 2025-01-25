@@ -15,14 +15,15 @@ package frc.robot;
 public final class Constants {
   public class Pivot {
     public static final int PIVOT_ID = 14;
+    public static final int SWITCH_ID = 16;
     //public static final int ENCODER_ID = 15;
     
     //public static final double GEAR_RATIO = 16/1.0;
     //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
     public static final double GEAR_RATIO = 27/1.0;
     public static final double CRUISE_VELOCITY = 100.0;
-    public static final double ACCELERATION = 200.0;
-    public static final double JERK = 1600.0;
+    public static final double ACCELERATION = 100.0;
+    public static final double JERK = 1700.0;
 
     public static final double CONVERSION_FACTOR = 0.002777777777777778;
     //public static final double INTAKE_SAFE = 0.31666666666666665;
@@ -38,8 +39,8 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double UP = 194.6 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double MIDDLE = 158.9* Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L2 = 220 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double MIDDLE = 90.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 0.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
@@ -51,12 +52,16 @@ public final class Constants {
 
     public static final double SLOW = 0.25;
     public static final double HIGH = 0.5;
+    public static final double REVERSE_SLOW = -0.25;
+    public static final double REVERSE_HIGH = -0.5;
 
     public static final int BEAM_ID = 8;
    }
    
    public static class Xbox { 
     public static final int DRIVER_CONTROLLER_PORT = 0, OPERATOR_CONTROLLER_PORT = 1;
-  }
+
  
+}
+
 }

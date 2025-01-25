@@ -13,15 +13,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Pivot extends SubsystemBase {
    private TalonFX pivotMotor;
+   private DigitalInput limitSwitch;
    //private CANcoder absEncoder; 
    public double revsToMove;
+   
 
    public Pivot() {
       //absEncoder = new CANcoder(Constants.Pivot.ENCODER_ID); 
       pivotMotor = new TalonFX(Constants.Pivot.PIVOT_ID);
+      limitSwitch = new DigitalInput(Constants.Pivot.SWITCH_ID);
 
       var talonFXConfigs = new TalonFXConfiguration();
 
@@ -55,6 +59,13 @@ public class Pivot extends SubsystemBase {
       revsToMove = revolutions*(Constants.Pivot.GEAR_RATIO); 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(0.0);
       pivotMotor.setControl(request);
+   }
+   
+   public void checkLimit(){
+      if (limitSwitch.get()){
+         pivotMotor.set(0);
+         
+      }
    }
 
    public void resetEncoders() { 

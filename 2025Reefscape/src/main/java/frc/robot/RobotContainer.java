@@ -34,12 +34,13 @@ public class RobotContainer {
    }
 
    private void configureBindings() {
-      operatorController.y().onTrue(new MovePivot(pivot, Constants.Pivot.UP));
-      operatorController.x().onTrue(new MovePivot(pivot, Constants.Pivot.MIDDLE));
+      operatorController.y().onTrue(new MovePivot(pivot, Constants.Pivot.MIDDLE));
+      operatorController.x().onTrue(new MovePivot(pivot, Constants.Pivot.L2));
       operatorController.a().onTrue(new MovePivot(pivot, Constants.Pivot.SAFE));
 
-      operatorController.leftTrigger().or(operatorController.rightTrigger()).whileTrue(new RunIntake(intake, led, Constants.Intake.SLOW));
-      operatorController.leftTrigger().or(operatorController.rightTrigger()).whileTrue(new RunIntake(intake, led, Constants.Intake.HIGH));
+      operatorController.rightTrigger().whileTrue(new RunIntake(intake, led, Constants.Intake.SLOW));
+      operatorController.leftTrigger().whileTrue(new RunIntake(intake, led, Constants.Intake.REVERSE_SLOW));
+      //operatorController.leftTrigger().or(operatorController.rightTrigger()).whileTrue(new RunIntake(intake, led, Constants.Intake.HIGH));
 
 
       operatorController.leftTrigger().or(operatorController.rightTrigger()).whileTrue(new SequentialCommandGroup(

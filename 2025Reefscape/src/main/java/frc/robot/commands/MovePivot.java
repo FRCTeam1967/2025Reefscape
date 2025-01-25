@@ -19,6 +19,7 @@ public class MovePivot extends Command {
 
    public void execute() {
       pivot.moveTo(targetPosition);
+      pivot.checkLimit();
    }
 
    public boolean isFinished() {
