@@ -28,7 +28,7 @@ public class VisionUpdate extends SubsystemBase {
   @Override
   public void periodic() {
     //This method will be called once per scheduler run
-    PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-janky");
+    PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
     
     if (poseEstimator.tagCount >= 2) {
       RobotContainer.drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));

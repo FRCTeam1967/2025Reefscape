@@ -42,8 +42,8 @@ public class TunerConstants {
     // When using closed-loop control, the drive motor uses the control
     // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
     private static final Slot0Configs driveGains = new Slot0Configs()
-        .withKP(0.018879).withKI(0).withKD(0)
-        .withKS(0.097042).withKV(0.115571).withKA(0.001785);
+        .withKP(0.1).withKI(0).withKD(0)
+        .withKS(0.0).withKV(0.124);
 
         /* withKP(0.1).withKI(0).withKD(0)
         .withKS(0).withKV(0.124);*/
@@ -81,7 +81,8 @@ public class TunerConstants {
         );
     private static final CANcoderConfiguration encoderInitialConfigs = new CANcoderConfiguration();
     // Configs for the Pigeon 2; leave this null to skip applying Pigeon 2 configs
-    private static final Pigeon2Configuration pigeonConfigs = null;
+    private static MountPoseConfigs mountPoseConfigs = new MountPoseConfigs().withMountPosePitch(85.00782775878906).withMountPoseRoll(-85.27510833740234).withMountPoseYaw(-6.728643417358398);
+    private static final Pigeon2Configuration pigeonConfigs = new Pigeon2Configuration().withMountPose(mountPoseConfigs);
 
     // CAN bus that the devices are located on;
     // All swerve devices must share the same CAN bus

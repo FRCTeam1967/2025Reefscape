@@ -9,23 +9,13 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
-
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import static edu.wpi.first.units.Units.*;
-
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -52,7 +42,15 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+    public static final Vision vision = new Vision("limelight"); 
+
+    private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
+    private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
+    private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+
+    private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain);
 
 
     /* Path follower */
@@ -66,33 +64,7 @@ public class RobotContainer {
 
         configureBindings();
     }
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-
-    /* Setting up bindings for necessary control of the swerve drive platform */
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-
-    private final Telemetry logger = new Telemetry(MaxSpeed);
-
-    private final CommandXboxController joystick = new CommandXboxController(0);
-
-    public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public static final Vision vision = new Vision("limelight-janky"); 
-
-    private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
-    private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
-    private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
-
-    private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain);
-
-    public RobotContainer() {
-        configureBindings();
-    }
-
+    
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -112,15 +84,39 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        joystick.povUp().whileTrue(drivetrain.applyRequest(() ->
+        drive.withVelocityX(0.2 * MaxSpeed) // Drive forward with negative Y (forward)
+            .withVelocityY(0 * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        ));
+
+        joystick.povDown().whileTrue(drivetrain.applyRequest(() ->
+        drive.withVelocityX(-0.2 * MaxSpeed) // Drive forward with negative Y (forward)
+            .withVelocityY(0 * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        ));
+
+        joystick.povRight().whileTrue(drivetrain.applyRequest(() ->
+        drive.withVelocityX(0 * MaxSpeed) // Drive forward with negative Y (forward)
+            .withVelocityY(-0.2 * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        ));
+
+        joystick.povLeft().whileTrue(drivetrain.applyRequest(() ->
+        drive.withVelocityX(0 * MaxSpeed) // Drive forward with negative Y (forward)
+            .withVelocityY(0.2 * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        ));
 
         //vision
         joystick.rightBumper().whileTrue(new VisionAlign(drivetrain, vision));
@@ -141,7 +137,7 @@ public class RobotContainer {
         double kD = 0.2; //test -> slow down when reaching target (stability)
         
         //TX -> x-axis offset in degrees, multiply by angular speed to be radians/second
-        double targetingAngularVelocity = (LimelightHelpers.getTX("limelight-janky") * kP) * CommandSwerveDrivetrain.kMaxAngularSpeed;
+        double targetingAngularVelocity = (LimelightHelpers.getTX("limelight") * kP) * CommandSwerveDrivetrain.kMaxAngularSpeed;
         
         targetingAngularVelocity *= 1.0;
         return targetingAngularVelocity;
@@ -152,7 +148,7 @@ public class RobotContainer {
         double kP = 0.02; //test
 
         //TY -> y-axis offset in degrees, multiply by angular speed to be raidans/second
-        double targetingForwardSpeed = (LimelightHelpers.getTY("limelight-janky") * kP) * CommandSwerveDrivetrain.kMaxSpeed;
+        double targetingForwardSpeed = (LimelightHelpers.getTY("limelight") * kP) * CommandSwerveDrivetrain.kMaxSpeed;
 
         targetingForwardSpeed *= -1.0;
         return targetingForwardSpeed;
