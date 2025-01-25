@@ -4,11 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -77,7 +72,7 @@ public final class Constants {
   public class AlgaeMechanism {
     public static final int PIVOT_ID = 14;
     public static final int INTAKE_ID = 15;
-    //public static final int ENCODER_ID = 15;
+    public static final int ENCODER_ID = 1000;
 
     public static final double ALGAE_INTAKE_SPEED = 10.0;
     

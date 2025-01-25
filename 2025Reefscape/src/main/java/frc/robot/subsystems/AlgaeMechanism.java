@@ -1,27 +1,25 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 
 public class AlgaeMechanism extends SubsystemBase {
    private TalonFX algaePivot;
    private TalonFX algaeIntake;
-   //private CANcoder absEncoder; 
+   private CANcoder absEncoder; 
    public double revsToMove;
 
    public AlgaeMechanism() {
-      //absEncoder = new CANcoder(Constants.Pivot.ENCODER_ID); 
+      absEncoder = new CANcoder(Constants.AlgaeMechanism.ENCODER_ID); 
 
       //pivot instantiations
       algaePivot = new TalonFX(Constants.AlgaeMechanism.PIVOT_ID);
@@ -68,6 +66,10 @@ public class AlgaeMechanism extends SubsystemBase {
 
    public void resetEncoders() { 
       algaePivot.setPosition(0);
+   }
+
+   public void setRelToAbs() {
+      algaePivot.setPosition(absEncoder.getPosition().getValueAsDouble());
    }
 
    public boolean isReached() {

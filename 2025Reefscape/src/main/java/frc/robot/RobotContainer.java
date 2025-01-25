@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Xbox;
-import frc.robot.subsystems.*;
-import frc.robot.commands.*;
+import frc.robot.commands.MoveElevator;
+import frc.robot.commands.RunAlgaeIntake;
+import frc.robot.subsystems.AlgaeMechanism;
+import frc.robot.subsystems.Elevator;
 
 
 /**
@@ -57,6 +59,10 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
+  }
+
+  public void homeAlgaePivot() {
+    algaeMechanism.setRelToAbs();
   }
 
   /**
