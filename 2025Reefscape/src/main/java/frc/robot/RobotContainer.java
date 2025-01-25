@@ -19,7 +19,6 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.OffsetAlign;
 import frc.robot.commands.VisionAlign;
 import frc.robot.generated.TunerConstants;
@@ -27,7 +26,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.VisionUpdate;
 
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Xbox;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
@@ -43,6 +41,13 @@ public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
+    // Replace with CommandPS4Controller or CommandJoystick if needed
+    private final CommandXboxController operatorController = new CommandXboxController(Xbox.OPERATOR_CONTROLLER_PORT);
+    private final CommandXboxController joystick = new CommandXboxController(0);
+
+    public final Elevator elevator = new Elevator();
+    public final AlgaeMechanism algaeMechanism = new AlgaeMechanism();
+
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -51,8 +56,6 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
-
-    private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -100,6 +103,12 @@ public class RobotContainer {
         // joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+
+        operatorController.y().onTrue(new MoveElevator(elevator, Constants.Elevator.UP));
+        operatorController.x().onTrue(new MoveElevator(elevator, Constants.Elevator.MIDDLE));
+        operatorController.a().onTrue(new MoveElevator(elevator, Constants.Elevator.SAFE));
+
+        operatorController.rightTrigger().whileTrue(new RunAlgaeIntake(algaeMechanism, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED));
 
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -187,54 +196,4 @@ public class RobotContainer {
         drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative, 1);
 
     }
-}
-  // The robot's subsystems and commands are defined here...
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController operatorController = new CommandXboxController(Xbox.OPERATOR_CONTROLLER_PORT);
-  public final Elevator elevator = new Elevator();
-  public final AlgaeMechanism algaeMechanism = new AlgaeMechanism();
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-  }
-
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-
-    operatorController.y().onTrue(new MoveElevator(elevator, Constants.Elevator.UP));
-    operatorController.x().onTrue(new MoveElevator(elevator, Constants.Elevator.MIDDLE));
-    operatorController.a().onTrue(new MoveElevator(elevator, Constants.Elevator.SAFE));
-
-    operatorController.rightTrigger().whileTrue(new RunAlgaeIntake(algaeMechanism, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED));
-
-
-    //operatorController.a().whileTrue(new LateralElevatorMove(lateralElevator, Constants.LateralElevator.SPEED));
-    //operatorController.leftTrigger().whileTrue(new ElevatorDown(elevator, -Constants.ElevatorTest.SPEED));
-
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
-  }
 }
