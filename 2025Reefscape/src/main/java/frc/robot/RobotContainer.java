@@ -15,6 +15,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -39,17 +40,19 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final SendableChooser<Command> autoChooserLOL;
 
     public ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
-
+    public ShuffleboardTab fieldTab = Shuffleboard.getTab("Field");
 
     public RobotContainer() {
         autoChooserLOL = AutoBuilder.buildAutoChooser();
-        matchTab.add("Auto Chooser lol", autoChooserLOL).withWidget(BuiltInWidgets.kComboBoxChooser);
         
+        matchTab.add("Auto Chooser lol", autoChooserLOL).withWidget(BuiltInWidgets.kComboBoxChooser);
+        fieldTab.add("Field", CommandSwerveDrivetrain.m_field).withWidget(BuiltInWidgets.kField).withSize(8, 4);
+
         configureBindings();
     }
 
