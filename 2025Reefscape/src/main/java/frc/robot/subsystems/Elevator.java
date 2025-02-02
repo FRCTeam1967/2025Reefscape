@@ -31,6 +31,8 @@ public class Elevator extends SubsystemBase {
     sensor = new DigitalInput(Constants.Elevator.SENSOR_ID);
     var talonFXConfigs = new TalonFXConfiguration();
 
+    sensor = new DigitalInput(0); //add constant
+
     // set slot 0 gains
     var slot0Configs = talonFXConfigs.Slot0;
     slot0Configs.kS = Constants.Elevator.kS; 
@@ -40,6 +42,12 @@ public class Elevator extends SubsystemBase {
     slot0Configs.kI = Constants.Elevator.kI;
     slot0Configs.kD = Constants.Elevator.kD; 
 
+    talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+    talonFXConfigs.CurrentLimits.SupplyCurrentLimit = 60; //TEST: 120 default
+
+    talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+    talonFXConfigs.CurrentLimits.StatorCurrentLimit = 60; //TEST: 120 default
+
     // set Motion Magic settings
     var motionMagicConfigs = talonFXConfigs.MotionMagic;
     motionMagicConfigs.MotionMagicCruiseVelocity = Constants.Elevator.CRUISE_VELOCITY;
@@ -47,12 +55,12 @@ public class Elevator extends SubsystemBase {
     motionMagicConfigs.MotionMagicJerk = Constants.Elevator.JERK;
 
     talonFXConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    talonFXConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //Clockwise_Positive
 
     leftMotor.getConfigurator().apply(talonFXConfigs);
     rightMotor.getConfigurator().apply(talonFXConfigs);
 
-    resetEncoders();
+    //resetEncoders();
     setBrakeMode();
 
   }
@@ -60,15 +68,24 @@ public class Elevator extends SubsystemBase {
   public void stopMotors(){
     leftMotor.stopMotor();
     rightMotor.stopMotor();
+  }
 
+  public boolean getSensorValue(){
+    return !sensor.get(); //it is false when triggered, so we make it true (by negating it)
+  }
+
+  public void setSafe() {
+    if (!getSensorValue()) {
+      leftMotor.setPosition(0);
+      rightMotor.setPosition(0);
+    }
   }
 
   public void moveTo(double inches){
     rotations = inches*(Constants.Elevator.GEAR_RATIO/Constants.Elevator.SPROCKET_PITCH_CIRCUMFERENCE);
     MotionMagicVoltage request = new MotionMagicVoltage(rotations).withFeedForward(Constants.Elevator.FEED_FORWARD);
     leftMotor.setControl(request); 
-    rightMotor.setControl(request);       
-      
+    rightMotor.setControl(request);        
   }
 
   public boolean atHeight(){
@@ -83,6 +100,7 @@ public class Elevator extends SubsystemBase {
     rightMotor.setPosition(0);
 
   }
+
   public void setBrakeMode() {
     leftMotor.setNeutralMode(NeutralModeValue.Brake);
     rightMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -90,9 +108,13 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
+    setSafe();
+    
     double height = ((rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2)/(Constants.Elevator.GEAR_RATIO/Constants.Elevator.SPROCKET_PITCH_CIRCUMFERENCE);
     SmartDashboard.putNumber("elevator height in inches", height);
+    SmartDashboard.putBoolean("sensor value", getSensorValue());
     SmartDashboard.putNumber("elevator height in revs", (rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2);
     // This method will be called once per scheduler run
+    
   }
 }

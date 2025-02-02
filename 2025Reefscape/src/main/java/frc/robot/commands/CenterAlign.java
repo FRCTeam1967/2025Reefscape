@@ -14,21 +14,18 @@ import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.*;
 
 
-public class VisionAlign extends Command {
+public class CenterAlign extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
   private SlewRateLimiter xLimiter, yLimiter;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
 
-  public VisionAlign(CommandSwerveDrivetrain drivetrain, Vision vision) {
+  public CenterAlign(CommandSwerveDrivetrain drivetrain, Vision vision) {
     this.drivetrain = drivetrain;
     this.vision = vision;
-
-
-
     addRequirements(drivetrain, vision);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
+  
   private double cleanAndScaleInput(double deadband, double input, SlewRateLimiter limiter, double speedScaling){
     input = Math.pow(input, 3);
     input = Math.abs(input)> deadband ? input : 0;

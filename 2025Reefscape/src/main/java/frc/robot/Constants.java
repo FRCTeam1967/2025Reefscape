@@ -144,19 +144,20 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 100;
-    public static final double ACCELERATION = 150; //200 //100
-    public static final double JERK = 600; //1000 //1600 <---how fast the acceleration is reached
+    public static final double CRUISE_VELOCITY = 150; //200 //150 //100
+    public static final double ACCELERATION = 200; //300 //250 //150 //200 //100
+    public static final double JERK = 1300; //1000 //950 //750 //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
+    public static final double SAFE_SPEED_FACTOR = 0.4; //based on climb testing
+    public static final double SAFE_SPEED = -0.4; //0.8 was for climb, need to test
 
     public static final int SENSOR_ID = 1;
 
     public static final double GEAR_RATIO = 64/8;
     public static final double SPROCKET_PITCH_CIRCUMFERENCE = 1.76*Math.PI;
     
-    public static final double UP = 26.5; //DO NOT CHANGE---MAX PHYSICAL HEIGHT
+    public static final double UP = 26.5; //25 //26.5 //DO NOT CHANGE---MAX PHYSICAL HEIGHT
     public static final double MIDDLE = 12;
-
     public static final double SAFE = 1;
 
     //public static final double EXTEND_ROTATIONS = INCHES*(GEAR_RATIO/SPROCKET_PITCH_CIRCUMFERENCE);
@@ -187,7 +188,6 @@ public final class Constants {
     // //public static final int FALCON_ENCODER_TICKS_PER_REVOLUTION = 2048;
 
    public static final double ERROR_THRESHOLD = 2;//0.5; 
-
     // public static final double EXTEND_HEIGHT = 1000; //need to check
   }
 
@@ -200,7 +200,7 @@ public final class Constants {
     
     //public static final double GEAR_RATIO = 16/1.0;
     //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
-    public static final double GEAR_RATIO = 27/1.0;
+    public static final double GEAR_RATIO = 28.5; //27/1.0
     public static final double CRUISE_VELOCITY = 100.0;
     public static final double ACCELERATION = 200.0;
     public static final double JERK = 1600.0;
