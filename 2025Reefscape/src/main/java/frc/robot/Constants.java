@@ -144,12 +144,12 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 100;
-    public static final double ACCELERATION = 150; //200 //100
-    public static final double JERK = 600; //1000 //1600 <---how fast the acceleration is reached
+    public static final double CRUISE_VELOCITY = 25;//100;
+    public static final double ACCELERATION = 50;//150; //200 //100
+    public static final double JERK = 100; //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
-    public static final int SENSOR_ID = 1;
+    public static final int SENSOR_ID = 0;
 
     public static final double GEAR_RATIO = 64/8;
     public static final double SPROCKET_PITCH_CIRCUMFERENCE = 1.76*Math.PI;
@@ -157,7 +157,7 @@ public final class Constants {
     public static final double UP = 26.5; //DO NOT CHANGE---MAX PHYSICAL HEIGHT
     public static final double MIDDLE = 12;
 
-    public static final double SAFE = 1;
+    public static final double SAFE = 5;
 
     //public static final double EXTEND_ROTATIONS = INCHES*(GEAR_RATIO/SPROCKET_PITCH_CIRCUMFERENCE);
 
@@ -192,15 +192,15 @@ public final class Constants {
   }
 
   public class AlgaeMechanism {
-    public static final int PIVOT_ID = 14;
+    public static final int PIVOT_ID = 16;
     public static final int INTAKE_ID = 15;
-    //public static final int ENCODER_ID = 15;
+    public static final int ENCODER_ID = 14;
 
     public static final double ALGAE_INTAKE_SPEED = 10.0;
     
     //public static final double GEAR_RATIO = 16/1.0;
     //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
-    public static final double GEAR_RATIO = 27/1.0;
+    public static final double GEAR_RATIO = 21.375/1.0;
     public static final double CRUISE_VELOCITY = 100.0;
     public static final double ACCELERATION = 200.0;
     public static final double JERK = 1600.0;
@@ -219,9 +219,9 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double UP = 194.6 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
-    public static final double MIDDLE = 158.9* Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
-    public static final double SAFE = 0.0 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double DOWN = 70 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double MIDDLE = 30* Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 10 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
   }

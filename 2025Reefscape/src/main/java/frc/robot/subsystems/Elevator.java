@@ -26,8 +26,8 @@ public class Elevator extends SubsystemBase {
 
   /** Creates a new Elevator. */
   public Elevator() {
-    leftMotor = new TalonFX(Constants.Elevator.LEFT_MOTOR_IDX, "Canivore");
-    rightMotor = new TalonFX(Constants.Elevator.RIGHT_MOTOR_IDX, "Canivore");
+    leftMotor = new TalonFX(Constants.Elevator.LEFT_MOTOR_IDX);
+    rightMotor = new TalonFX(Constants.Elevator.RIGHT_MOTOR_IDX);
     sensor = new DigitalInput(Constants.Elevator.SENSOR_ID);
     var talonFXConfigs = new TalonFXConfiguration();
 
@@ -47,14 +47,25 @@ public class Elevator extends SubsystemBase {
     motionMagicConfigs.MotionMagicJerk = Constants.Elevator.JERK;
 
     talonFXConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    talonFXConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     leftMotor.getConfigurator().apply(talonFXConfigs);
     rightMotor.getConfigurator().apply(talonFXConfigs);
 
-    resetEncoders();
+    //resetEncoders();
     setBrakeMode();
 
+  }
+
+  public void setSafe(){
+    if(!sensor.get()){
+      leftMotor.setPosition(0);
+      rightMotor.setPosition(0);
+    }
+  }
+
+  public boolean getSensor(){
+    return !sensor.get();
   }
 
   public void stopMotors(){
@@ -90,9 +101,12 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
+    setSafe();
+    
     double height = ((rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2)/(Constants.Elevator.GEAR_RATIO/Constants.Elevator.SPROCKET_PITCH_CIRCUMFERENCE);
     SmartDashboard.putNumber("elevator height in inches", height);
     SmartDashboard.putNumber("elevator height in revs", (rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2);
+    SmartDashboard.putBoolean("Sensor val", !sensor.get());
     // This method will be called once per scheduler run
   }
 }

@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_robotContainer.elevator.setSafe();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -57,6 +58,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     SignalLogger.start();
+    m_robotContainer.elevator.setSafe();
   }
 
   @Override

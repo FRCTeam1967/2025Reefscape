@@ -34,6 +34,9 @@ public class MoveElevator extends Command {
   @Override
   public void end(boolean interrupted) {
     //elevator.stopMotors();
+    if (elevator.getSensor()) {
+      elevator.stopMotors();
+    }
   }
 
   // Returns true when the command should end.

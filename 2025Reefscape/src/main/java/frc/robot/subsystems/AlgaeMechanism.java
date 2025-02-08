@@ -1,6 +1,7 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -16,15 +17,19 @@ import frc.robot.Constants;
 public class AlgaeMechanism extends SubsystemBase {
    private TalonFX algaePivot;
    private TalonFX algaeIntake;
-   //private CANcoder absEncoder; 
+   private CANcoder absEncoder; 
    public double revsToMove;
 
    public AlgaeMechanism() {
-      //absEncoder = new CANcoder(Constants.Pivot.ENCODER_ID); 
+      absEncoder = new CANcoder(Constants.AlgaeMechanism.ENCODER_ID); 
 
       //pivot instantiations
       algaePivot = new TalonFX(Constants.AlgaeMechanism.PIVOT_ID);
       var talonFXConfigs = new TalonFXConfiguration();
+     
+      CANcoderConfiguration ccdConfigs = new CANcoderConfiguration();
+      var cancoderConfig = absEncoder.getConfigurator();
+
 
       //set slot configs
       var slot0Configs = talonFXConfigs.Slot0;
