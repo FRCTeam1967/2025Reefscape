@@ -50,8 +50,9 @@ public class Pivot extends SubsystemBase {
       //applies motion magic configs
       pivotMotor.getConfigurator().apply(talonFXConfigs);
 
-      resetEncoders(); 
+      //resetEncoders(); 
       pivotMotor.setNeutralMode(NeutralModeValue.Brake);
+      checkLimit();
    }
 
    /** Stops the pivot motor */
@@ -87,6 +88,7 @@ public class Pivot extends SubsystemBase {
    public void periodic() {
       //SmartDashboard.putNumber("Pivot Rel Position Degrees",(pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       //SmartDashboard.putBoolean("Pivot At Target", isReached());
+      checkLimit();
    }
 
    public void configDashboard(ShuffleboardTab tab) {
