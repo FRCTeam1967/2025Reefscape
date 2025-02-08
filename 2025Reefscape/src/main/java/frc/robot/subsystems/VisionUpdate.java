@@ -44,7 +44,7 @@ public class VisionUpdate extends SubsystemBase {
     PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
 
     //if elevator = all the way down, then only add vision measurements
-    if (!RobotContainer.elevator.getSensorValue()) {
+    if (!RobotContainer.elevator.getSensor()) {
       if (poseEstimator.tagCount >= 2) {
         RobotContainer.drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
         RobotContainer.drivetrain.addVisionMeasurement(poseEstimator.pose, poseEstimator.timestampSeconds);

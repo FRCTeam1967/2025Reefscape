@@ -10,13 +10,14 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class AlgaeMechanism extends SubsystemBase {
    private TalonFX algaePivot;
-   private TalonFX algaeIntake;
    private CANcoder absEncoder; 
    public double revsToMove;
 
@@ -29,6 +30,9 @@ public class AlgaeMechanism extends SubsystemBase {
      
       CANcoderConfiguration ccdConfigs = new CANcoderConfiguration();
       var cancoderConfig = absEncoder.getConfigurator();
+
+      ccdConfigs.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+      ccdConfigs.MagnetSensor.MagnetOffset = -0.29900390625;
 
 
       //set slot configs
@@ -45,18 +49,11 @@ public class AlgaeMechanism extends SubsystemBase {
       motionMagicConfigs.MotionMagicAcceleration = Constants.AlgaeMechanism.ACCELERATION;
       motionMagicConfigs.MotionMagicJerk = Constants.AlgaeMechanism.JERK;
 
-      talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      talonFXConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
       algaePivot.getConfigurator().apply(talonFXConfigs);
 
       resetEncoders(); 
       algaePivot.setNeutralMode(NeutralModeValue.Brake);
-
-      //intake instantiations
-      algaeIntake = new TalonFX(Constants.AlgaeMechanism.INTAKE_ID);
-      var talonAlgaeIntakeConfigs = new TalonFXConfiguration();
-      
-      talonAlgaeIntakeConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      algaeIntake.getConfigurator().apply(talonAlgaeIntakeConfigs);
    }
 
    //pivot methods
@@ -70,25 +67,23 @@ public class AlgaeMechanism extends SubsystemBase {
       algaePivot.setControl(request);
    }
 
+   public void setReltoAbs(){
+      algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
+   }
+
    public void resetEncoders() { 
       algaePivot.setPosition(0);
    }
 
    public boolean isReached() {
-      return Math.abs(((algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360) - (revsToMove*360)) < 5.0;
+      return Math.abs((absEncoder.getAbsolutePosition().getValueAsDouble()*360) - ((revsToMove/Constants.AlgaeMechanism.GEAR_RATIO)*360)) < 5.0;
    }
 
    //intake methods
-   public void runIntake(double speed){
-      algaeIntake.set(speed);
-   }
-
-   public void stopIntake(){
-      algaeIntake.stopMotor();
-   }
 
    public void periodic() {
       SmartDashboard.putNumber("Pivot Rel Position Degrees",(algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360);
       SmartDashboard.putBoolean("Pivot At Target", isReached());
+      SmartDashboard.putNumber("Algae Abs Encoder", absEncoder.getAbsolutePosition().getValueAsDouble());
    }
 }

@@ -18,9 +18,10 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.OffsetAlign;
-import frc.robot.commands.CenterAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision;
@@ -47,6 +48,7 @@ public class RobotContainer {
 
     public final static Elevator elevator = new Elevator();
     public final AlgaeMechanism algaeMechanism = new AlgaeMechanism();
+    public final AlgaeIntake intake = new AlgaeIntake();
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -110,7 +112,18 @@ public class RobotContainer {
 
         operatorController.a().onTrue(new MoveElevator(elevator, Constants.Elevator.SAFE));
 
-        operatorController.rightTrigger().whileTrue(new RunAlgaeIntake(algaeMechanism, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED));
+        //operatorController.b().whileTrue(new RunAlgaeIntake(algaeMechanism, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED));
+        operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
+            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, -0.1)),
+            new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED)));
+
+        operatorController.leftTrigger().whileTrue(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
+
+        operatorController.b().whileTrue(new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED));
+        intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.1));
+
+
+
 
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));

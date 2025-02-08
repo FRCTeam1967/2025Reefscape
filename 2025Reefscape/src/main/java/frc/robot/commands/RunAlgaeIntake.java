@@ -6,15 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.AlgaeMechanism;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class RunAlgaeIntake extends Command {
-  private AlgaeMechanism intake;
+  private AlgaeIntake intake;
   private double speed;
 
   /** Creates a new RunAlgaeIntake. */
-  public RunAlgaeIntake(AlgaeMechanism intake, double speed) {
+  public RunAlgaeIntake(AlgaeIntake intake, double speed) {
     this.intake = intake;
     this.speed = speed;
     addRequirements(intake);

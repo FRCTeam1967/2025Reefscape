@@ -196,18 +196,20 @@ public final class Constants {
     public static final int INTAKE_ID = 15;
     public static final int ENCODER_ID = 14;
 
-    public static final double ALGAE_INTAKE_SPEED = 10.0;
+    public static final double ALGAE_INTAKE_SPEED = -0.5;
+    public static final double ALGAE_OUTTAKE_SPEED = 0.5;
     
     //public static final double GEAR_RATIO = 16/1.0;
     //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
     public static final double GEAR_RATIO = 21.375/1.0;
-    public static final double CRUISE_VELOCITY = 100.0;
-    public static final double ACCELERATION = 200.0;
+    public static final double CRUISE_VELOCITY = 400.0;
+    public static final double ACCELERATION = 600.0;
     public static final double JERK = 1600.0;
 
     public static final double CONVERSION_FACTOR = 0.002777777777777778;
     //public static final double INTAKE_SAFE = 0.31666666666666665;
     //public static final double INTAKE_DOWN = 0.02777777777777778;
+    //
 
     public static final double kP = 4.8;
     public static final double kI = 0.0;
