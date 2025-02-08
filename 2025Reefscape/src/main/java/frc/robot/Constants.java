@@ -20,7 +20,7 @@ public final class Constants {
     
     //public static final double GEAR_RATIO = 16/1.0;
     //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
-    public static final double GEAR_RATIO = 27/1.0;
+    public static final double GEAR_RATIO = 18/1.0;
     public static final double CRUISE_VELOCITY = 100.0;
     public static final double ACCELERATION = 100.0;
     public static final double JERK = 1700.0;
@@ -55,7 +55,7 @@ public final class Constants {
     public static final double REVERSE_SLOW = -0.25;
     public static final double REVERSE_HIGH = -0.5;
 
-    public static final int BEAM_ID = 8;
+    public static final int BEAM_ID = 0;
    }
    
    public static class Xbox { 

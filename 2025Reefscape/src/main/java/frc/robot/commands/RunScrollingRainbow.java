@@ -6,7 +6,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDSubsystem;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
-
+/**creates a class for RunScrollimgRainbow - runs a scrolling rainbow effect */
+/**constructor takes an LEDSubsystem object */
 public class RunScrollingRainbow extends Command {
     private final LEDSubsystem led;
 
@@ -24,7 +25,8 @@ public class RunScrollingRainbow extends Command {
       
     }
     public void end(boolean interrupted) {
-      led.black();
+      led.blackPattern();
+  
     }
 
     @Override

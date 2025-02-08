@@ -22,7 +22,6 @@ public class BlinkGradient extends Command {
       led.blinkGradient();
     }
     public void end(boolean interrupted) {
-      led.black();
     }
 
     @Override
