@@ -26,11 +26,11 @@ public class RunIntake extends Command {
    }
 /** sets the intake motors to a certain speed defined in SLOW or HIGH in Constants */
    public void execute() {
-      intake.setMotors(speed);
+      intake.setMotor(speed);
    }
 /** stops the intake motors and sets the LED to red when the command is done */
    public void end(boolean interrupted) {
-      intake.stopMotors();
+      intake.stopMotor();
       stopwatch.reset();
       stopwatch.start();
       while (stopwatch.get() < 3) {

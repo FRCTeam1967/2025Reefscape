@@ -14,22 +14,22 @@ package frc.robot;
  */
 public final class Constants {
   public class Pivot {
-    public static final int PIVOT_ID = 14;
-    public static final int SWITCH_ID = 16;
+    public static final int PIVOT_ID = 17;
+    public static final int SWITCH_ID = 8;
     //public static final int ENCODER_ID = 15;
     
     //public static final double GEAR_RATIO = 16/1.0;
     //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
     public static final double GEAR_RATIO = 18/1.0;
     public static final double CRUISE_VELOCITY = 100.0;
-    public static final double ACCELERATION = 100.0;
+    public static final double ACCELERATION = 200.0;
     public static final double JERK = 1700.0;
 
     public static final double CONVERSION_FACTOR = 0.002777777777777778;
     //public static final double INTAKE_SAFE = 0.31666666666666665;
     //public static final double INTAKE_DOWN = 0.02777777777777778;
 
-    public static final double kP = 4.8;
+    public static final double kP = 3;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
     public static final double kS = 0.25;
@@ -47,15 +47,14 @@ public final class Constants {
   }
 
   public class Intake {
-    public static final int LEFT_MOTOR_ID = 20;
-    public static final int RIGHT_MOTOR_ID = 21;
+    public static final int INTAKE_MOTOR_ID = 18;
 
     public static final double SLOW = 0.25;
     public static final double HIGH = 0.5;
     public static final double REVERSE_SLOW = -0.25;
     public static final double REVERSE_HIGH = -0.5;
 
-    public static final int BEAM_ID = 0;
+    public static final int BEAM_ID = 9;
    }
    
    public static class Xbox { 

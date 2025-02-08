@@ -10,27 +10,23 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
    private DigitalInput sensor;
-   private TalonFX leftMotor;
-   private TalonFX rightMotor;
+   private TalonFX intakeMotor;
 
    /** Initializes left motor, right motor, and beam break sensor IDs */
    public Intake() {
       //kraken motors
-      leftMotor = new TalonFX(20);
-      rightMotor = new TalonFX(21);
+      intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
       sensor = new DigitalInput(Constants.Intake.BEAM_ID);
    }
 
    /**  Sets speed for right and left motors, left motor is reversed for intake to run in opposite direction */
-   public void setMotors(double speed) {
-      leftMotor.set(speed);
-      rightMotor.set(speed * -1.0);
+   public void setMotor(double speed) {
+      intakeMotor.set(speed);
    }
 
    /** Stops both the left motor and right motor */
-   public void stopMotors() {
-      leftMotor.stopMotor();
-      rightMotor.stopMotor();
+   public void stopMotor() {
+      intakeMotor.stopMotor();
    }
 
    /** Checks if the beam in the beam break sensor has been broken */

@@ -69,7 +69,7 @@ public class Pivot extends SubsystemBase {
    /** checks if pivot has surpassed hard stop
     * if limit has been reached, sets pivot motor speed to 0 */
    public void checkLimit(){
-      if (limitSwitch.get()){
+      if (!limitSwitch.get()){
          pivotMotor.set(0);
       }
    }
@@ -92,5 +92,6 @@ public class Pivot extends SubsystemBase {
    public void configDashboard(ShuffleboardTab tab) {
       tab.add("Pivot Rel Position Degrees",(pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       tab.add("Pivot At Target", isReached());
+      tab.add("Sensor Detected?", !limitSwitch.get());
    }
 }
