@@ -9,9 +9,6 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,12 +17,10 @@ public class AlgaeMechanism extends SubsystemBase {
    private TalonFX algaePivot;
    private TalonFX algaeIntake;
    //private CANcoder absEncoder; 
-   private double revsToMove;
-   private ShuffleboardTab tab;
+   public double revsToMove;
 
    public AlgaeMechanism() {
       //absEncoder = new CANcoder(Constants.Pivot.ENCODER_ID); 
-      tab = Shuffleboard.getTab("match");
 
       //pivot instantiations
       algaePivot = new TalonFX(Constants.AlgaeMechanism.PIVOT_ID);
@@ -88,7 +83,7 @@ public class AlgaeMechanism extends SubsystemBase {
    }
 
    public void periodic() {
-      tab.addNumber("Pivot Rel Position Degrees", () -> ((algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360));
-      tab.addBoolean("Pivot At Target", () -> isReached());
+      SmartDashboard.putNumber("Pivot Rel Position Degrees",(algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360);
+      SmartDashboard.putBoolean("Pivot At Target", isReached());
    }
 }

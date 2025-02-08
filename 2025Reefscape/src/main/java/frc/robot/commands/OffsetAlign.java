@@ -17,7 +17,7 @@ import frc.robot.subsystems.*;
 public class OffsetAlign extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
-  private SlewRateLimiter xLimiter;
+  private SlewRateLimiter xLimiter, yLimiter;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
 
   /** Creates a new OffsetAlign. */

@@ -15,6 +15,7 @@ public class MoveElevator extends Command {
   public MoveElevator(Elevator elevator, double inches) {
     this.elevator = elevator;
     this.inches = inches;
+    //this.goingUp = goingUp;
     addRequirements(elevator);
     // Use addRequirements() here to declare subsystem dependencies.
   }

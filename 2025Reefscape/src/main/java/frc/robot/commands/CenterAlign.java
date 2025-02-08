@@ -13,10 +13,11 @@ import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.*;
 
+
 public class CenterAlign extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
-  private SlewRateLimiter xLimiter;
+  private SlewRateLimiter xLimiter, yLimiter;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
 
   public CenterAlign(CommandSwerveDrivetrain drivetrain, Vision vision) {
@@ -24,16 +25,7 @@ public class CenterAlign extends Command {
     this.vision = vision;
     addRequirements(drivetrain, vision);
   }
-
-  /**
-   * Cubes the input for smoother driving (exponential vs linear)
-   * @param deadband
-   * @param input
-   * @param SlewRateLimiter
-   * @param speedScaling
-   * 
-   * @return cleaned and scaled input
-   */
+  
   private double cleanAndScaleInput(double deadband, double input, SlewRateLimiter limiter, double speedScaling){
     input = Math.pow(input, 3);
     input = Math.abs(input)> deadband ? input : 0;
@@ -70,17 +62,13 @@ public class CenterAlign extends Command {
     }
   }
 
-  /** Called once the command ends or is interrupted.
-   * @param interrupted
-   */
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     drivetrain.stopModules();
   }
 
-  /** Returns true when the command should end.
-   * @return false to end command
-   */
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return vision.getIsInRange();

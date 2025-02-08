@@ -19,7 +19,13 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.OffsetAlign;
+import frc.robot.commands.CenterAlign;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionUpdate;
+
 import frc.robot.Constants.Xbox;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
@@ -61,18 +67,15 @@ public class RobotContainer {
 
     private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain);
 
+
     /* Path follower */
     private final SendableChooser<Command> autoChooserLOL;
 
     public ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
-    public ShuffleboardTab fieldTab = Shuffleboard.getTab("Field");
 
     public RobotContainer() {
         autoChooserLOL = AutoBuilder.buildAutoChooser();
         matchTab.add("Auto Chooser lol", autoChooserLOL).withWidget(BuiltInWidgets.kComboBoxChooser);
-        fieldTab.add("Field", VisionUpdate.m_field)
-            .withWidget(BuiltInWidgets.kField)
-            .withSize(8, 4);
 
         configureBindings();
     }
