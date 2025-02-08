@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.OffsetAlign;
-import frc.robot.commands.CenterAlign;
+import frc.robot.commands.VisionAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision;
@@ -142,7 +142,7 @@ public class RobotContainer {
         ));
 
         //vision
-        joystick.rightBumper().whileTrue(new CenterAlign(drivetrain, vision));
+        joystick.rightBumper().whileTrue(new VisionAlign(drivetrain, vision));
         joystick.rightTrigger().whileTrue(new OffsetAlign(drivetrain, vision));
     }
 
