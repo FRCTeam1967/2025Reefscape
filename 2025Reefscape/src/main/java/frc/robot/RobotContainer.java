@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.OffsetAlign;
-import frc.robot.commands.VisionAlign;
+import frc.robot.commands.CenterAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision;
@@ -45,7 +45,7 @@ public class RobotContainer {
     private final CommandXboxController operatorController = new CommandXboxController(Xbox.OPERATOR_CONTROLLER_PORT);
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final Elevator elevator = new Elevator();
+    public final static Elevator elevator = new Elevator();
     public final AlgaeMechanism algaeMechanism = new AlgaeMechanism();
 
     /* Setting up bindings for necessary control of the swerve drive platform */
@@ -106,6 +106,8 @@ public class RobotContainer {
 
         operatorController.y().onTrue(new MoveElevator(elevator, Constants.Elevator.UP));
         operatorController.x().onTrue(new MoveElevator(elevator, Constants.Elevator.MIDDLE));
+        //operatorController.a().onTrue(new ElevatorSafe(elevator, Constants.Elevator.SAFE));
+
         operatorController.a().onTrue(new MoveElevator(elevator, Constants.Elevator.SAFE));
 
         operatorController.rightTrigger().whileTrue(new RunAlgaeIntake(algaeMechanism, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED));
@@ -140,7 +142,7 @@ public class RobotContainer {
         ));
 
         //vision
-        joystick.rightBumper().whileTrue(new VisionAlign(drivetrain, vision));
+        joystick.rightBumper().whileTrue(new CenterAlign(drivetrain, vision));
         joystick.rightTrigger().whileTrue(new OffsetAlign(drivetrain, vision));
     }
 

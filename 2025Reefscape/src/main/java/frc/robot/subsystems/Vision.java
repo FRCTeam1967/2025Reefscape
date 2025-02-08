@@ -25,13 +25,12 @@ public class Vision extends SubsystemBase {
   public double verticalOffset, angleToGoalDegrees, angleToGoalRadians;
   public double limelightToGoalInches = 0.0;
   private String limelightHostname;
-  public LimelightTarget_Fiducial limelightTargetFiducial = new LimelightTarget_Fiducial();
+
   
+  public LimelightTarget_Fiducial limelightTargetFiducial = new LimelightTarget_Fiducial();
 
   public Pose3d targetPose = new Pose3d();
   public LimelightResults results = new LimelightResults();
-  
-  
   
   /** Creates new Vision */
   public Vision(String hostname) {
@@ -44,7 +43,6 @@ public class Vision extends SubsystemBase {
   
   /** Update x offset value */
   public void updateValues() {
-
     //targetPose = limelightTable.getEntry("targetpose_robotspace").getDoubleArray(targetPose);
     //double xOffset = targetPose.getX();
     //double verticalOffset = targetPose.getY();
@@ -89,7 +87,6 @@ public class Vision extends SubsystemBase {
     } else {
       isInRange = true;
       SmartDashboard.putBoolean("Range", true);
-      
     }
   }
 
