@@ -12,24 +12,27 @@ import frc.robot.LimelightHelpers.PoseEstimate;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionUpdate extends SubsystemBase {
   private final CommandSwerveDrivetrain drivetrain;
-  private final Field2d m_field = new Field2d();
+  public final static Field2d m_field = new Field2d();
   private final LimelightTarget_Retro retro = new LimelightTarget_Retro();
   private final StructPublisher<Pose2d> limelightPublisher;
   private final StructPublisher<Pose2d> drivetrainPublisher;
 
+  private final ShuffleboardTab tab;
+
   /** Creates a new VisionUpdate. */
   public VisionUpdate(CommandSwerveDrivetrain drivetrain) {
     this.drivetrain = drivetrain;
-    SmartDashboard.putData("Field", m_field);
+    tab = Shuffleboard.getTab("match");
+
+    tab.add("field", m_field);
 
     limelightPublisher = NetworkTableInstance.getDefault()
       .getStructTopic("Limelight Pose", Pose2d.struct).publish();

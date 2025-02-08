@@ -7,8 +7,8 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
@@ -16,45 +16,37 @@ import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 
 public class Vision extends SubsystemBase {
-  //https://readthedocs.org/projects/limelight/downloads/pdf/latest/
-
+  //network tables
+  private String hostname;
   private NetworkTable limelightTable;
-  private double xOffset = -100000;
+  private double xOffset;
+  private double verticalOffset;
+
+  //fiducial
+  private LimelightTarget_Fiducial limelightTargetFiducial = new LimelightTarget_Fiducial();
+  private LimelightResults results = new LimelightResults();
+
+  //misc
   private boolean isInRange = false;
-  private boolean isRedAlliance;
-  public double verticalOffset, angleToGoalDegrees, angleToGoalRadians;
-  public double limelightToGoalInches = 0.0;
-  private String limelightHostname;
-
-  
-  public LimelightTarget_Fiducial limelightTargetFiducial = new LimelightTarget_Fiducial();
-
-  public Pose3d targetPose = new Pose3d();
-  public LimelightResults results = new LimelightResults();
+  private Pose3d targetPose = new Pose3d();
+  private ShuffleboardTab tab;
   
   /** Creates new Vision */
   public Vision(String hostname) {
-    limelightHostname = hostname;
-    limelightTable = NetworkTableInstance.getDefault().getTable(limelightHostname);
+    this.hostname = hostname;
+    limelightTable = NetworkTableInstance.getDefault().getTable(hostname);
     targetPose = limelightTargetFiducial.getTargetPose_RobotSpace();
+
+    tab = Shuffleboard.getTab("match");
     updateValues();
   }
 
-  
-  /** Update x offset value */
+  /** 
+   * Update x offset value
+   */
   public void updateValues() {
-    //targetPose = limelightTable.getEntry("targetpose_robotspace").getDoubleArray(targetPose);
-    //double xOffset = targetPose.getX();
-    //double verticalOffset = targetPose.getY();
-
     xOffset = limelightTable.getEntry("tx").getDouble(0.0);
     verticalOffset = limelightTable.getEntry("ty").getDouble(0.0);
-
-    SmartDashboard.putNumber("X Offset", xOffset);
-    SmartDashboard.putNumber("Y Offset", verticalOffset);
-    SmartDashboard.putNumber("Blue X", getBlueFieldX());
-    SmartDashboard.putNumber("Blue Y", getBlueFieldY());
-    SmartDashboard.putNumber("Blue ROT", getBlueFieldRot().getAngle());
   }
 
   /**
@@ -62,11 +54,10 @@ public class Vision extends SubsystemBase {
    * @param tab - ShuffleboardTab to add values to
    */
   public void configDashboard(ShuffleboardTab tab){
-    tab.addCamera("Limelight Camera", "m_limelight", "http://10.19.67.11:5800/");
-    tab.addDouble("Limelight xOffset", () -> limelightTable.getEntry("tx").getDouble(0.0));
-    tab.addDouble("Limelight yOffset", () -> limelightTable.getEntry("ty").getDouble(0.0));
-    tab.addBoolean("In Range", ()->isInRange);
-    tab.addDouble("Distance to Target", () -> limelightToGoalInches);
+    tab.addCamera("limelight camera", "limelight", "http://10.19.67.11:5800/");
+    tab.addDouble("x offset - left/right", () -> xOffset);
+    tab.addDouble("y offset - top/bottom", () -> verticalOffset);
+    tab.addBoolean("in range", () -> isInRange);
   }
 
   /**
@@ -78,23 +69,18 @@ public class Vision extends SubsystemBase {
     else limelightTable.getEntry("pipeline").setNumber(1);
   }
 
-  /** updates value of isInRange */
+  /** 
+   * updates value of isInRange
+   */
   public void alignAngleX(){
     updateValues();
     if (xOffset > -Constants.Vision.DEGREE_ERROR && xOffset < Constants.Vision.DEGREE_ERROR){
       isInRange = false;
-      SmartDashboard.putBoolean("Range", false);
+      tab.addBoolean("Range", () -> false);
     } else {
       isInRange = true;
-      SmartDashboard.putBoolean("Range", true);
+      tab.addBoolean("Range", () -> true);
     }
-  }
-
-  public void alignAngleZ(){
-    updateValues();
-    angleToGoalDegrees = Constants.Vision.LIMELIGHT_ANGLE_DEGREES + verticalOffset;
-    angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-    limelightToGoalInches = (Constants.Vision.TARGET_HEIGHT_INCHES - Constants.Vision.LIMELIGHT_HEIGHT_INCHES) / Math.tan(angleToGoalRadians);
   }
 
   /** @return whether limelight is in range */
@@ -107,38 +93,8 @@ public class Vision extends SubsystemBase {
     return xOffset;
   }
 
-  public void onEnable(Optional<Alliance> alliance){
-    if (alliance.get() == Alliance.Red) isRedAlliance = true;
-    else isRedAlliance = false;
-  }
-   public boolean getAlliance(){
-     return isRedAlliance;
-   }
-
-
-   //NEW
-   public Rotation3d getBlueFieldRot(){
-    return results.getBotPose3d_wpiBlue().getRotation(); //yaw?
-    //return (limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[6])[5]);
-  }
-
-  public double getBlueFieldX() {
-    //return results.getBotPose3d_wpiBlue().getX();
-    return LimelightHelpers.pose3dToArray(results.getBotPose3d_wpiBlue())[0];
-    //(limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[6])[0]);
-  }
-
-  public double getBlueFieldY() {
-    return results.getBotPose3d_wpiBlue().getY();
-    //(limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[6])[1]);
-  }
-
   @Override
   public void periodic() {
     alignAngleX();
-    alignAngleZ();
-  
-    //m_field.setRobotPose(1.0,1.0, new Rotation2d(.5));
-  
   }
 }

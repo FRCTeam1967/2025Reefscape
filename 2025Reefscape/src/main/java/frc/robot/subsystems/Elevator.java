@@ -12,6 +12,8 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,6 +25,7 @@ public class Elevator extends SubsystemBase {
   private DigitalInput sensor;
   private boolean atZero;
   //private TalonFX rightMotor;
+  private ShuffleboardTab tab;
 
   /** Creates a new Elevator. */
   public Elevator() {
@@ -30,6 +33,8 @@ public class Elevator extends SubsystemBase {
     rightMotor = new TalonFX(Constants.Elevator.RIGHT_MOTOR_IDX, "Canivore");
     sensor = new DigitalInput(Constants.Elevator.SENSOR_ID);
     var talonFXConfigs = new TalonFXConfiguration();
+
+    tab = Shuffleboard.getTab("match");
 
     sensor = new DigitalInput(0); //add constant
 
@@ -111,10 +116,8 @@ public class Elevator extends SubsystemBase {
     setSafe();
     
     double height = ((rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2)/(Constants.Elevator.GEAR_RATIO/Constants.Elevator.SPROCKET_PITCH_CIRCUMFERENCE);
-    SmartDashboard.putNumber("elevator height in inches", height);
-    SmartDashboard.putBoolean("sensor value", getSensorValue());
-    SmartDashboard.putNumber("elevator height in revs", (rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2);
-    // This method will be called once per scheduler run
-    
+    tab.addNumber("elevator height in inches", () -> height);
+    tab.addBoolean("sensor value",() -> getSensorValue());
+    tab.addNumber("elevator height in revs", () -> ((rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2));
   }
 }
