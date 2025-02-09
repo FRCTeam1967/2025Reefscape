@@ -14,14 +14,14 @@ import edu.wpi.first.wpilibj.Timer;
 public class RunIntake extends Command {
    private final Intake intake;
    private final double speed;
-   private final LEDSubsystem led;
-   private final Timer stopwatch;
+   //private final LEDSubsystem led;
+   //private final Timer stopwatch;
 
-   public RunIntake(Intake intake, LEDSubsystem led, double speed) {
+   public RunIntake(Intake intake, double speed) {
       this.intake = intake;
       this.speed = speed;
-      this.led = led;
-      stopwatch = new Timer();
+      //this.led = led;
+      //stopwatch = new Timer();
       addRequirements(intake);
    }
 /** sets the intake motors to a certain speed defined in SLOW or HIGH in Constants */
@@ -31,12 +31,11 @@ public class RunIntake extends Command {
 /** stops the intake motors and sets the LED to red when the command is done */
    public void end(boolean interrupted) {
       intake.stopMotor();
-      stopwatch.reset();
-      stopwatch.start();
-      while (stopwatch.get() < 3) {
-         led.scrollingRed();
+      //stopwatch.reset();
+      //stopwatch.start();
+      //while (stopwatch.get() < 3) {
+         //led.scrollingRed();
      }
-   }
 /** checks if beam in beam break sensor has been broken*/
    public boolean isFinished() {
       return intake.isBroken();

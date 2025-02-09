@@ -14,7 +14,7 @@ public class Robot extends TimedRobot {
 
    public void robotInit() {
       this.m_robotContainer = new RobotContainer();
-      m_robotContainer.coralResetPos();
+      m_robotContainer.pivot.checkLimit();
    }
 
    public void robotPeriodic() {

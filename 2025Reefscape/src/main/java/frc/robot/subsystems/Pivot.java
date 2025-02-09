@@ -71,7 +71,7 @@ public class Pivot extends SubsystemBase {
     * if limit has been reached, sets pivot motor speed to 0 */
    public void checkLimit(){
       if (!limitSwitch.get()){
-         pivotMotor.set(0);
+         pivotMotor.setPosition(0);
       }
    }
 
@@ -88,6 +88,9 @@ public class Pivot extends SubsystemBase {
    public void periodic() {
       //SmartDashboard.putNumber("Pivot Rel Position Degrees",(pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       //SmartDashboard.putBoolean("Pivot At Target", isReached());
+      SmartDashboard.putBoolean("Pivot Sensor", !limitSwitch.get());
+      SmartDashboard.putNumber("Pivot Rel Position in Degrees", (pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
+      SmartDashboard.putBoolean("Pivot at Target?", isReached());
       checkLimit();
    }
 

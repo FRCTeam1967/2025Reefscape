@@ -39,9 +39,9 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double L2 = 220 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double MIDDLE = 90.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double SAFE = 0.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    //public static final double L2 = 220 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double MIDDLE = 124.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 3.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
   }
@@ -50,9 +50,9 @@ public final class Constants {
     public static final int INTAKE_MOTOR_ID = 18;
 
     public static final double SLOW = 0.25;
-    public static final double HIGH = 0.5;
+    public static final double HIGH = 0.75;
     public static final double REVERSE_SLOW = -0.25;
-    public static final double REVERSE_HIGH = -0.5;
+    public static final double REVERSE_HIGH = -0.75;
 
     public static final int BEAM_ID = 9;
    }
