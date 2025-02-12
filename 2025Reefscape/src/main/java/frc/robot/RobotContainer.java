@@ -44,13 +44,16 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooserLOL;
 
-    public ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
+    public static ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
     public ShuffleboardTab fieldTab = Shuffleboard.getTab("Field");
 
     public RobotContainer() {
         autoChooserLOL = AutoBuilder.buildAutoChooser();
         
         matchTab.add("Auto Chooser lol", autoChooserLOL).withWidget(BuiltInWidgets.kComboBoxChooser);
+        matchTab.addNumber("encoder count", () -> drivetrain.getModule(0)
+            .getDriveMotor().getRotorPosition().getValueAsDouble())
+            .withWidget(BuiltInWidgets.kTextView).withSize(1, 1);
         fieldTab.add("Field", CommandSwerveDrivetrain.m_field).withWidget(BuiltInWidgets.kField).withSize(8, 4);
 
         configureBindings();
@@ -72,6 +75,23 @@ public class RobotContainer {
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
+
+        joystick.povUp().whileTrue(drivetrain.applyRequest(() -> 
+            drive.withVelocityX(0.5)
+            .withVelocityY(0)
+            .withRotationalRate(0)));
+        joystick.povDown().whileTrue(drivetrain.applyRequest(() -> 
+            drive.withVelocityX(-0.5)
+            .withVelocityY(0)
+            .withRotationalRate(0)));
+        joystick.povRight().whileTrue(drivetrain.applyRequest(() -> 
+            drive.withVelocityX(0)
+            .withVelocityY(0.5)
+            .withRotationalRate(0)));
+        joystick.povLeft().whileTrue(drivetrain.applyRequest(() -> 
+            drive.withVelocityX(0)
+            .withVelocityY(-0.5)
+            .withRotationalRate(0)));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
