@@ -69,6 +69,7 @@ public class AlgaeMechanism extends SubsystemBase {
 
    public void setReltoAbs(){
       algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
+      //moveTo(algaePivot.getRotorPosition().getValueAsDouble());
    }
 
    public void resetEncoders() { 

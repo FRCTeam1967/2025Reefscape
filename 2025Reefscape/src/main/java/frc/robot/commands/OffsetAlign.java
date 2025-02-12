@@ -38,19 +38,19 @@ public class OffsetAlign extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.2286, 0.0);
+    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, -0.1651, 0.0); //0.2286, left, -.0658890
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (vision.getOffset() >= 2.5){
+    if (vision.getOffset() >= 3.0){
       double xSpeed = cleanAndScaleInput(0.0, -0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
-    } else if (vision.getOffset() < 2.5 && vision.getOffset() >= -1.0) {
+    } else if (vision.getOffset() < 3.0 && vision.getOffset() >= -1.0) {
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));

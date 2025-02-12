@@ -136,8 +136,7 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     alignAngleX();
-    alignAngleZ();
-  
+    alignAngleZ();  
     //m_field.setRobotPose(1.0,1.0, new Rotation2d(.5));
   
   }

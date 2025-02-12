@@ -25,10 +25,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.OffsetAlign;
 import frc.robot.commands.VisionAlign;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Vision;
-import frc.robot.subsystems.VisionUpdate;
-
 import frc.robot.Constants.Xbox;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
@@ -71,13 +67,13 @@ public class RobotContainer {
 
     private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain);
 
-
     /* Path follower */
     private final SendableChooser<Command> autoChooserLOL;
 
     public ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
 
     public RobotContainer() {
+        vision.configDashboard(matchTab);
         autoChooserLOL = AutoBuilder.buildAutoChooser();
         matchTab.add("Auto Chooser lol", autoChooserLOL).withWidget(BuiltInWidgets.kComboBoxChooser);
 
@@ -122,7 +118,7 @@ public class RobotContainer {
         operatorController.leftTrigger().whileTrue(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
 
         operatorController.b().whileTrue(new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED));
-        intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.1));
+        //intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.1));
 
 
 

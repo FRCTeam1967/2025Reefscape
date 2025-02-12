@@ -43,13 +43,13 @@ public class VisionAlign extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (vision.getOffset() >= 2.5){
+    if (vision.getOffset() >= 3.0){
       double xSpeed = cleanAndScaleInput(0.0, -0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
-    } else if (vision.getOffset() < 2.5 && vision.getOffset() >= -1.0) {
+    } else if (vision.getOffset() < 3.0 && vision.getOffset() >= -1.5) {
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
