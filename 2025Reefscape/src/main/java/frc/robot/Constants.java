@@ -221,9 +221,9 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double DOWN = 70 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double DOWN = 92 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
     public static final double MIDDLE = 30* Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
-    public static final double SAFE = 10 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 1 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
   }

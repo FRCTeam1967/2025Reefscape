@@ -52,7 +52,7 @@ public class AlgaeMechanism extends SubsystemBase {
       talonFXConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
       algaePivot.getConfigurator().apply(talonFXConfigs);
 
-      resetEncoders(); 
+      //resetEncoders(); 
       algaePivot.setNeutralMode(NeutralModeValue.Brake);
    }
 

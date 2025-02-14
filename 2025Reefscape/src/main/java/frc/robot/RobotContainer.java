@@ -78,6 +78,7 @@ public class RobotContainer {
         matchTab.add("Auto Chooser lol", autoChooserLOL).withWidget(BuiltInWidgets.kComboBoxChooser);
 
         configureBindings();
+        algaeMechanism.setReltoAbs();
     }
     
     private void configureBindings() {
@@ -112,13 +113,20 @@ public class RobotContainer {
 
         //operatorController.b().whileTrue(new RunAlgaeIntake(algaeMechanism, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED));
         operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
-            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, -0.1)),
+            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, -0.7)),
             new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED)));
 
-        operatorController.leftTrigger().whileTrue(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
+        //operatorController.rightTrigger().and(operatorController.leftTrigger()).whileFalse(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
 
-        operatorController.b().whileTrue(new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED));
-        //intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.1));
+        algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
+
+        operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
+            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
+            new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED)));
+
+        //operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED)));
+
+        intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.1));
 
 
 
