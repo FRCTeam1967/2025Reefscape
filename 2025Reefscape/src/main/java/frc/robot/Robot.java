@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     m_robotContainer.elevator.setSafe();     //TODO: REMOVE FROM TELEOP AFTER TESTING
 
-    //m_robotContainer.algaeMechanism.setReltoAbs();     //TODO: REMOVE FROM TELEOP AFTER TESTING
+    m_robotContainer.algaeMechanism.setReltoAbs();     //TODO: REMOVE FROM TELEOP AFTER TESTING
 
 
     if (m_autonomousCommand != null) {

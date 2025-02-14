@@ -22,8 +22,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.OffsetAlign;
-import frc.robot.commands.VisionAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.Xbox;
 import frc.robot.subsystems.*;
@@ -45,8 +43,11 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final static Elevator elevator = new Elevator();
-    public final AlgaeMechanism algaeMechanism = new AlgaeMechanism();
+    public final AlgaePivot algaeMechanism = new AlgaePivot();
     public final AlgaeIntake intake = new AlgaeIntake();
+
+    public final static CoralPivot coralPivot = new CoralPivot();
+    public final static CoralIntake coralIntake = new CoralIntake();
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -105,22 +106,20 @@ public class RobotContainer {
         // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        operatorController.y().onTrue(new MoveElevator(elevator, Constants.Elevator.UP));
-        operatorController.x().onTrue(new MoveElevator(elevator, Constants.Elevator.MIDDLE));
+        /*operatorController.y().onTrue(new MoveElevator(elevator, Constants.Elevator.UP));
+        operatorController.x().onTrue(new MoveElevator(elevator, Constants.Elevator.MIDDLE));*/
         //operatorController.a().onTrue(new ElevatorSafe(elevator, Constants.Elevator.SAFE));
 
-        operatorController.a().onTrue(new MoveElevator(elevator, Constants.Elevator.SAFE));
-
         //operatorController.b().whileTrue(new RunAlgaeIntake(algaeMechanism, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED));
-        operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
+        /*operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, -0.7)),
-            new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED)));
+            new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_INTAKE_SPEED)));*/
 
         //operatorController.rightTrigger().and(operatorController.leftTrigger()).whileFalse(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
 
-        algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
+        //algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
 
-        operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
+        operatorController.back().whileTrue(new SequentialCommandGroup(
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
             new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED)));
 
@@ -163,6 +162,55 @@ public class RobotContainer {
         //vision
         joystick.rightBumper().whileTrue(new VisionAlign(drivetrain, vision));
         joystick.rightTrigger().whileTrue(new OffsetAlign(drivetrain, vision));
+
+
+
+
+
+
+
+        operatorController.start().whileTrue(new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.PROCESSOR_HEIGHT), 
+            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
+            new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED)
+        ));
+
+        operatorController.a().whileTrue(new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
+            new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORING_ANGLE), 
+                new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)
+            ).withTimeout(1),
+            new RunIntake(coralIntake, Constants.Intake.HIGH)
+        ));
+
+        operatorController.x().whileTrue(new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
+            new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORING_ANGLE), 
+                new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)
+            ).withTimeout(1),
+            new RunIntake(coralIntake, Constants.Intake.HIGH)
+        ));
+
+        operatorController.y().whileTrue(new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
+            new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORING_ANGLE), 
+                new MoveCoralPivot(coralPivot, Constants.Pivot.L4)
+            ).withTimeout(1),
+            new RunIntake(coralIntake, Constants.Intake.HIGH)
+        ));
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     public Command getAutonomousCommand() {

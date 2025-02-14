@@ -114,6 +114,53 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints SWERVE_TRANSLATION_PID_CONSTRAINTS = new TrapezoidProfile.Constraints(15, 3);
   }
 
+  public class Pivot {
+    public static final int PIVOT_ID = 17;
+    public static final int SWITCH_ID = 8;
+    //public static final int ENCODER_ID = 15;
+    
+    //public static final double GEAR_RATIO = 16/1.0;
+    //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
+    public static final double GEAR_RATIO = 18/1.0;
+    public static final double CRUISE_VELOCITY = 100.0;
+    public static final double ACCELERATION = 200.0;
+    public static final double JERK = 1700.0;
+
+    public static final double CONVERSION_FACTOR = 0.002777777777777778;
+    //public static final double INTAKE_SAFE = 0.31666666666666665;
+    //public static final double INTAKE_DOWN = 0.02777777777777778;
+
+    public static final double kP = 3;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kS = 0.25;
+    public static final double kV = 0.12;
+    public static final double kA = 0.01;
+
+    public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
+    public static final double FEED_FORWARD = 0.0;
+
+
+    public static final double L1 = 52.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L2L3 = 48.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L4 = 44.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double CORAL_STATION_INTAKE_ANGLE = 124.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 3.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+
+    public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
+  }
+
+  public class Intake {
+    public static final int INTAKE_MOTOR_ID = 18;
+
+    public static final double SLOW = 0.25;
+    public static final double HIGH = 0.75;
+    public static final double REVERSE_SLOW = -0.25;
+    public static final double REVERSE_HIGH = -0.75;
+
+    public static final int BEAM_ID = 9;
+   }
+
   public static class Vision {
     public static final double DEGREE_ERROR = 4.0;
 
@@ -144,14 +191,14 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 25;//100;
-    public static final double ACCELERATION = 50;//150; //200 //100
-    public static final double JERK = 100; //600 //1000 //1600 <---how fast the acceleration is reached
+    public static final double CRUISE_VELOCITY = 100;//100;
+    public static final double ACCELERATION = 20;//150; //200 //100
+    public static final double JERK = 600; //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
     public static final int SENSOR_ID = 0;
 
-    public static final double GEAR_RATIO = 64/8;
+    public static final double GEAR_RATIO = 7/1;
     public static final double SPROCKET_PITCH_CIRCUMFERENCE = 1.76*Math.PI;
     
     public static final double UP = 26.5; //DO NOT CHANGE---MAX PHYSICAL HEIGHT
@@ -159,11 +206,19 @@ public final class Constants {
 
     public static final double SAFE = 5;
 
+    public static final double PROCESSOR_HEIGHT = 1;
+    public static final double CORAL_L2_HEIGHT = 17;
+    public static final double CORAL_L3_HEIGHT = 31.75;
+    public static final double CORAL_L4_HEIGHT = 54.12;
+
+    public static final double CORAL_STATION = 31.75;
+
+
     //public static final double EXTEND_ROTATIONS = INCHES*(GEAR_RATIO/SPROCKET_PITCH_CIRCUMFERENCE);
 
 
     //public static final double SPEED = 25;
-    public static final double kP = 2.5; // A position error of 2.5 rotations results in 12 V output
+    public static final double kP = 6; // A position error of 2.5 rotations results in 12 V output
     public static final double kI = 0; // no output for integrated error
     public static final double kD = 0; // A velocity error of 1 rps results in 0.1 V output
     public static final double kG = 0; 
@@ -201,7 +256,7 @@ public final class Constants {
     
     //public static final double GEAR_RATIO = 16/1.0;
     //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
-    public static final double GEAR_RATIO = 21.375/1.0;
+    public static final double GEAR_RATIO = 28.5/1.0;
     public static final double CRUISE_VELOCITY = 400.0;
     public static final double ACCELERATION = 600.0;
     public static final double JERK = 1600.0;
@@ -226,6 +281,9 @@ public final class Constants {
     public static final double SAFE = 1 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
+
+    public static final double CORAL_SCORING_ANGLE = 150;
+
   }
 
   public static class Extender{

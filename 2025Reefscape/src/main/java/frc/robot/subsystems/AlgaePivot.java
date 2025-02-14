@@ -16,12 +16,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class AlgaeMechanism extends SubsystemBase {
+public class AlgaePivot extends SubsystemBase {
    private TalonFX algaePivot;
    private CANcoder absEncoder; 
    public double revsToMove;
 
-   public AlgaeMechanism() {
+   public AlgaePivot() {
       absEncoder = new CANcoder(Constants.AlgaeMechanism.ENCODER_ID); 
 
       //pivot instantiations
@@ -68,7 +68,9 @@ public class AlgaeMechanism extends SubsystemBase {
    }
 
    public void setReltoAbs(){
-      algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
+      //algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble()*Constants.AlgaeMechanism.GEAR_RATIO);
+      algaePivot.setPosition(67);
+      //algaePivot.getConfigurator().setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
       //moveTo(algaePivot.getRotorPosition().getValueAsDouble());
    }
 
@@ -77,13 +79,15 @@ public class AlgaeMechanism extends SubsystemBase {
    }
 
    public boolean isReached() {
-      return Math.abs((absEncoder.getAbsolutePosition().getValueAsDouble()*360) - ((revsToMove/Constants.AlgaeMechanism.GEAR_RATIO)*360)) < 5.0;
+      //return Math.abs((absEncoder.getAbsolutePosition().getValueAsDouble()*360) - ((revsToMove/Constants.AlgaeMechanism.GEAR_RATIO)*360)) < 5.0;
+      return Math.abs(((algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360) - ((revsToMove/Constants.AlgaeMechanism.GEAR_RATIO)*360)) < 5.0;
+
    }
 
    //intake methods
 
    public void periodic() {
-      SmartDashboard.putNumber("Pivot Rel Position Degrees",(algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360);
+      SmartDashboard.putNumber("Algae Pivot Rel Position Degrees",(algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360);
       SmartDashboard.putBoolean("Pivot At Target", isReached());
       SmartDashboard.putNumber("Algae Abs Encoder", absEncoder.getAbsolutePosition().getValueAsDouble());
    }

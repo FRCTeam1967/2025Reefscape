@@ -1,13 +1,14 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.AlgaePivot;
+import frc.robot.subsystems.CoralPivot;
 
-public class MoveAlgaePivot extends Command {
-   private AlgaePivot pivot;
+/**define class MovePivot */
+public class MoveCoralPivot extends Command {
+   private CoralPivot pivot;
    private double targetPosition;
 
-   public MoveAlgaePivot(AlgaePivot pivot, double targetPosition ) {
+   public MoveCoralPivot(CoralPivot pivot, double targetPosition ) {
       this.pivot = pivot;
       this.targetPosition = targetPosition;
       addRequirements(this.pivot);
@@ -15,11 +16,17 @@ public class MoveAlgaePivot extends Command {
 
    public void initialize() {
    }
-
+/**
+ moves the pivot to the target position
+ checks if it has passed the hardstop checkpoint using checkLimit
+ */
    public void execute() {
       pivot.moveTo(targetPosition);
+      pivot.checkLimit();
    }
-
+/**
+ * checks if the pivot has reached target position
+ * */
    public boolean isFinished() {
       return pivot.isReached();
    }
@@ -28,3 +35,4 @@ public class MoveAlgaePivot extends Command {
 
    }
 }
+
