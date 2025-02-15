@@ -79,7 +79,7 @@ public class RobotContainer {
         matchTab.add("Auto Chooser lol", autoChooserLOL).withWidget(BuiltInWidgets.kComboBoxChooser);
 
         configureBindings();
-        algaeMechanism.setReltoAbs();
+        //algaeMechanism.setReltoAbs();
     }
     
     private void configureBindings() {
@@ -175,13 +175,30 @@ public class RobotContainer {
             new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED)
         ));
 
-        operatorController.a().whileTrue(new SequentialCommandGroup(
+        operatorController.a().onTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
-            new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORING_ANGLE), 
-                new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)
-            ).withTimeout(1),
-            new RunIntake(coralIntake, Constants.Intake.HIGH)
-        ));
+            new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORE_SAFE).withTimeout(1), 
+            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3).withTimeout(1),
+            new RunIntake(coralIntake, Constants.Intake.HIGH),
+            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
+        //operatorController.a().onTrue(new SequentialCommandGroup(
+            //new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
+            //new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORE_SAFE).withTimeout(1), 
+            //new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)
+
+        //));
+
+        
+        
+
+
+        //operatorController.a().onTrue(
+            //new MoveElevator(elevator, Constants.Elevator.SAFE)
+        //);
+
+        operatorController.b().whileTrue(
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT)
+        );
 
         operatorController.x().whileTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),

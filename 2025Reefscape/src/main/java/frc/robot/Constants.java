@@ -191,8 +191,8 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 100;//100;
-    public static final double ACCELERATION = 20;//150; //200 //100
+    public static final double CRUISE_VELOCITY = 100;//50;
+    public static final double ACCELERATION = 300;//150; //200 //100
     public static final double JERK = 600; //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
@@ -279,6 +279,7 @@ public final class Constants {
     public static final double DOWN = 92 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
     public static final double MIDDLE = 30* Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 1 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double CORAL_SCORE_SAFE = 25 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 

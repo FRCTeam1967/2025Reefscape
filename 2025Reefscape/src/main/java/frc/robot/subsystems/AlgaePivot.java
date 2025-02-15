@@ -20,6 +20,7 @@ public class AlgaePivot extends SubsystemBase {
    private TalonFX algaePivot;
    private CANcoder absEncoder; 
    public double revsToMove;
+   private boolean synced = false;
 
    public AlgaePivot() {
       absEncoder = new CANcoder(Constants.AlgaeMechanism.ENCODER_ID); 
@@ -62,16 +63,20 @@ public class AlgaePivot extends SubsystemBase {
    }
 
    public void moveTo(double revolutions) {
+      if (!synced){
+         algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
+         synced = !synced;
+      }
       revsToMove = revolutions*(Constants.AlgaeMechanism.GEAR_RATIO); 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(0.0);
       algaePivot.setControl(request);
    }
 
    public void setReltoAbs(){
-      //algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble()*Constants.AlgaeMechanism.GEAR_RATIO);
-      algaePivot.setPosition(67);
-      //algaePivot.getConfigurator().setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
-      //moveTo(algaePivot.getRotorPosition().getValueAsDouble());
+      algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
+      //algaePivot.setPosition(0);
+      // algaePivot.getConfigurator().setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
+      // moveTo(algaePivot.getRotorPosition().getValueAsDouble());
    }
 
    public void resetEncoders() { 
