@@ -141,9 +141,9 @@ public final class Constants {
     public static final double FEED_FORWARD = 0.0;
 
 
-    public static final double L1 = 52.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double L2L3 = 48.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double L4 = 44.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L1 = 1.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L2L3 = 40.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L4 = 33.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; //35 works
     public static final double CORAL_STATION_INTAKE_ANGLE = 124.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 3.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
 
@@ -153,8 +153,8 @@ public final class Constants {
   public class Intake {
     public static final int INTAKE_MOTOR_ID = 18;
 
-    public static final double SLOW = 0.25;
-    public static final double HIGH = 0.75;
+    public static final double SLOW = 0.3;
+    public static final double HIGH = 0.5; //0.5 //0.6 //0.75
     public static final double REVERSE_SLOW = -0.25;
     public static final double REVERSE_HIGH = -0.75;
 
@@ -191,9 +191,9 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 100;//50;
-    public static final double ACCELERATION = 300;//150; //200 //100
-    public static final double JERK = 600; //600 //1000 //1600 <---how fast the acceleration is reached
+    public static final double CRUISE_VELOCITY = 80;//50;
+    public static final double ACCELERATION = 80; //300//150; //200 //100
+    public static final double JERK = 150; //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
     public static final int SENSOR_ID = 0;
@@ -204,12 +204,12 @@ public final class Constants {
     public static final double UP = 26.5; //DO NOT CHANGE---MAX PHYSICAL HEIGHT
     public static final double MIDDLE = 12;
 
-    public static final double SAFE = 5;
+    public static final double SAFE = 1; //5
 
     public static final double PROCESSOR_HEIGHT = 1;
-    public static final double CORAL_L2_HEIGHT = 17;
-    public static final double CORAL_L3_HEIGHT = 31.75;
-    public static final double CORAL_L4_HEIGHT = 54.12;
+    public static final double CORAL_L2_HEIGHT = 6.0; //5.25 //17
+    public static final double CORAL_L3_HEIGHT = 14.25; //21.75; //31.75
+    public static final double CORAL_L4_HEIGHT = 26;
 
     public static final double CORAL_STATION = 31.75;
 
@@ -278,12 +278,15 @@ public final class Constants {
 
     public static final double DOWN = 92 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
     public static final double MIDDLE = 30* Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
-    public static final double SAFE = 1 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
-    public static final double CORAL_SCORE_SAFE = 25 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 8.4 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS; //19 //1
+    //public static final double CORAL_SCORE_SAFE = 25 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 
-    public static final double CORAL_SCORING_ANGLE = 150;
+
+    public static final double CORAL_SCORING_ANGLE = 160 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double L2_CORAL_SCORING_ANGLE = 10 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double L4_CORAL_SCORING_ANGLE = 10 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
 
   }
 

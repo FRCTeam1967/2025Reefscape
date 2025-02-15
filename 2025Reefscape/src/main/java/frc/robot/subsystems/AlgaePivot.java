@@ -63,17 +63,16 @@ public class AlgaePivot extends SubsystemBase {
    }
 
    public void moveTo(double revolutions) {
-      if (!synced){
-         algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
-         synced = !synced;
-      }
       revsToMove = revolutions*(Constants.AlgaeMechanism.GEAR_RATIO); 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(0.0);
       algaePivot.setControl(request);
    }
 
    public void setReltoAbs(){
-      algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
+      if (!synced){
+         algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble()*Constants.AlgaeMechanism.GEAR_RATIO);
+         synced = !synced;
+      }
       //algaePivot.setPosition(0);
       // algaePivot.getConfigurator().setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
       // moveTo(algaePivot.getRotorPosition().getValueAsDouble());
