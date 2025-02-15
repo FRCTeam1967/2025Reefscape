@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -139,10 +139,17 @@ public class RobotContainer {
 
         //operatorController.rightTrigger().and(operatorController.leftTrigger()).whileFalse(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
 
-        algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
-        elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
-        coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.Pivot.SAFE));
+        //algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
+
+        operatorController.back().whileTrue(new SequentialCommandGroup(
+            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
+            new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED)));
+
+        //operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED)));
+
         intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.1));
+
+
 
 
         // reset the field-centric heading on left bumper press
@@ -178,50 +185,71 @@ public class RobotContainer {
         joystick.rightBumper().whileTrue(new VisionAlign(drivetrain, vision));
         joystick.rightTrigger().whileTrue(new OffsetAlign(drivetrain, vision));
 
-        //PROCESSOR
+
+
+
+
+
+
         operatorController.start().whileTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.PROCESSOR_HEIGHT), 
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
             new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED)
         ));
 
-        //L2
-        operatorController.a().whileTrue(new SequentialCommandGroup(
+        operatorController.a().onTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
-            new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.L2_CORAL_SCORING_ANGLE).withTimeout(1), 
+            new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORE_SAFE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3).withTimeout(1),
-            //new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
-
-        //INTAKE CORAL
-        operatorController.b().whileTrue(new SequentialCommandGroup(
             new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(0.07)));        
+            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
+        //operatorController.a().onTrue(new SequentialCommandGroup(
+            //new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
+            //new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORE_SAFE).withTimeout(1), 
+            //new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)
 
-        //L3
+        //));
+
+        
+        
+
+
+        //operatorController.a().onTrue(
+            //new MoveElevator(elevator, Constants.Elevator.SAFE)
+        //);
+
+        operatorController.b().whileTrue(
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT)
+        );
+
         operatorController.x().whileTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
-            new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.L2_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3).withTimeout(1),
-            //new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
+            new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORING_ANGLE), 
+                new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)
+            ).withTimeout(1),
+            new RunIntake(coralIntake, Constants.Intake.HIGH)
+        ));
 
-        //L4
-
-        operatorController.back().whileTrue(new SequentialCommandGroup(
-            new RunFastIntake(coralIntake, Constants.Intake.SLOW).withTimeout(1),
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L1)));
-        
         operatorController.y().whileTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
-            new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L4).withTimeout(1),
-            //new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1),
-            new ParallelCommandGroup(
-                new RunFastIntake(coralIntake, Constants.Intake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.Pivot.SAFE)
-            ).withTimeout(2))); //maybe change to 2.5
+            new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORING_ANGLE), 
+                new MoveCoralPivot(coralPivot, Constants.Pivot.L4)
+            ).withTimeout(1),
+            new RunIntake(coralIntake, Constants.Intake.HIGH)
+        ));
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     public Command getAutonomousCommand() {

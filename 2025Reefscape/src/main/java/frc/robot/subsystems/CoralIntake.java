@@ -35,7 +35,8 @@ public class CoralIntake extends SubsystemBase {
       return !(sensor.get());
    }
 
-   public void periodic() {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+   public void periodic() {
+      
       SmartDashboard.putBoolean("Beambreak Sensor", isBroken());
 
    }

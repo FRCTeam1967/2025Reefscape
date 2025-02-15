@@ -87,7 +87,7 @@ public class CoralPivot extends SubsystemBase {
    public void periodic() {
       //SmartDashboard.putNumber("Pivot Rel Position Degrees",(pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       //SmartDashboard.putBoolean("Pivot At Target", isReached());
-      SmartDashboard.putBoolean("Pivot Hall Effect Sensor", !limitSwitch.get());
+      SmartDashboard.putBoolean("Pivot Sensor", !limitSwitch.get());
       SmartDashboard.putNumber("Pivot Rel Position in Degrees", (pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       SmartDashboard.putBoolean("Pivot at Target?", isReached());
       checkLimit();
