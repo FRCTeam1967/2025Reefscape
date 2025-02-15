@@ -66,7 +66,7 @@ public class TunerConstants {
 
     // The stator current at which the wheels start to slip;
     // This needs to be tuned to your individual robot
-    private static final Current kSlipCurrent = Amps.of(120.0);
+    private static final Current kSlipCurrent = Amps.of(120.0); //TODO: measure
 
     // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
     // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
@@ -81,7 +81,10 @@ public class TunerConstants {
         );
     private static final CANcoderConfiguration encoderInitialConfigs = new CANcoderConfiguration();
     // Configs for the Pigeon 2; leave this null to skip applying Pigeon 2 configs
-    private static MountPoseConfigs mountPoseConfigs = new MountPoseConfigs().withMountPosePitch(85.00782775878906).withMountPoseRoll(-85.27510833740234).withMountPoseYaw(-6.728643417358398);
+    private static MountPoseConfigs mountPoseConfigs = new MountPoseConfigs()
+    .withMountPosePitch(90) //85.00782775878906
+    .withMountPoseRoll(-90) //-85.27510833740234
+    .withMountPoseYaw(90); // -6.728643417358398
     private static final Pigeon2Configuration pigeonConfigs = new Pigeon2Configuration().withMountPose(mountPoseConfigs);
 
     // CAN bus that the devices are located on;
@@ -149,8 +152,8 @@ public class TunerConstants {
     private static final boolean kFrontLeftSteerMotorInverted = true;
     private static final boolean kFrontLeftEncoderInverted = false;
 
-    private static final Distance kFrontLeftXPos = Inches.of(14);
-    private static final Distance kFrontLeftYPos = Inches.of(14);
+    private static final Distance kFrontLeftXPos = Meters.of(0.305);
+    private static final Distance kFrontLeftYPos = Meters.of(0.305);
 
     // Front Right
     private static final int kFrontRightDriveMotorId = 1;
@@ -160,8 +163,8 @@ public class TunerConstants {
     private static final boolean kFrontRightSteerMotorInverted = true;
     private static final boolean kFrontRightEncoderInverted = false;
 
-    private static final Distance kFrontRightXPos = Inches.of(14);
-    private static final Distance kFrontRightYPos = Inches.of(-14);
+    private static final Distance kFrontRightXPos = Meters.of(0.305);
+    private static final Distance kFrontRightYPos = Meters.of(-.305);
 
     // Back Left
     private static final int kBackLeftDriveMotorId = 5;
@@ -171,8 +174,8 @@ public class TunerConstants {
     private static final boolean kBackLeftSteerMotorInverted = true;
     private static final boolean kBackLeftEncoderInverted = false;
 
-    private static final Distance kBackLeftXPos = Inches.of(-14);
-    private static final Distance kBackLeftYPos = Inches.of(14);
+    private static final Distance kBackLeftXPos = Meters.of(-0.305);
+    private static final Distance kBackLeftYPos = Meters.of(0.305);
 
     // Back Right
     private static final int kBackRightDriveMotorId = 3;
@@ -182,8 +185,8 @@ public class TunerConstants {
     private static final boolean kBackRightSteerMotorInverted = true;
     private static final boolean kBackRightEncoderInverted = false;
 
-    private static final Distance kBackRightXPos = Inches.of(-14);
-    private static final Distance kBackRightYPos = Inches.of(-14);
+    private static final Distance kBackRightXPos = Meters.of(-0.305);
+    private static final Distance kBackRightYPos = Meters.of(-0.305);
 
 
     public static final SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration> FrontLeft =

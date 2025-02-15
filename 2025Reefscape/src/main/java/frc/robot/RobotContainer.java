@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -69,16 +71,36 @@ public class RobotContainer {
     private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain);
 
     /* Path follower */
-    private final SendableChooser<Command> autoChooserLOL;
+    public static SendableChooser<Command> autoChooserLOL;
 
     public ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
+    public ShuffleboardTab fieldTab = Shuffleboard.getTab("Field");
 
     public RobotContainer() {
+        NamedCommands.registerCommand("Score Coral L2", new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
+            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)));
+
+        NamedCommands.registerCommand("Score Coral L3", new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
+            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)));
+
+        NamedCommands.registerCommand("Score Coral L4", new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
+            new MoveCoralPivot(coralPivot, Constants.Pivot.L4)));
+
+        NamedCommands.registerCommand("shootAlgae", new SequentialCommandGroup(
+            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN),
+            new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
+            new RunAlgaeIntake(intake, Constants.AlgaeMechanism.ALGAE_OUTTAKE_SPEED)));
+
         vision.configDashboard(matchTab);
         autoChooserLOL = AutoBuilder.buildAutoChooser();
-        matchTab.add("Auto Chooser lol", autoChooserLOL).withWidget(BuiltInWidgets.kComboBoxChooser);
+        fieldTab.add("Field", CommandSwerveDrivetrain.m_field).withWidget(BuiltInWidgets.kField).withSize(8, 4);
+
 
         configureBindings();
+        CommandSwerveDrivetrain.configDashboard(matchTab);
         //algaeMechanism.setReltoAbs();
     }
     
