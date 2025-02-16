@@ -206,10 +206,14 @@ public final class Constants {
 
     public static final double SAFE = 1; //5
 
-    public static final double PROCESSOR_HEIGHT = 1;
+    public static final double PROCESSOR_HEIGHT = 5;
     public static final double CORAL_L2_HEIGHT = 6.0; //5.25 //17
     public static final double CORAL_L3_HEIGHT = 14.25; //21.75; //31.75
     public static final double CORAL_L4_HEIGHT = 26;
+
+    public static final double ALGAE_L2_HEIGHT = 15;
+    public static final double ALGAE_L3_HEIGHT = 24;
+
 
     public static final double CORAL_STATION = 31.75;
 
@@ -252,7 +256,7 @@ public final class Constants {
     public static final int ENCODER_ID = 14;
 
     public static final double ALGAE_INTAKE_SPEED = -0.5;
-    public static final double ALGAE_OUTTAKE_SPEED = 0.5;
+    public static final double ALGAE_OUTTAKE_SPEED = 0.2;
     
     //public static final double GEAR_RATIO = 16/1.0;
     //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
@@ -276,7 +280,9 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double DOWN = 92 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double DOWN = 75 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double ALGAE_DOWN = 90 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+
     public static final double MIDDLE = 30* Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 8.4 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS; //19 //1
     //public static final double CORAL_SCORE_SAFE = 25 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
