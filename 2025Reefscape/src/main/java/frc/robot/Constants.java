@@ -144,7 +144,7 @@ public final class Constants {
     public static final double L1 = 1.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 40.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
     public static final double L4 = 33.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; //35 works
-    public static final double CORAL_STATION_INTAKE_ANGLE = 124.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double CORAL_STATION_INTAKE_ANGLE = 120 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 3.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
@@ -191,9 +191,9 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 80;//50;
-    public static final double ACCELERATION = 80; //300//150; //200 //100
-    public static final double JERK = 150; //600 //1000 //1600 <---how fast the acceleration is reached
+    public static final double CRUISE_VELOCITY = 65; //80//50;
+    public static final double ACCELERATION = 60; //80 //300//150; //200 //100
+    public static final double JERK = 120; //150 //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
     public static final int SENSOR_ID = 0;
@@ -213,9 +213,10 @@ public final class Constants {
 
     public static final double ALGAE_L2_HEIGHT = 15;
     public static final double ALGAE_L3_HEIGHT = 24;
+    public static final double VISION_HEIGHT = 20.0;
 
 
-    public static final double CORAL_STATION = 31.75;
+    public static final double CORAL_STATION = 14;
 
 
     //public static final double EXTEND_ROTATIONS = INCHES*(GEAR_RATIO/SPROCKET_PITCH_CIRCUMFERENCE);
@@ -290,7 +291,9 @@ public final class Constants {
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 
 
-    public static final double CORAL_SCORING_ANGLE = 160 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double CORAL_SCORING_ANGLE = 170 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+    public static final double EXTRA_CORAL_SCORING_ANGLE = 172 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
+
     public static final double L2_CORAL_SCORING_ANGLE = 10 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
     public static final double L4_CORAL_SCORING_ANGLE = 10 * Constants.AlgaeMechanism.DEGREES_TO_REVOLUTIONS;
 

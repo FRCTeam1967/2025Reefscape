@@ -62,7 +62,6 @@ public class Vision extends SubsystemBase {
    * @param tab - ShuffleboardTab to add values to
    */
   public void configDashboard(ShuffleboardTab tab){
-    tab.addCamera("Limelight Camera", "m_limelight", "http://10.19.67.202:5801/");
     tab.addDouble("Limelight xOffset", () -> limelightTable.getEntry("tx").getDouble(0.0));
     tab.addDouble("Limelight yOffset", () -> limelightTable.getEntry("ty").getDouble(0.0));
     tab.addBoolean("In Range", ()->isInRange);
@@ -70,11 +69,8 @@ public class Vision extends SubsystemBase {
   }
 
   public void odometryConfigDashboard(ShuffleboardTab tab){
-    tab.addCamera("odo Limelight Camera", "limelight-santos", "http://10.19.67.11:5801/");
     tab.addDouble("odo Limelight xOffset", () -> limelightTable.getEntry("tx").getDouble(0.0));
     tab.addDouble("odo Limelight yOffset", () -> limelightTable.getEntry("ty").getDouble(0.0));
-    //tab.addBoolean("In Range", ()->isInRange);
-    //tab.addDouble("Distance to Target", () -> limelightToGoalInches);
   }
 
   /**
