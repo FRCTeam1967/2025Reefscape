@@ -99,11 +99,6 @@ public class RobotContainer {
         odometryVision.odometryConfigDashboard(matchTab);
         autoChooserLOL = AutoBuilder.buildAutoChooser();
         fieldTab.add("Field", CommandSwerveDrivetrain.m_field).withWidget(BuiltInWidgets.kField).withSize(8, 4);
-        
-        algaeMechanism.configDashboard(matchTab);
-        coralPivot.configDashboard(matchTab);
-        elevator.configDashboard(matchTab);
-        coralIntake.configDashboard(matchTab);
 
 
         configureBindings();

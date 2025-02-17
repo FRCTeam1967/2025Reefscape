@@ -13,7 +13,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -114,10 +113,4 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putBoolean("Sensor val", !sensor.get());
     // This method will be called once per scheduler run
   }
-
-  public void configDashboard(ShuffleboardTab tab) {
-    tab.add("elevator height in inches", getHeight());
-    tab.add("elevator height in revs", (rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2);
-    tab.add("Sensor val", !sensor.get());
- }
 }
