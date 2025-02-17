@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -94,5 +95,11 @@ public class AlgaePivot extends SubsystemBase {
       SmartDashboard.putNumber("Algae Pivot Rel Position Degrees",(algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360);
       SmartDashboard.putBoolean("Pivot At Target", isReached());
       SmartDashboard.putNumber("Algae Abs Encoder", absEncoder.getAbsolutePosition().getValueAsDouble());
+   }
+
+   public void configDashboard(ShuffleboardTab tab) {
+      tab.add("Algae Pivot Rel Position Degrees",(algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360);
+      tab.add("Pivot At Target", isReached());
+      tab.add("Algae Abs Encoder", absEncoder.getAbsolutePosition().getValueAsDouble());
    }
 }
