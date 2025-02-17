@@ -99,12 +99,16 @@ public class Elevator extends SubsystemBase {
     rightMotor.setNeutralMode(NeutralModeValue.Brake);
   }
 
+  public double getHeight() {
+    double rotorPos = (rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2;
+    return rotorPos * (Constants.Elevator.SPROCKET_PITCH_CIRCUMFERENCE/Constants.Elevator.GEAR_RATIO);
+  }
+
   @Override
   public void periodic() {
     setSafe();
     
-    double height = ((rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2)/(Constants.Elevator.GEAR_RATIO/Constants.Elevator.SPROCKET_PITCH_CIRCUMFERENCE);
-    SmartDashboard.putNumber("elevator height in inches", height);
+    SmartDashboard.putNumber("elevator height in inches", getHeight());
     SmartDashboard.putNumber("elevator height in revs", (rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2);
     SmartDashboard.putBoolean("Sensor val", !sensor.get());
     // This method will be called once per scheduler run

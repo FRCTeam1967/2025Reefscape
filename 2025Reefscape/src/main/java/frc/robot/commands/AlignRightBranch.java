@@ -14,14 +14,14 @@ import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class OffsetAlign extends Command {
+public class AlignRightBranch extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
   private SlewRateLimiter xLimiter, yLimiter;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
 
   /** Creates a new OffsetAlign. */
-  public OffsetAlign(CommandSwerveDrivetrain drivetrain, Vision vision) {
+  public AlignRightBranch(CommandSwerveDrivetrain drivetrain, Vision vision) {
     this.drivetrain = drivetrain;
     this.vision = vision;
     addRequirements(drivetrain, vision);
@@ -38,7 +38,7 @@ public class OffsetAlign extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.2286, 0.0); //0.1651//0.2286, left, -.0658890
+    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.2275, 0.0); //0.2286, left, -.0658890
   }
 
   // Called every time the scheduler runs while the command is scheduled.

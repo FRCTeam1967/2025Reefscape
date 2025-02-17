@@ -14,13 +14,13 @@ import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.*;
 
 
-public class VisionAlign extends Command {
+public class AlignLeftBranch extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
   private SlewRateLimiter xLimiter, yLimiter;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
 
-  public VisionAlign(CommandSwerveDrivetrain drivetrain, Vision vision) {
+  public AlignLeftBranch(CommandSwerveDrivetrain drivetrain, Vision vision) {
     this.drivetrain = drivetrain;
     this.vision = vision;
     addRequirements(drivetrain, vision);
