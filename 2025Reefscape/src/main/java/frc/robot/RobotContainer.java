@@ -184,12 +184,12 @@ public class RobotContainer {
         //DRIVER CONTROLLER VISION ALIGNMENT
         joystick.rightBumper().onTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-            new AlignLeftBranch(drivetrain, vision)).withTimeout(3)
+            new AlignRightBranch(drivetrain, vision)).withTimeout(3)
         );
 
         joystick.leftBumper().onTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-            new AlignRightBranch(drivetrain, vision)).withTimeout(3)
+            new AlignLeftBranch(drivetrain, vision)).withTimeout(3)
         );
         
         //SCORE PROCESSOR
