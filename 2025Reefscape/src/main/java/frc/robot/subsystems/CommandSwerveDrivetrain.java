@@ -338,7 +338,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return gyro.getRotation2d();
     }
 
-    public static void configDashboard(ShuffleboardTab tab) {
+    public void configDashboard(ShuffleboardTab tab) {
         tab.add("Auto Chooser lol", RobotContainer.autoChooserLOL);
         tab.addNumber("Swerve Encoder Count", () -> (RobotContainer.drivetrain)
             .getModule(0).getDriveMotor().getRotorPosition().getValueAsDouble());

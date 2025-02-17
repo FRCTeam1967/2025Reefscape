@@ -14,7 +14,9 @@ import frc.robot.Constants;
 public class AlgaeIntake extends SubsystemBase {
   private TalonFX motor;
   
-  /** Creates a new AlgaeIntake. */
+  /** Creates a new AlgaeIntake. 
+   * @param motorID
+  */
   public AlgaeIntake() {
       motor = new TalonFX(Constants.AlgaeMechanism.INTAKE_ID);
       var talonAlgaeIntakeConfigs = new TalonFXConfiguration();
@@ -22,9 +24,14 @@ public class AlgaeIntake extends SubsystemBase {
       talonAlgaeIntakeConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
       motor.getConfigurator().apply(talonAlgaeIntakeConfigs);
   }
+  /** Runs intake
+   * @param speed
+   */
   public void runIntake(double speed){
     motor.set(speed);
  }
+ /** Stops intake
+  */
 
   public void stopIntake(){
     motor.stopMotor();

@@ -13,6 +13,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -56,24 +58,28 @@ public class Elevator extends SubsystemBase {
     setBrakeMode();
 
   }
-
+  /** Sets position to zero if sensor is detected */
   public void setSafe(){
     if(!sensor.get()){
       leftMotor.setPosition(0);
       rightMotor.setPosition(0);
     }
   }
-
+  /** Checks whether or not the sensor is detected
+   * @return true if the magnet is detected
+   */
   public boolean getSensor(){
     return !sensor.get();
   }
-
+  /** Stops motors */
   public void stopMotors(){
     leftMotor.stopMotor();
     rightMotor.stopMotor();
 
   }
-
+  /** Sets param to MotionMagic goal and gives request to motors
+    * @param inches - goal height
+    */
   public void moveTo(double inches){
     rotations = inches*(Constants.Elevator.GEAR_RATIO/Constants.Elevator.SPROCKET_PITCH_CIRCUMFERENCE);
     MotionMagicVoltage request = new MotionMagicVoltage(rotations).withFeedForward(Constants.Elevator.FEED_FORWARD);
@@ -81,7 +87,9 @@ public class Elevator extends SubsystemBase {
     rightMotor.setControl(request);       
       
   }
-
+  /**
+  * Confirms if the elevator is at the target position
+  */
   public boolean atHeight(){
     double currentPosition = (leftMotor.getRotorPosition().getValueAsDouble() + rightMotor.getRotorPosition().getValueAsDouble())/2;
     double targetPosition = rotations;
@@ -89,28 +97,39 @@ public class Elevator extends SubsystemBase {
     return (error < Constants.Elevator.ERROR_THRESHOLD);
   }
 
+/**
+ * Resets the encoders to the 0 position
+ */
   public void resetEncoders() {
     leftMotor.setPosition(0);
     rightMotor.setPosition(0);
 
   }
+  /**
+   * Sets the motors to brake mode
+   */
   public void setBrakeMode() {
     leftMotor.setNeutralMode(NeutralModeValue.Brake);
     rightMotor.setNeutralMode(NeutralModeValue.Brake);
   }
 
+  /**
+   * Gets the heigt of the elevator based on motor rotor positions
+   */
   public double getHeight() {
     double rotorPos = (rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2;
     return rotorPos * (Constants.Elevator.SPROCKET_PITCH_CIRCUMFERENCE/Constants.Elevator.GEAR_RATIO);
   }
 
+  public void configDashboard(ShuffleboardTab tab) {
+      tab.addNumber("elevator height in inches",() -> getHeight());
+      tab.addNumber("elevator height in revs", () -> (rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2);
+      tab.addBoolean("Sensor val", () -> !sensor.get());
+   }
+  
   @Override
   public void periodic() {
     setSafe();
-    
-    SmartDashboard.putNumber("elevator height in inches", getHeight());
-    SmartDashboard.putNumber("elevator height in revs", (rightMotor.getRotorPosition().getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2);
-    SmartDashboard.putBoolean("Sensor val", !sensor.get());
     // This method will be called once per scheduler run
   }
 }

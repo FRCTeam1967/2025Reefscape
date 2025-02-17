@@ -13,15 +13,18 @@ import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class RunFastIntake extends Command {
+public class RunCoralFastIntake extends Command {
 
   private final CoralIntake intake;
   private final double speed;
    //private final LEDSubsystem led;
   //private final Timer stopwatch;
-  /** Creates a new RunFastIntake. */
-  
-  public RunFastIntake(CoralIntake intake, double speed) {
+
+  /** Creates a new RunFastIntake.
+   * @param - intake
+   * @param - speed
+   */
+  public RunCoralFastIntake(CoralIntake intake, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.speed = speed;

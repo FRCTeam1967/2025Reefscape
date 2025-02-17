@@ -44,7 +44,7 @@ public class RobotContainer {
     private final CommandXboxController operatorController = new CommandXboxController(Xbox.OPERATOR_CONTROLLER_PORT);
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final static Elevator elevator = new Elevator();
+    public final Elevator elevator = new Elevator();
     public final AlgaePivot algaeMechanism = new AlgaePivot();
     public final AlgaeIntake intake = new AlgaeIntake();
 
@@ -74,21 +74,21 @@ public class RobotContainer {
     /* Path follower */
     public static SendableChooser<Command> autoChooserLOL;
 
-    public ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
+    public static ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
     public ShuffleboardTab fieldTab = Shuffleboard.getTab("Field");
 
     public RobotContainer() {
         NamedCommands.registerCommand("Score Coral L2", new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)));
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3)));
 
         NamedCommands.registerCommand("Score Coral L3", new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3)));
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3)));
 
         NamedCommands.registerCommand("Score Coral L4", new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L4)));
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4)));
 
         NamedCommands.registerCommand("shootAlgae", new SequentialCommandGroup(
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.DOWN),
@@ -102,7 +102,12 @@ public class RobotContainer {
 
 
         configureBindings();
-        CommandSwerveDrivetrain.configDashboard(matchTab);
+        drivetrain.configDashboard(matchTab);
+        elevator.configDashboard(matchTab);
+        algaeMechanism.configDashboard(matchTab);
+        coralPivot.configDashboard(matchTab);
+        coralIntake.configDashboard(matchTab);
+        
         //algaeMechanism.setReltoAbs();
     }
     
@@ -150,7 +155,7 @@ public class RobotContainer {
         //DEFAULT COMMANDS
         algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.SAFE));
         elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
-        coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.Pivot.SAFE));
+        coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
         intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.07));
 
         //RESET GYRO
@@ -217,9 +222,9 @@ public class RobotContainer {
         operatorController.rightBumper().whileTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_STATION),
             new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.CORAL_SCORING_ANGLE),
-            new MoveCoralPivot(coralPivot, Constants.Pivot.CORAL_STATION_INTAKE_ANGLE)).withTimeout(1),
-            new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(0.07),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_STATION_INTAKE_ANGLE)).withTimeout(1),
+            new RunCoralIntake(coralIntake, Constants.Intake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(0.07),
             new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.EXTRA_CORAL_SCORING_ANGLE), new RunAlgaeIntake(intake, -0.1))));
 
         //RIGHT BRANCH L2
@@ -229,9 +234,9 @@ public class RobotContainer {
                 new AlignRightBranch(drivetrain, vision)).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.L2_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3).withTimeout(1),
-            //new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.Intake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
 
         //RIGHT BRANCH L3
         operatorController.x().whileTrue(new SequentialCommandGroup(
@@ -240,9 +245,9 @@ public class RobotContainer {
                 new AlignRightBranch(drivetrain, vision)).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.L2_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3).withTimeout(1),
-            //new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.Intake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
 
         //RIGHT BRANCH L4
         operatorController.y().whileTrue(new SequentialCommandGroup(
@@ -251,12 +256,12 @@ public class RobotContainer {
                 new AlignRightBranch(drivetrain, vision)).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L4).withTimeout(1),
-            //new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.Intake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1),
             new ParallelCommandGroup(
-                new RunFastIntake(coralIntake, Constants.Intake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.Pivot.SAFE)
+                new RunCoralFastIntake(coralIntake, Constants.Intake.HIGH),
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(2))); //maybe change to 2.5
 
         //LEFT BRANCH L2
@@ -266,9 +271,9 @@ public class RobotContainer {
                 new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.L2_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3).withTimeout(1),
-            //new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.Intake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
 
         //LEFT BRANCH L3
         operatorController.x().and(operatorController.back()).whileTrue(new SequentialCommandGroup(
@@ -277,9 +282,9 @@ public class RobotContainer {
                 new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.L2_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L2L3).withTimeout(1),
-            //new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.Intake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1)));
 
         //LEFT BRANCH L4
         operatorController.y().and(operatorController.back()).whileTrue(new SequentialCommandGroup(
@@ -288,18 +293,18 @@ public class RobotContainer {
                 new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.AlgaeMechanism.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L4).withTimeout(1),
-            //new RunIntake(coralIntake, Constants.Intake.HIGH),
-            new RunFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.Intake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.Intake.HIGH).withTimeout(1),
             new ParallelCommandGroup(
-                new RunFastIntake(coralIntake, Constants.Intake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.Pivot.SAFE)
+                new RunCoralFastIntake(coralIntake, Constants.Intake.HIGH),
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(2))); //maybe change to 2.5
 
         //L1 CORAL SCORING   
         operatorController.b().whileTrue(new SequentialCommandGroup(
-            new RunFastIntake(coralIntake, Constants.Intake.SLOW).withTimeout(1),
-            new MoveCoralPivot(coralPivot, Constants.Pivot.L1)));
+            new RunCoralFastIntake(coralIntake, Constants.Intake.SLOW).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1)));
     }
 
 

@@ -114,7 +114,7 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints SWERVE_TRANSLATION_PID_CONSTRAINTS = new TrapezoidProfile.Constraints(15, 3);
   }
 
-  public class Pivot {
+  public class CoralPivot {
     public static final int PIVOT_ID = 17;
     public static final int SWITCH_ID = 8;
     //public static final int ENCODER_ID = 15;
@@ -141,13 +141,16 @@ public final class Constants {
     public static final double FEED_FORWARD = 0.0;
 
 
-    public static final double L1 = 1.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double L2L3 = 40.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double L4 = 33.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; //35 works
-    public static final double CORAL_STATION_INTAKE_ANGLE = 120 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double SAFE = 3.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L2L3 = 40.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L4 = 33.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //35 works
+    public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+    public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
+    public static final double SAFE = 3.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
+
+    public static final double CURRENT_LIMIT = 40;
   }
 
   public class Intake {
@@ -247,7 +250,6 @@ public final class Constants {
     // //public static final int FALCON_ENCODER_TICKS_PER_REVOLUTION = 2048;
 
    public static final double ERROR_THRESHOLD = 2;//0.5; 
-
     // public static final double EXTEND_HEIGHT = 1000; //need to check
   }
 
@@ -255,6 +257,8 @@ public final class Constants {
     public static final int PIVOT_ID = 16;
     public static final int INTAKE_ID = 15;
     public static final int ENCODER_ID = 14;
+
+    public static final double CURRENT_LIMIT = 35; //TODO: test later for correct value
 
     public static final double ALGAE_INTAKE_SPEED = -0.5;
     public static final double ALGAE_OUTTAKE_SPEED = 0.2;

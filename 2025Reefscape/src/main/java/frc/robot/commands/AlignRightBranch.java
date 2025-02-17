@@ -27,6 +27,10 @@ public class AlignRightBranch extends Command {
     addRequirements(drivetrain, vision);
   }
 
+
+  /**
+   * Cube the input from the joystick for a smooth movement (exponential vs linear acceleration)
+   */
   private double cleanAndScaleInput(double deadband, double input, SlewRateLimiter limiter, double speedScaling){
     input = Math.pow(input, 3);
     input = Math.abs(input)> deadband ? input : 0;
@@ -35,13 +39,22 @@ public class AlignRightBranch extends Command {
     return input;
   }
 
-  // Called when the command is initially scheduled.
+  // Called when the command is initially scheduled. 
+  /**
+   * Sets a 3D positional offset for fiducial tracking on the Limelight camera.
+   *
+   */
   @Override
   public void initialize() {
     LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.2275, 0.0); //0.2286, left, -.0658890
   }
 
   // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Check if the vision system detects an offset greater than or equal to 5.0
+   * 1)Move left based on the chasis speed and line 56 sends the speed command to the drivetrain
+   * 2)Check if the vision offset is between -2.0 and 5.0 
+   */
   @Override
   public void execute() {
     if (vision.getOffset() >= 5.0){

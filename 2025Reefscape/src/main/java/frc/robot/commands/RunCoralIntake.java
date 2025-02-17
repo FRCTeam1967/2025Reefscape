@@ -11,13 +11,13 @@ import frc.robot.subsystems.CoralIntake;
 
 
 
-public class RunIntake extends Command {
+public class RunCoralIntake extends Command {
    private final CoralIntake intake;
    private final double speed;
    //private final LEDSubsystem led;
    //private final Timer stopwatch;
 
-   public RunIntake(CoralIntake intake, double speed) {
+   public RunCoralIntake(CoralIntake intake, double speed) {
       this.intake = intake;
       this.speed = speed;
       //this.led = led;

@@ -13,7 +13,6 @@ import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.*;
 
-
 public class AlignLeftBranch extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
@@ -25,7 +24,10 @@ public class AlignLeftBranch extends Command {
     this.vision = vision;
     addRequirements(drivetrain, vision);
   }
-  
+
+  /**
+   * Cube the input from the joystick for a smooth movement (exponential vs linear acceleration)
+   */
   private double cleanAndScaleInput(double deadband, double input, SlewRateLimiter limiter, double speedScaling){
     input = Math.pow(input, 3);
     input = Math.abs(input)> deadband ? input : 0;
@@ -35,12 +37,23 @@ public class AlignLeftBranch extends Command {
   }
 
   // Called when the command is initially scheduled.
+  /**
+   * Sets fiducial 3D offset to where the limelight is supposed to align (fiducial offset -- an offset based on the april tag, measured in meters) <br></br>
+   * 1) Sets x, y and z offsets (in meters) -- y is left/right <br></br>
+   * 2) This offset accounts for the position of the limelight (which is slightly offset to the right) <br></br>
+   */
   @Override
   public void initialize() {
     LimelightHelpers.setFiducial3DOffset("limelight", 0.0, -0.0889, 0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Moves the robot (left-right) by controlling chassis speeds until aligned <br></br>
+   * 1) Checks if the xOffset is in range within 5 degrees of the "center" <br></br>
+   * 2) If so, applies ChassisSpeeds object to the drivetrain (direction specificed based on where the robot currently is) <br></br>
+   * 3) When the robot is within 5 degrees of the "center," apply 0 ChassisSpeeds (stop movement)
+   */
   @Override
   public void execute() {
     if (vision.getOffset() >= 5.0){

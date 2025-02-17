@@ -13,14 +13,16 @@ public class CoralIntake extends SubsystemBase {
    private DigitalInput sensor;
    private TalonFX intakeMotor;
 
-   /** Initializes left motor, right motor, and beam break sensor IDs */
+   /** Initializes left motor, right motor, and beam break sensor IDs  */
    public CoralIntake() {
       //kraken motors
       intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
       sensor = new DigitalInput(Constants.Intake.BEAM_ID);
    }
 
-   /**  Sets speed for right and left motors, left motor is reversed for intake to run in opposite direction */
+   /**  Sets speed for right and left motors, left motor is reversed for intake to run in opposite direction
+    * @param - speed
+    */
    public void setMotor(double speed) {
       intakeMotor.set(speed);
    }
@@ -39,7 +41,9 @@ public class CoralIntake extends SubsystemBase {
       SmartDashboard.putBoolean("Beambreak Sensor", isBroken());
 
    }
-
+   /**Adds value to shuffleboard
+    * @param - tab
+    */
    public void configDashboard(ShuffleboardTab tab) {
       tab.add("Beam Break Sensor Detected?", !(sensor.get()));
    }
