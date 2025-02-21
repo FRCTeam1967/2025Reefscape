@@ -46,7 +46,7 @@ public class AlignRightBranch extends Command {
    */
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.2275, 0.0); //0.2286, left, -.0658890
+    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.1513, 0.0); //0.2275-0.076 //0.2286, left, -.0658890
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -85,6 +85,6 @@ public class AlignRightBranch extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return vision.getIsInRange();
+    return vision.getVisionAbility(); //add vision.getIsInRange()
   }
 }

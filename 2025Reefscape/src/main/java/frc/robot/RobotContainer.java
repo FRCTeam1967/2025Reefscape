@@ -160,7 +160,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> {
                     double currMaxSpeed = MaxSpeed;
                     double currAngularRate = MaxAngularRate;
-                    if (elevator.getHeight() >= 10){
+                    if (elevator.getHeight() >= 2){
                         currMaxSpeed = MaxSpeed/5;
                         currAngularRate = MaxAngularRate/5;
                     }else{
@@ -220,10 +220,16 @@ public class RobotContainer {
         ));
 
         //DRIVER CONTROLLER VISION ALIGNMENT
-        joystick.rightBumper().onTrue((new AlignRightBranch(drivetrain, vision)));
-        joystick.rightBumper().onTrue((new AlignLeftBranch(drivetrain, vision)));
+        joystick.rightBumper().onTrue(new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
+            new AlignRightBranch(drivetrain, vision)).withTimeout(3));
+
+        joystick.leftBumper().onTrue(new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
+            new AlignLeftBranch(drivetrain, vision)).withTimeout(3));
 
         //DISABLE VISION
+        joystick.y().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
         
         //SCORE PROCESSOR
         operatorController.rightBumper().whileTrue(new SequentialCommandGroup(
