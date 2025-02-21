@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class VisionUpdate extends SubsystemBase {
   private final String hostName;
   private final CommandSwerveDrivetrain drivetrain;
-  private final Field2d m_field = new Field2d();
   private final LimelightTarget_Retro retro = new LimelightTarget_Retro();
   private final StructPublisher<Pose2d> limelightPublisher;
 
@@ -28,7 +27,6 @@ public class VisionUpdate extends SubsystemBase {
   public VisionUpdate(CommandSwerveDrivetrain drivetrain, String hostName) {
     this.drivetrain = drivetrain;
     this.hostName = hostName;
-    SmartDashboard.putData("Field", m_field);
 
     limelightPublisher = NetworkTableInstance.getDefault().getStructTopic("Limelight Pose", Pose2d.struct).publish();
   }
@@ -48,7 +46,6 @@ public class VisionUpdate extends SubsystemBase {
     //System.out.println(RobotContainer.drivetrain.getState().Pose);
     //System.out.println(retro.getRobotPose_FieldSpace());
 
-    m_field.setRobotPose(RobotContainer.drivetrain.getState().Pose);
     limelightPublisher.set(poseEstimator.pose);
   }
 }

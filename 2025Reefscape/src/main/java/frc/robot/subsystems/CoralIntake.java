@@ -4,6 +4,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 //beambreak sensor = digital input
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,8 +17,8 @@ public class CoralIntake extends SubsystemBase {
    /** Initializes left motor, right motor, and beam break sensor IDs  */
    public CoralIntake() {
       //kraken motors
-      intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
-      sensor = new DigitalInput(Constants.Intake.BEAM_ID);
+      intakeMotor = new TalonFX(Constants.CoralIntake.INTAKE_MOTOR_ID);
+      sensor = new DigitalInput(Constants.CoralIntake.BEAM_ID);
    }
 
    /**  Sets speed for right and left motors, left motor is reversed for intake to run in opposite direction
@@ -45,7 +46,9 @@ public class CoralIntake extends SubsystemBase {
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.add("Beam Break Sensor Detected?", !(sensor.get()));
+      tab.add("CBeamBreak?", !(sensor.get()))
+      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(6, 0)
+      .withSize(1, 1);
    }
 
 

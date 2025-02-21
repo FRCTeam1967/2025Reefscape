@@ -18,7 +18,7 @@ public class AlgaeIntake extends SubsystemBase {
    * @param motorID
   */
   public AlgaeIntake() {
-      motor = new TalonFX(Constants.AlgaeMechanism.INTAKE_ID);
+      motor = new TalonFX(Constants.Algae.INTAKE_ID);
       var talonAlgaeIntakeConfigs = new TalonFXConfiguration();
       
       talonAlgaeIntakeConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;

@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,10 +30,10 @@ public class AlgaePivot extends SubsystemBase {
     * 
     */
    public AlgaePivot() {
-      absEncoder = new CANcoder(Constants.AlgaeMechanism.ENCODER_ID); 
+      absEncoder = new CANcoder(Constants.Algae.ENCODER_ID); 
 
       //pivot instantiations
-      algaePivot = new TalonFX(Constants.AlgaeMechanism.PIVOT_ID);
+      algaePivot = new TalonFX(Constants.Algae.PIVOT_ID);
       var talonFXConfigs = new TalonFXConfiguration();
      
       CANcoderConfiguration ccdConfigs = new CANcoderConfiguration();
@@ -42,19 +43,19 @@ public class AlgaePivot extends SubsystemBase {
 
       //set slot configs
       var slot0Configs = talonFXConfigs.Slot0;
-      slot0Configs.kS = Constants.AlgaeMechanism.kS; 
-      slot0Configs.kV = Constants.AlgaeMechanism.kV;
-      slot0Configs.kA = Constants.AlgaeMechanism.kA;
-      slot0Configs.kP = Constants.AlgaeMechanism.kP;
-      slot0Configs.kI = Constants.AlgaeMechanism.kI;
-      slot0Configs.kD = Constants.AlgaeMechanism.kD;
+      slot0Configs.kS = Constants.Algae.kS; 
+      slot0Configs.kV = Constants.Algae.kV;
+      slot0Configs.kA = Constants.Algae.kA;
+      slot0Configs.kP = Constants.Algae.kP;
+      slot0Configs.kI = Constants.Algae.kI;
+      slot0Configs.kD = Constants.Algae.kD;
 
-      talonFXConfigs.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Constants.AlgaeMechanism.CURRENT_LIMIT));
+      talonFXConfigs.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Constants.Algae.CURRENT_LIMIT));
 
       var motionMagicConfigs = talonFXConfigs.MotionMagic;
-      motionMagicConfigs.MotionMagicCruiseVelocity = Constants.AlgaeMechanism.CRUISE_VELOCITY;
-      motionMagicConfigs.MotionMagicAcceleration = Constants.AlgaeMechanism.ACCELERATION;
-      motionMagicConfigs.MotionMagicJerk = Constants.AlgaeMechanism.JERK;
+      motionMagicConfigs.MotionMagicCruiseVelocity = Constants.Algae.CRUISE_VELOCITY;
+      motionMagicConfigs.MotionMagicAcceleration = Constants.Algae.ACCELERATION;
+      motionMagicConfigs.MotionMagicJerk = Constants.Algae.JERK;
 
       talonFXConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
       algaePivot.getConfigurator().apply(talonFXConfigs);
@@ -74,14 +75,14 @@ public class AlgaePivot extends SubsystemBase {
     * @param revolutions - goal height
     */
    public void moveTo(double revolutions) {
-      revsToMove = revolutions*(Constants.AlgaeMechanism.GEAR_RATIO); 
+      revsToMove = revolutions*(Constants.Algae.GEAR_RATIO); 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(0.0);
       algaePivot.setControl(request);
    }
    /** If not already synced, sets relative encoder equal to absolute encoder and switches boolean value */
    public void setReltoAbs(){
       if (!synced){
-         algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble()*Constants.AlgaeMechanism.GEAR_RATIO);
+         algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble()*Constants.Algae.GEAR_RATIO);
          synced = !synced;
       }
       //algaePivot.setPosition(0);
@@ -96,15 +97,22 @@ public class AlgaePivot extends SubsystemBase {
     * @return boolean- true if goal is reached and false otherwise
     */
    public boolean isReached() {
-         //return Math.abs((absEncoder.getAbsolutePosition().getValueAsDouble()*360) - ((revsToMove/Constants.AlgaeMechanism.GEAR_RATIO)*360)) < 5.0;
-         return Math.abs(((algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360) - ((revsToMove/Constants.AlgaeMechanism.GEAR_RATIO)*360)) < 5.0;
+         //return Math.abs((absEncoder.getAbsolutePosition().getValueAsDouble()*360) - ((revsToMove/Constants.Algae.GEAR_RATIO)*360)) < 5.0;
+         return Math.abs(((algaePivot.getRotorPosition().getValueAsDouble()/Constants.Algae.GEAR_RATIO)*360) - ((revsToMove/Constants.Algae.GEAR_RATIO)*360)) < 5.0;
    
       }
    
    public void configDashboard(ShuffleboardTab tab) {
-      tab.addNumber("Algae Pivot Rel Position Degrees",() -> ((algaePivot.getRotorPosition().getValueAsDouble()/Constants.AlgaeMechanism.GEAR_RATIO)*360));
-      tab.addBoolean("Algae Pivot At Target", () -> isReached());
-      tab.addNumber("Algae Abs Encoder", () -> absEncoder.getAbsolutePosition().getValueAsDouble());
+      tab.addNumber("APivotRelPosDeg",() -> ((algaePivot.getRotorPosition()
+      .getValueAsDouble()/Constants.Algae.GEAR_RATIO)*360))
+      .withWidget(BuiltInWidgets.kTextView).withPosition(3, 0)
+      .withSize(1, 1);
+      tab.addBoolean("APivot Reached", () -> isReached())
+      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(4, 0)
+      .withSize(1, 1);
+      tab.addNumber("Algae Abs Pos", () -> absEncoder.getAbsolutePosition().getValueAsDouble())
+      .withWidget(BuiltInWidgets.kTextView).withPosition(5, 0)
+      .withSize(1, 1);
    }
 
    //intake methods

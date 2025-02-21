@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -98,8 +99,12 @@ public class CoralPivot extends SubsystemBase {
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.add("Pivot Rel Position Degrees",(pivotMotor.getRotorPosition().getValueAsDouble()/Constants.CoralPivot.GEAR_RATIO)*360);
-      tab.add("Coral Pivot At Target", isReached());
-      tab.add("Sensor Detected?", !limitSwitch.get());
+      tab.add("CPivotRelPosDeg",(pivotMotor.getRotorPosition()
+      .getValueAsDouble()/Constants.CoralPivot.GEAR_RATIO)*360).withWidget(BuiltInWidgets.kTextView)
+      .withPosition(0, 1).withSize(1, 1);
+      tab.add("CPivot At Target", isReached()).withWidget(BuiltInWidgets.kBooleanBox)
+      .withPosition(1, 1).withSize(1, 1);
+      tab.add("CPivot Sensor?", !limitSwitch.get()).withWidget(BuiltInWidgets.kBooleanBox)
+      .withPosition(2, 1).withSize(1, 1);
    }
 }

@@ -2,11 +2,16 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.Publisher;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +30,7 @@ public class Vision extends SubsystemBase {
   public double verticalOffset, angleToGoalDegrees, angleToGoalRadians;
   public double limelightToGoalInches = 0.0;
   private String limelightHostname;
-
+  private boolean isVisionEnabled = true;
   
   public LimelightTarget_Fiducial limelightTargetFiducial = new LimelightTarget_Fiducial();
 
@@ -49,12 +54,6 @@ public class Vision extends SubsystemBase {
 
     xOffset = limelightTable.getEntry("tx").getDouble(0.0);
     verticalOffset = limelightTable.getEntry("ty").getDouble(0.0);
-
-    SmartDashboard.putNumber("X Offset", xOffset);
-    SmartDashboard.putNumber("Y Offset", verticalOffset);
-    SmartDashboard.putNumber("Blue X", getBlueFieldX());
-    SmartDashboard.putNumber("Blue Y", getBlueFieldY());
-    SmartDashboard.putNumber("Blue ROT", getBlueFieldRot().getAngle());
   }
 
   /**
@@ -62,17 +61,28 @@ public class Vision extends SubsystemBase {
    * @param tab - ShuffleboardTab to add values to
    */
   public void configDashboard(ShuffleboardTab tab){
-    tab.addDouble("Limelight xOffset", () -> limelightTable.getEntry("tx").getDouble(0.0));
-    tab.addDouble("Limelight yOffset", () -> limelightTable.getEntry("ty").getDouble(0.0));
-    tab.addBoolean("In Range", ()->isInRange);
-    tab.addDouble("Distance to Target", () -> limelightToGoalInches);
+    tab.addDouble("LL xOffset", () -> limelightTable.getEntry("tx")
+    .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
+    .withPosition(6, 1).withSize(1, 1);
+    tab.addDouble("Limelight yOffset", () -> limelightTable.getEntry("ty")
+    .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
+    .withPosition(7, 1).withSize(1, 1);
+    tab.addBoolean("LL In Range", ()->isInRange).withWidget(BuiltInWidgets.kBooleanBox)
+    .withPosition(0, 2).withSize(1, 1);
+    tab.addDouble("LL Dist to Target", () -> limelightToGoalInches)
+    .withWidget(BuiltInWidgets.kTextView).withPosition(1, 2)
+    .withSize(1, 1);
   }
 
   public void odometryConfigDashboard(ShuffleboardTab tab){
-    tab.addDouble("odo Limelight xOffset", () -> limelightTable.getEntry("tx").getDouble(0.0));
-    tab.addDouble("odo Limelight yOffset", () -> limelightTable.getEntry("ty").getDouble(0.0));
+    tab.addDouble("odo LL xOffset", () -> limelightTable.getEntry("tx")
+    .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
+    .withPosition(2, 2)
+    .withSize(1, 1);
+    tab.addDouble("odo LL yOffset", () -> limelightTable.getEntry("ty")
+    .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
+    .withPosition(3, 2).withSize(1, 1);
   }
-
   /**
    * Changes pipeline
    * @param isVision - if true, look for AprilTags
@@ -87,10 +97,8 @@ public class Vision extends SubsystemBase {
     updateValues();
     if (xOffset > -Constants.Vision.DEGREE_ERROR && xOffset < Constants.Vision.DEGREE_ERROR){
       isInRange = false;
-      SmartDashboard.putBoolean("Range", false);
     } else {
       isInRange = true;
-      SmartDashboard.putBoolean("Range", true);
     }
   }
 
@@ -109,6 +117,11 @@ public class Vision extends SubsystemBase {
   /** @return value of xOffset */
   public double getOffset() {
     return xOffset;
+  }
+
+  public boolean disableVision(){
+    isVisionEnabled = false;
+    return isVisionEnabled;
   }
 
   public void onEnable(Optional<Alliance> alliance){

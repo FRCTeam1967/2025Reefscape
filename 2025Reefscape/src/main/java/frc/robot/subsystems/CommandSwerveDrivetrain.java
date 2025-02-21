@@ -20,6 +20,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.Notifier;
@@ -339,8 +340,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public void configDashboard(ShuffleboardTab tab) {
-        tab.add("Auto Chooser lol", RobotContainer.autoChooserLOL);
-        tab.addNumber("Swerve Encoder Count", () -> (RobotContainer.drivetrain)
-            .getModule(0).getDriveMotor().getRotorPosition().getValueAsDouble());
+        tab.add("Auto Chooser lol", RobotContainer.autoChooserLOL)
+        .withWidget(BuiltInWidgets.kComboBoxChooser)
+        .withPosition(0, 0).withSize(2, 1);
+        tab.addNumber("Swerve Enc Ct", () -> (RobotContainer.drivetrain)
+            .getModule(0).getDriveMotor().getRotorPosition().getValueAsDouble())
+            .withWidget(BuiltInWidgets.kTextView).withPosition(2, 0)
+            .withSize(1, 1);
     }
 }
