@@ -90,8 +90,9 @@ public class CoralPivot extends SubsystemBase {
    }
 
    public void periodic() {
-      //SmartDashboard.putNumber("Pivot Rel Position Degrees",(pivotMotor.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
-      //SmartDashboard.putBoolean("Pivot At Target", isReached());
+      SmartDashboard.putNumber("Pivot Rel Position Degrees",(pivotMotor.getRotorPosition().getValueAsDouble()/Constants.CoralPivot.GEAR_RATIO)*360);
+      SmartDashboard.putBoolean("Pivot At Target", isReached());
+      SmartDashboard.putBoolean("Coral Pivot Sensor", !limitSwitch.get());
       checkLimit();
    }
 
@@ -99,12 +100,12 @@ public class CoralPivot extends SubsystemBase {
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.add("CPivotRelPosDeg",(pivotMotor.getRotorPosition()
+      tab.addNumber("CPivotRelPosDeg",() -> (pivotMotor.getRotorPosition()
       .getValueAsDouble()/Constants.CoralPivot.GEAR_RATIO)*360).withWidget(BuiltInWidgets.kTextView)
       .withPosition(0, 1).withSize(1, 1);
-      tab.add("CPivot At Target", isReached()).withWidget(BuiltInWidgets.kBooleanBox)
+      tab.addBoolean("CPivot At Target", () -> isReached()).withWidget(BuiltInWidgets.kBooleanBox)
       .withPosition(1, 1).withSize(1, 1);
-      tab.add("CPivot Sensor?", !limitSwitch.get()).withWidget(BuiltInWidgets.kBooleanBox)
+      tab.addBoolean("CPivot Sensor?", () -> !limitSwitch.get()).withWidget(BuiltInWidgets.kBooleanBox)
       .withPosition(2, 1).withSize(1, 1);
    }
 }
