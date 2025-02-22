@@ -127,7 +127,7 @@ public class RobotContainer {
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
                 new AlignRightBranch(drivetrain, vision)).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2_CORAL_SCORING_ANGLE).withTimeout(1), 
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
@@ -151,14 +151,14 @@ public class RobotContainer {
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
                 new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2_CORAL_SCORING_ANGLE).withTimeout(1), 
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         NamedCommands.registerCommand("Score Coral L3", new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2_CORAL_SCORING_ANGLE).withTimeout(1), 
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
@@ -229,6 +229,10 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> {
                     double currMaxSpeed = MaxSpeed;
                     double currAngularRate = MaxAngularRate;
+                    // for (int i = 0; elevator.getHeight() >= 3; i+=0.5){
+                    //     currMaxSpeed = MaxSpeed/i;
+                    //     currAngularRate = MaxAngularRate/i;
+                    // }
                     if (elevator.getHeight() >= 3 && elevator.getHeight() < 4 ){
                         currMaxSpeed = MaxSpeed/1.5;
                         currAngularRate = MaxAngularRate/1.5;
