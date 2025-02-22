@@ -93,14 +93,80 @@ public class RobotContainer {
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
+        NamedCommands.registerCommand("Remove Algae L2", new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.ALGAE_L2_HEIGHT),
+            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
+            new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)));
+        
+            NamedCommands.registerCommand("Remove Algae L3", new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.ALGAE_L3_HEIGHT),
+            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
+            new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
+        ));
+
+        NamedCommands.registerCommand("Intake Coral", new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.CORAL_STATION),
+            new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.CORAL_SCORING_ANGLE),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_STATION_INTAKE_ANGLE)).withTimeout(1),
+            new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(0.07),
+            new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.EXTRA_CORAL_SCORING_ANGLE), new RunAlgaeIntake(intake, -0.1))));
+        
+        NamedCommands.registerCommand("Align and Score Coral Right L2", new SequentialCommandGroup(
+            new SequentialCommandGroup(
+                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
+                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
+        
+        NamedCommands.registerCommand("Align and Score Coral Right L3",new SequentialCommandGroup(
+            new SequentialCommandGroup(
+                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
+                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
+
+        NamedCommands.registerCommand("Align and Score Coral Right L4", new SequentialCommandGroup(
+            new SequentialCommandGroup(
+                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
+                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
+            new ParallelCommandGroup(
+                new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH),
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
+            ).withTimeout(2)));//maybe change to 2.5
+        
+        NamedCommands.registerCommand("Align and Score Coral Left L2", new SequentialCommandGroup(
+            new SequentialCommandGroup(
+                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
+                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
+            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
+
         NamedCommands.registerCommand("Score Coral L3", new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3)));
-        NamedCommands.registerCommand("Run CoralIntake", new RunCoralIntake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1.0));
-
-        NamedCommands.registerCommand("AlignAndScoreCoralLeftL4", new SequentialCommandGroup(
-            new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-            new AlignLeftBranch(drivetrain, vision).withTimeout(3),
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
+            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
+        
+        NamedCommands.registerCommand("Align and Score Coral Left L4", new SequentialCommandGroup(
+            new SequentialCommandGroup(
+                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
+                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
@@ -111,11 +177,14 @@ public class RobotContainer {
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE))
                 .withTimeout(2)));
 
-        NamedCommands.registerCommand("shootAlgae", new SequentialCommandGroup(
+        NamedCommands.registerCommand("Score Processor", new SequentialCommandGroup(
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT),
             new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
-            new RunAlgaeIntake(intake, Constants.Algae.ALGAE_OUTTAKE_SPEED)));
-
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
+            ).withTimeout(2)); //maybe change to 2.5
+        
+        
+       
         vision.configDashboard(matchTab);
         odometryVision.odometryConfigDashboard(matchTab);
         
@@ -160,19 +229,59 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> {
                     double currMaxSpeed = MaxSpeed;
                     double currAngularRate = MaxAngularRate;
-                    if (elevator.getHeight() >= 2){
-                        currMaxSpeed = MaxSpeed/5;
-                        currAngularRate = MaxAngularRate/5;
-                    }else{
+                    // for (int i = 0; elevator.getHeight() >= 3; i+=0.5){
+                    //     currMaxSpeed = MaxSpeed/i;
+                    //     currAngularRate = MaxAngularRate/i;
+                    // }
+                    if (elevator.getHeight() >= 3 && elevator.getHeight() < 4 ){
+                        currMaxSpeed = MaxSpeed/1.5;
+                        currAngularRate = MaxAngularRate/1.5;
+                    }
+                    if (elevator.getHeight() >= 4 && elevator.getHeight() < 5 ){
+                        currMaxSpeed = MaxSpeed/2;
+                        currAngularRate = MaxAngularRate/2;
+                    }
+        
+                    if (elevator.getHeight() >= 5 && elevator.getHeight() < 6 ){
+                        currMaxSpeed = MaxSpeed/2.5;
+                        currAngularRate = MaxAngularRate/2.5;
+                    }
+       
+    
+                    if (elevator.getHeight() >= 6 && elevator.getHeight() < 7 ){
+                        currMaxSpeed = MaxSpeed/3;
+                        currAngularRate = MaxAngularRate/3;
+                    }
+    
+            
+                    if (elevator.getHeight() >= 7 && elevator.getHeight() < 8 ){
+                        currMaxSpeed = MaxSpeed/3.5;
+                        currAngularRate = MaxAngularRate/3.5;
+                    }
+            
+                    if (elevator.getHeight() >= 8 && elevator.getHeight() < 9 ){
+                        currMaxSpeed = MaxSpeed/4;
+                        currAngularRate = MaxAngularRate/4;
+                    }
+    
+           
+                    if (elevator.getHeight() >= 9 && elevator.getHeight() < 10 ){
+                        currMaxSpeed = MaxSpeed/4.5;
+                        currAngularRate = MaxAngularRate/4.5;
+                    }
+    
+                    else{
                         currMaxSpeed = MaxSpeed;
                         currAngularRate = MaxAngularRate;
                     }
-                    return drive.withVelocityX(-joystick.getLeftY() * currMaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * currMaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * currAngularRate); // Drive counterclockwise with negative X (left)
-            })
+                return drive.withVelocityX(-joystick.getLeftY() * currMaxSpeed) // Drive forward with negative Y (forward)
+                .withVelocityY(-joystick.getLeftX() * currMaxSpeed) // Drive left with negative X (left)
+                .withRotationalRate(-joystick.getRightX() * currAngularRate); // Drive counterclockwise with negative X (left)
+                })
         );
 
+
+                    
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         //joystick.b().whileTrue(drivetrain.applyRequest(() ->
             //point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))

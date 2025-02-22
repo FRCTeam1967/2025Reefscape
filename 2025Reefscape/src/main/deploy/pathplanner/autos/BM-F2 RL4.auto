@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "PPFace1"
+            "pathName": "BM-F2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Align and Score Coral Left L4"
+            "name": "Align and Score Coral Right L4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
-  "choreoAuto": false
+  "folder": "BM 1PC RL4",
+  "choreoAuto": true
 }
