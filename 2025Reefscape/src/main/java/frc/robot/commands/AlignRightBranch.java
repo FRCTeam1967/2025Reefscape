@@ -85,6 +85,6 @@ public class AlignRightBranch extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return vision.getVisionAbility(); //add vision.getIsInRange()
+    return vision.getVisionAbility();
   }
 }

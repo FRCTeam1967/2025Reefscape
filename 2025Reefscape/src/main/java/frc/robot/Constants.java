@@ -146,7 +146,7 @@ public final class Constants {
     public static final double L4 = 33.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //35 works
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
-    public static final double SAFE = 3.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 
@@ -277,13 +277,15 @@ public final class Constants {
 
     public static final double GROUND_INTAKE_HEIGHT = 80 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double ALGAE_DOWN = 90 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
-    public static final double PROCESSOR_HEIGHT = 75 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double PROCESSOR_HEIGHT = 70 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 8.4 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
     public static final double CORAL_SCORING_ANGLE = 170 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double EXTRA_CORAL_SCORING_ANGLE = 172 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
-    public static final double L2L3_CORAL_SCORING_ANGLE = 10 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double BARGE_SCORING_ANGLE = 30 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+
+    public static final double L2L3_CORAL_SCORING_ANGLE = 12 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double L4_CORAL_SCORING_ANGLE = 10 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
@@ -293,8 +295,10 @@ public final class Constants {
     public static final int ENCODER_ID = 14;
 
     public static final double ALGAE_INTAKE_SPEED = -0.7;
-    public static final double ALGAE_OUTTAKE_SPEED = 0.2;
+    public static final double ALGAE_OUTTAKE_SPEED = 0.5;
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
+
+    public static final double BARGE_SCORING_SPEED = 1.0;
 
     //public static final double INTAKE_SAFE = 0.31666666666666665;
     //public static final double INTAKE_DOWN = 0.02777777777777778;

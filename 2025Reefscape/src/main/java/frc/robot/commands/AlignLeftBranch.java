@@ -45,7 +45,7 @@ public class AlignLeftBranch extends Command {
    */
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, -0.18129, 0.0); //-0.10509 //-0.0889-0.0762
+    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, -0.181, 0.0); //-0.18129 //-0.10509 //-0.0889-0.0762
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -83,9 +83,9 @@ public class AlignLeftBranch extends Command {
     RobotContainer.drivetrain.setControl(request.withSpeeds(chassisSpeeds));
   }
 
-  // Returns true when the command should end.
+  // Returns true when the command should eSSnd.
   @Override
   public boolean isFinished() {
-    return vision.getVisionAbility(); //add vision.getIsInRange()
+    return vision.getVisionAbility();
   }
 }
