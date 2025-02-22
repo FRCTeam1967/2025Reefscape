@@ -26,6 +26,10 @@ public class RunIntake extends Command {
    }
 /** sets the intake motors to a certain speed defined in SLOW or HIGH in Constants */
    public void execute() {
+      /* 
+      if (funnel.isBroken()){
+         intake.setMotor(speed);
+      } */
       intake.setMotor(speed);
    }
 /** stops the intake motors and sets the LED to red when the command is done */

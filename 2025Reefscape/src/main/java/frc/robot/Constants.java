@@ -39,8 +39,11 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    //public static final double L2 = 220 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double MIDDLE = 124.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+
+    public static final double L1 = 52.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L2L3 = 48.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L4 = 44.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double CORAL_STATION_INTAKE_ANGLE = 124.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 3.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
@@ -56,9 +59,16 @@ public final class Constants {
 
     public static final int BEAM_ID = 9;
    }
+
+   public class Funnel {
+    public static final int FUNNEL_MOTOR_ID = 19; //change when ID'ed
+
+   }
    
    public static class Xbox { 
     public static final int DRIVER_CONTROLLER_PORT = 0, OPERATOR_CONTROLLER_PORT = 1;
+  
+  
 
  
 }

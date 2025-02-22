@@ -47,11 +47,13 @@ public class RobotContainer {
    private void configureBindings() {
       /** Set the default command to turn the strip off, otherwise the last colors written by the last command to run will continue to be displayed.*/
       led.setDefaultCommand(new BlackLED(led));
-      operatorController.y().onTrue(new MovePivot(pivot, Constants.Pivot.MIDDLE));
-      //operatorController.x().onTrue(new MovePivot(pivot, Constants.Pivot.L2));
+      operatorController.b().onTrue(new MovePivot(pivot, Constants.Pivot.L1));
+      operatorController.y().onTrue(new MovePivot(pivot, Constants.Pivot.L2L3));
+      //operatorController.x().onTrue(new MovePivot(pivot, Constants.Pivot.L4));
       operatorController.a().onTrue(new MovePivot(pivot, Constants.Pivot.SAFE));
+      operatorController.x().onTrue(new MovePivot(pivot, Constants.Pivot.CORAL_STATION_INTAKE_ANGLE));
 
-      operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(new RunIntake(intake, Constants.Intake.HIGH), new RunFastIntake(intake, Constants.Intake.HIGH).withTimeout(0.04)));
+      operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(new RunIntake(intake, Constants.Intake.HIGH), new RunFastIntake(intake, Constants.Intake.HIGH).withTimeout(0.5)));
       operatorController.leftTrigger().whileTrue(new Outtake(intake, Constants.Intake.HIGH));
       //operatorController.leftTrigger().whileTrue(new RunIntake(intake, led, Constants.Intake.REVERSE_SLOW));
       //operatorController.leftTrigger().or(operatorController.rightTrigger()).whileTrue(new RunIntake(intake, led, Constants.Intake.HIGH));
