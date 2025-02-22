@@ -46,7 +46,7 @@ public class CoralIntake extends SubsystemBase {
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.add("CBeamBreak?", !(sensor.get()))
+      tab.addBoolean("CBeamBreak?", ()-> !(sensor.get()))
       .withWidget(BuiltInWidgets.kBooleanBox).withPosition(6, 0)
       .withSize(1, 1);
    }

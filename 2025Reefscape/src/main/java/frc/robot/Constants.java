@@ -146,7 +146,7 @@ public final class Constants {
     public static final double L4 = 33.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //35 works
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
-    public static final double SAFE = 3.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 
@@ -254,27 +254,16 @@ public final class Constants {
   }
 
   public class Algae {
+
+    //PIVOT CONSTANTS
     public static final int PIVOT_ID = 16;
-    public static final int INTAKE_ID = 15;
-    public static final int ENCODER_ID = 14;
 
-    public static final double CURRENT_LIMIT = 35; //TODO: test later for correct value
-
-    public static final double ALGAE_INTAKE_SPEED = -0.7;
-    public static final double ALGAE_OUTTAKE_SPEED = 0.2;
-    public static final double ALGAE_DEFAULT_SPEED = -0.15;
-    
     //public static final double GEAR_RATIO = 16/1.0;
     //public static final double SPROCKET_PITCH_CIRCUMFERENCE = 3.19;
     public static final double GEAR_RATIO = 28.5/1.0;
     public static final double CRUISE_VELOCITY = 400.0;
     public static final double ACCELERATION = 600.0;
     public static final double JERK = 1600.0;
-
-    public static final double CONVERSION_FACTOR = 0.002777777777777778;
-    //public static final double INTAKE_SAFE = 0.31666666666666665;
-    //public static final double INTAKE_DOWN = 0.02777777777777778;
-    //
 
     public static final double kP = 4.8;
     public static final double kI = 0.0;
@@ -286,22 +275,39 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double DOWN = 75 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double GROUND_INTAKE_HEIGHT = 80 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double ALGAE_DOWN = 90 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
-
-    public static final double MIDDLE = 30* Constants.Algae.DEGREES_TO_REVOLUTIONS;
-    public static final double SAFE = 8.4 * Constants.Algae.DEGREES_TO_REVOLUTIONS; //19 //1
-    //public static final double CORAL_SCORE_SAFE = 25 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
-
-    public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
-
+    public static final double PROCESSOR_HEIGHT = 70 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 8.4 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
     public static final double CORAL_SCORING_ANGLE = 170 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double EXTRA_CORAL_SCORING_ANGLE = 172 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
-    public static final double L2_CORAL_SCORING_ANGLE = 10 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double BARGE_SCORING_ANGLE = 30 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+
+    public static final double L2L3_CORAL_SCORING_ANGLE = 12 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double L4_CORAL_SCORING_ANGLE = 10 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+
+    public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
+
+    //INTAKE CONSTANTS
+    public static final int INTAKE_ID = 15;
+    public static final int ENCODER_ID = 14;
+
+    public static final double ALGAE_INTAKE_SPEED = -0.7;
+    public static final double ALGAE_OUTTAKE_SPEED = 0.5;
+    public static final double ALGAE_DEFAULT_SPEED = -0.15;
+
+    public static final double BARGE_SCORING_SPEED = 1.0;
+
+    //public static final double INTAKE_SAFE = 0.31666666666666665;
+    //public static final double INTAKE_DOWN = 0.02777777777777778;
+    //public static final double CORAL_SCORE_SAFE = 25 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+
+    public static final double CURRENT_LIMIT = 35; //TODO: test later for correct value
+
 
   }
   public static final double ROBOT_PERIOD = 0;
+  
 }

@@ -81,10 +81,10 @@ public class AlgaePivot extends SubsystemBase {
    }
    /** If not already synced, sets relative encoder equal to absolute encoder and switches boolean value */
    public void setReltoAbs(){
-      if (!synced){
+      //if (!synced){
          algaePivot.setPosition(absEncoder.getAbsolutePosition().getValueAsDouble()*Constants.Algae.GEAR_RATIO);
-         synced = !synced;
-      }
+         //synced = !synced;
+      //}
       //algaePivot.setPosition(0);
       // algaePivot.getConfigurator().setPosition(absEncoder.getAbsolutePosition().getValueAsDouble());
       // moveTo(algaePivot.getRotorPosition().getValueAsDouble());

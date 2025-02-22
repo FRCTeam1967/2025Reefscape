@@ -2,10 +2,13 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import com.ctre.phoenix6.swerve.SwerveRequest;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.Publisher;
@@ -19,6 +22,7 @@ import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.RobotContainer;
 
 public class Vision extends SubsystemBase {
   //https://readthedocs.org/projects/limelight/downloads/pdf/latest/
@@ -30,7 +34,9 @@ public class Vision extends SubsystemBase {
   public double verticalOffset, angleToGoalDegrees, angleToGoalRadians;
   public double limelightToGoalInches = 0.0;
   private String limelightHostname;
-  private boolean isVisionEnabled = true;
+  private boolean disableVision = false;
+  private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
+
   
   public LimelightTarget_Fiducial limelightTargetFiducial = new LimelightTarget_Fiducial();
 
@@ -111,6 +117,9 @@ public class Vision extends SubsystemBase {
 
   /** @return whether limelight is in range */
   public boolean getIsInRange(){
+    if (getOffset() < 5.0 && getOffset() >= -2.0) {
+      return true;
+    }
     return false;
   }
 
@@ -119,9 +128,12 @@ public class Vision extends SubsystemBase {
     return xOffset;
   }
 
-  public boolean disableVision(){
-    isVisionEnabled = false;
-    return isVisionEnabled;
+  public void disableVision(){
+    disableVision = !disableVision;
+  }
+
+  public boolean getVisionAbility(){
+    return disableVision;
   }
 
   public void onEnable(Optional<Alliance> alliance){

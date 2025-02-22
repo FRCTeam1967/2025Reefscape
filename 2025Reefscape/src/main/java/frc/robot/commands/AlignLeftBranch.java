@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 
 public class AlignLeftBranch extends Command {
@@ -44,7 +45,7 @@ public class AlignLeftBranch extends Command {
    */
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, -0.0889, 0.0);
+    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, -0.181, 0.0); //-0.18129 //-0.10509 //-0.0889-0.0762
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -78,12 +79,13 @@ public class AlignLeftBranch extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.stopModules();
+    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);   
+    RobotContainer.drivetrain.setControl(request.withSpeeds(chassisSpeeds));
   }
 
-  // Returns true when the command should end.
+  // Returns true when the command should eSSnd.
   @Override
   public boolean isFinished() {
-    return vision.getIsInRange();
+    return vision.getVisionAbility();
   }
 }
