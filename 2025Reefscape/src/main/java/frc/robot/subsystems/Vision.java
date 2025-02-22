@@ -115,14 +115,6 @@ public class Vision extends SubsystemBase {
     limelightToGoalInches = (Constants.Vision.TARGET_HEIGHT_INCHES - Constants.Vision.LIMELIGHT_HEIGHT_INCHES) / Math.tan(angleToGoalRadians);
   }
 
-  /** @return whether limelight is in range */
-  public boolean getIsInRange(){
-    if (getOffset() < 5.0 && getOffset() >= -2.0) {
-      return true;
-    }
-    return false;
-  }
-
   /** @return value of xOffset */
   public double getOffset() {
     return xOffset;

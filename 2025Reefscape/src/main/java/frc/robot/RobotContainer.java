@@ -222,11 +222,11 @@ public class RobotContainer {
         //DRIVER CONTROLLER VISION ALIGNMENT
         joystick.rightBumper().onTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-            new AlignRightBranch(drivetrain, vision)).withTimeout(3));
+            new AlignRightBranch(drivetrain, vision)));
 
         joystick.leftBumper().onTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-            new AlignLeftBranch(drivetrain, vision)).withTimeout(3));
+            new AlignLeftBranch(drivetrain, vision)));
 
         //DISABLE VISION
         joystick.y().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
@@ -274,7 +274,7 @@ public class RobotContainer {
         operatorController.a().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+                new AlignRightBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -285,7 +285,7 @@ public class RobotContainer {
         operatorController.x().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+                new AlignRightBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -296,7 +296,7 @@ public class RobotContainer {
         operatorController.y().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+                new AlignRightBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
@@ -311,7 +311,7 @@ public class RobotContainer {
         operatorController.a().and(operatorController.leftBumper()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
+                new AlignLeftBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -322,7 +322,7 @@ public class RobotContainer {
         operatorController.x().and(operatorController.leftBumper()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
+                new AlignLeftBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -333,7 +333,7 @@ public class RobotContainer {
         operatorController.y().and(operatorController.leftBumper()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
+                new AlignLeftBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
@@ -345,6 +345,7 @@ public class RobotContainer {
             ).withTimeout(2))); //maybe change to 2.5
         
 
+        //BARGE SCORING 
         operatorController.b().whileTrue(
         new SequentialCommandGroup(
             new ParallelCommandGroup(

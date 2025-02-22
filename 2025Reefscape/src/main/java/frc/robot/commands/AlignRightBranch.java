@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -39,6 +40,13 @@ public class AlignRightBranch extends Command {
     return input;
   }
 
+  public boolean getIsInRange(){
+    if (vision.getOffset() < 5.0 && vision.getOffset() >= -2.0) {
+      return true;
+    }
+    return false;
+  }
+
   // Called when the command is initially scheduled. 
   /**
    * Sets a 3D positional offset for fiducial tracking on the Limelight camera.
@@ -58,18 +66,13 @@ public class AlignRightBranch extends Command {
   @Override
   public void execute() {
     if (vision.getOffset() >= 5.0){
-      double xSpeed = cleanAndScaleInput(0.0, -0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
+      double xSpeed = cleanAndScaleInput(0.0, -0.6, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
-    } else if (vision.getOffset() < 5.0 && vision.getOffset() >= -2.0) {
-      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
-      
-      drivetrain.setControl(request.withSpeeds(chassisSpeeds));
-
     } else{
-      double xSpeed = cleanAndScaleInput(0.0, 0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
+      double xSpeed = cleanAndScaleInput(0.0, 0.6, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, xSpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
@@ -79,12 +82,13 @@ public class AlignRightBranch extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.stopModules();
+    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);   
+    RobotContainer.drivetrain.setControl(request.withSpeeds(chassisSpeeds));
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return vision.getVisionAbility();
+    return vision.getVisionAbility() || getIsInRange();
   }
 }
