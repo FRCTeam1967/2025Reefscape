@@ -66,15 +66,20 @@ public class AlignLeftBranch extends Command {
   @Override
   public void execute() {
     if (vision.getOffset() >= 5.0){
-      double xSpeed = cleanAndScaleInput(0.0, -0.6, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
+      double xSpeed = cleanAndScaleInput(0.0, -0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
-      
+
+      drivetrain.setControl(request.withSpeeds(chassisSpeeds));
+
+    } else if (vision.getOffset() < 5.0 && vision.getOffset() >= -2.0) {
+      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
+
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
     } else{
-      double xSpeed = cleanAndScaleInput(0.0, 0.6, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
+      double xSpeed = cleanAndScaleInput(0.0, 0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, xSpeed, 0.0);
-      
+
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
     }
   }
@@ -89,6 +94,6 @@ public class AlignLeftBranch extends Command {
   // Returns true when the command should eSSnd.
   @Override
   public boolean isFinished() {
-    return vision.getVisionAbility() || getIsInRange();
+    return vision.getVisionAbility();
   }
 }

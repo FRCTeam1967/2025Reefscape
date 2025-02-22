@@ -196,7 +196,7 @@ public final class Constants {
 
     public static final double CRUISE_VELOCITY = 65; //80//50;
     public static final double ACCELERATION = 60; //80 //300//150; //200 //100
-    public static final double JERK = 120; //150 //600 //1000 //1600 <---how fast the acceleration is reached
+    public static final double JERK = 110; //120 //150 //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
     public static final int SENSOR_ID = 0;
