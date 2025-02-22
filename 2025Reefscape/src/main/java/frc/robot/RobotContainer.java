@@ -51,6 +51,7 @@ public class RobotContainer {
     public final Elevator elevator = new Elevator();
     public final AlgaePivot algaeMechanism = new AlgaePivot();
     public final AlgaeIntake intake = new AlgaeIntake();
+    public final LEDSubsystem led = new LEDSubsystem();
 
     public final static CoralPivot coralPivot = new CoralPivot();
     public final static CoralIntake coralIntake = new CoralIntake();
@@ -224,7 +225,6 @@ public class RobotContainer {
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );*/
-
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() -> {
                     double currMaxSpeed = MaxSpeed;
@@ -299,6 +299,7 @@ public class RobotContainer {
         elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
         coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
         intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.15));
+        led.setDefaultCommand(new BlackLED(led));
 
         //RESET GYRO
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -357,6 +358,7 @@ public class RobotContainer {
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_STATION_INTAKE_ANGLE)).withTimeout(1),
             new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(0.07),
+            new RunScrollingRainbow(led).withTimeout(2),
             new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.EXTRA_CORAL_SCORING_ANGLE), new RunAlgaeIntake(intake, -0.1))));
 
         //ALGAE L2 REMOVAL
