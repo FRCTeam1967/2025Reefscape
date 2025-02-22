@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to F1"
+            "pathName": "BM-F1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align and Score Coral Left L4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "BM 1PC LL4",
   "choreoAuto": true
 }

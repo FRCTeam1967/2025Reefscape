@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle to F1"
+            "pathName": "BL-F3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AlignAndScoreCoralLeftL4"
+            "name": "Align and Score Coral Right L4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "BL 1PC RL4",
   "choreoAuto": true
 }

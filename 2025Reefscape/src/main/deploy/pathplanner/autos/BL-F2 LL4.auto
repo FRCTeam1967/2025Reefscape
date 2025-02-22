@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "PPFace1"
+            "pathName": "BL-F2"
           }
         },
         {
@@ -20,6 +20,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
-  "choreoAuto": false
+  "folder": "BL 1PC LL4",
+  "choreoAuto": true
 }
