@@ -51,6 +51,7 @@ public class RobotContainer {
     public final Elevator elevator = new Elevator();
     public final AlgaePivot algaeMechanism = new AlgaePivot();
     public final AlgaeIntake intake = new AlgaeIntake();
+    public final LEDSubsystem led = new LEDSubsystem();
 
     public final static CoralPivot coralPivot = new CoralPivot();
     public final static CoralIntake coralIntake = new CoralIntake();
@@ -202,6 +203,8 @@ public class RobotContainer {
         limelightTab.add(httpCamera2).withWidget(BuiltInWidgets.kCameraStream).withPosition(3, 0)
         .withSize(3, 2);
 
+        //limelightTab.addString("limelight stream", () -> "http://10.19.67.12:5801/")
+
 
         configureBindings();
         drivetrain.configDashboard(matchTab);
@@ -224,59 +227,22 @@ public class RobotContainer {
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );*/
-
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() -> {
                     double currMaxSpeed = MaxSpeed;
                     double currAngularRate = MaxAngularRate;
-                    // for (int i = 0; elevator.getHeight() >= 3; i+=0.5){
-                    //     currMaxSpeed = MaxSpeed/i;
-                    //     currAngularRate = MaxAngularRate/i;
-                    // }
-                    if (elevator.getHeight() >= 3 && elevator.getHeight() < 4 ){
-                        currMaxSpeed = MaxSpeed/1.5;
-                        currAngularRate = MaxAngularRate/1.5;
-                    }
-                    if (elevator.getHeight() >= 4 && elevator.getHeight() < 5 ){
-                        currMaxSpeed = MaxSpeed/2;
-                        currAngularRate = MaxAngularRate/2;
-                    }
-        
-                    if (elevator.getHeight() >= 5 && elevator.getHeight() < 6 ){
-                        currMaxSpeed = MaxSpeed/2.5;
-                        currAngularRate = MaxAngularRate/2.5;
-                    }
-       
-    
-                    if (elevator.getHeight() >= 6 && elevator.getHeight() < 7 ){
-                        currMaxSpeed = MaxSpeed/3;
-                        currAngularRate = MaxAngularRate/3;
-                    }
-    
-            
-                    if (elevator.getHeight() >= 7 && elevator.getHeight() < 8 ){
-                        currMaxSpeed = MaxSpeed/3.5;
-                        currAngularRate = MaxAngularRate/3.5;
-                    }
-            
-                    if (elevator.getHeight() >= 8 && elevator.getHeight() < 9 ){
-                        currMaxSpeed = MaxSpeed/4;
-                        currAngularRate = MaxAngularRate/4;
-                    }
-    
-           
-                    if (elevator.getHeight() >= 9 && elevator.getHeight() < 10 ){
-                        currMaxSpeed = MaxSpeed/4.5;
-                        currAngularRate = MaxAngularRate/4.5;
-                    }
-    
-                    else{
+
+                    if (elevator.getHeight() >= 2){
+                        currMaxSpeed = MaxSpeed/5;
+                        currAngularRate = MaxAngularRate/5;
+                    }else{
                         currMaxSpeed = MaxSpeed;
                         currAngularRate = MaxAngularRate;
                     }
-                return drive.withVelocityX(-joystick.getLeftY() * currMaxSpeed) // Drive forward with negative Y (forward)
-                .withVelocityY(-joystick.getLeftX() * currMaxSpeed) // Drive left with negative X (left)
-                .withRotationalRate(-joystick.getRightX() * currAngularRate); // Drive counterclockwise with negative X (left)
+
+                    return drive.withVelocityX(-joystick.getLeftY() * currMaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * currMaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick.getRightX() * currAngularRate); // Drive counterclockwise with negative X (left)
                 })
         );
 
@@ -299,6 +265,7 @@ public class RobotContainer {
         elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
         coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
         intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.15));
+        led.setDefaultCommand(new BlackLED(led));
 
         //RESET GYRO
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -331,11 +298,11 @@ public class RobotContainer {
         //DRIVER CONTROLLER VISION ALIGNMENT
         joystick.rightBumper().onTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-            new AlignRightBranch(drivetrain, vision)).withTimeout(3));
+            new AlignRightBranch(drivetrain, vision)));
 
         joystick.leftBumper().onTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-            new AlignLeftBranch(drivetrain, vision)).withTimeout(3));
+            new AlignLeftBranch(drivetrain, vision)));
 
         //DISABLE VISION
         joystick.y().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
@@ -357,6 +324,7 @@ public class RobotContainer {
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_STATION_INTAKE_ANGLE)).withTimeout(1),
             new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(0.07),
+            new RunScrollingRainbow(led).withTimeout(2),
             new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.EXTRA_CORAL_SCORING_ANGLE), new RunAlgaeIntake(intake, -0.1))));
 
         //ALGAE L2 REMOVAL
@@ -383,7 +351,7 @@ public class RobotContainer {
         operatorController.a().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+                new AlignRightBranch(drivetrain, vision).withTimeout(2)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -394,7 +362,7 @@ public class RobotContainer {
         operatorController.x().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+                new AlignRightBranch(drivetrain, vision).withTimeout(2)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -405,7 +373,7 @@ public class RobotContainer {
         operatorController.y().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+                new AlignRightBranch(drivetrain, vision).withTimeout(2)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
@@ -420,7 +388,7 @@ public class RobotContainer {
         operatorController.a().and(operatorController.leftBumper()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
+                new AlignLeftBranch(drivetrain, vision).withTimeout(2)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -431,7 +399,7 @@ public class RobotContainer {
         operatorController.x().and(operatorController.leftBumper()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
+                new AlignLeftBranch(drivetrain, vision).withTimeout(2)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -442,7 +410,7 @@ public class RobotContainer {
         operatorController.y().and(operatorController.leftBumper()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
+                new AlignLeftBranch(drivetrain, vision).withTimeout(2)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
@@ -454,6 +422,7 @@ public class RobotContainer {
             ).withTimeout(2))); //maybe change to 2.5
         
 
+        //BARGE SCORING 
         operatorController.b().whileTrue(
         new SequentialCommandGroup(
             new ParallelCommandGroup(
