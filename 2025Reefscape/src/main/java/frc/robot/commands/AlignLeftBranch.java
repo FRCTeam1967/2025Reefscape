@@ -45,7 +45,7 @@ public class AlignLeftBranch extends Command {
    */
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, -0.181, 0.0); //-0.18129 //-0.10509 //-0.0889-0.0762
+    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, -0.1556, 0.0); //-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -57,13 +57,13 @@ public class AlignLeftBranch extends Command {
    */
   @Override
   public void execute() {
-    if (vision.getOffset() >= 5.0){
+    if (vision.getOffset() >= 3.0){
       double xSpeed = cleanAndScaleInput(0.0, -0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
-    } else if (vision.getOffset() < 5.0 && vision.getOffset() >= -2.0) {
+    } else if (vision.getOffset() < 3.0 && vision.getOffset() >= -1.0) {
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));

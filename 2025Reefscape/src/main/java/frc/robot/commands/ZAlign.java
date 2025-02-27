@@ -11,22 +11,23 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
-import frc.robot.subsystems.*;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class AlignRightBranch extends Command {
+public class ZAlign extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
   private SlewRateLimiter xLimiter, yLimiter;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
 
-  /** Creates a new OffsetAlign. */
-  public AlignRightBranch(CommandSwerveDrivetrain drivetrain, Vision vision) {
+  /** Creates a new ZAlign. */
+  public ZAlign(CommandSwerveDrivetrain drivetrain, Vision vision) {
     this.drivetrain = drivetrain;
     this.vision = vision;
     addRequirements(drivetrain, vision);
   }
-
 
   /**
    * Cube the input from the joystick for a smooth movement (exponential vs linear acceleration)
@@ -39,21 +40,24 @@ public class AlignRightBranch extends Command {
     return input;
   }
 
-  // Called when the command is initially scheduled. 
+  // Called when the command is initially scheduled.
   /**
-   * Sets a 3D positional offset for fiducial tracking on the Limelight camera.
-   *
+   * Sets fiducial 3D offset to where the limelight is supposed to align (fiducial offset -- an offset based on the april tag, measured in meters) <br></br>
+   * 1) Sets x, y and z offsets (in meters) -- y is left/right <br></br>
+   * 2) This offset accounts for the position of the limelight (which is slightly offset to the right) <br></br>
    */
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.1685, 0.0); //0.1513 //0.2275-0.076 //0.2286, left, -.0658890
+    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.0254);
   }
+
 
   // Called every time the scheduler runs while the command is scheduled.
   /**
-   * Check if the vision system detects an offset greater than or equal to 5.0
-   * 1)Move left based on the chasis speed and line 56 sends the speed command to the drivetrain
-   * 2)Check if the vision offset is between -2.0 and 5.0 
+   * Moves the robot (left-right) by controlling chassis speeds until aligned <br></br>
+   * 1) Checks if the xOffset is in range within 5 degrees of the "center" <br></br>
+   * 2) If so, applies ChassisSpeeds object to the drivetrain (direction specificed based on where the robot currently is) <br></br>
+   * 3) When the robot is within 5 degrees of the "center," apply 0 ChassisSpeeds (stop movement)
    */
   @Override
   public void execute() {
@@ -79,7 +83,8 @@ public class AlignRightBranch extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.stopModules();
+    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);   
+    RobotContainer.drivetrain.setControl(request.withSpeeds(chassisSpeeds));
   }
 
   // Returns true when the command should end.

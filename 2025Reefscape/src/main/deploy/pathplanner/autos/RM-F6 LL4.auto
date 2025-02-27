@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RM-F6"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align and Score Coral Left L4"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "RM 1PC LL4",
+  "choreoAuto": true
+}

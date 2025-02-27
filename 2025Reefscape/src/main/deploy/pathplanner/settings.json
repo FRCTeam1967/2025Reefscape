@@ -10,7 +10,10 @@
     "BM 1PC RL4",
     "BR 1PC LL4",
     "BR 1PC RL4",
-    "RL 1PC LL4"
+    "New Folder",
+    "RL 1PC LL4",
+    "RM 1PC LL4",
+    "RM 1PC RL4"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
