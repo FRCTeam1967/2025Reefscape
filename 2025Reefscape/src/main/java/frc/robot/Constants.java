@@ -164,6 +164,13 @@ public final class Constants {
     public static final int BEAM_ID = 9;
    }
 
+  public static class Funnel {
+    public static final int FUNNEL_MOTOR_ID = 19; //ID motor later
+    public static final double FUNNEL_SPEED_FAST = 0.5;
+    public static final double FUNNEL_SPEED_SLOW = 0.25;
+    
+  }
+
   public static class Vision {
     public static final double DEGREE_ERROR = 4.0;
 

@@ -55,6 +55,7 @@ public class RobotContainer {
 
     public final static CoralPivot coralPivot = new CoralPivot();
     public final static CoralIntake coralIntake = new CoralIntake();
+    public final static Funnel funnel = new Funnel();
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -322,6 +323,7 @@ public class RobotContainer {
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.CORAL_SCORING_ANGLE),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_STATION_INTAKE_ANGLE)).withTimeout(1),
+            new RunFunnel(funnel, coralIntake, Constants.Funnel.FUNNEL_SPEED_FAST),
             new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(0.07),
             new RunScrollingRainbow(led).withTimeout(2),
