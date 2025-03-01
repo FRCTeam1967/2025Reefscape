@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-
-//beambreak sensor = digital input
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -38,6 +36,16 @@ public class CoralIntake extends SubsystemBase {
       return !(sensor.get());
    }
 
+   public double getRotorPos() {
+      return intakeMotor.getRotorPosition().getValueAsDouble();
+   }
+
+   public void zeroEncoder() {
+     intakeMotor.setPosition(0);
+   }
+
+
+
    public void periodic() {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
       SmartDashboard.putBoolean("Beambreak Sensor", isBroken());
 
@@ -49,6 +57,9 @@ public class CoralIntake extends SubsystemBase {
       tab.addBoolean("CBeamBreak?", ()-> !(sensor.get()))
       .withWidget(BuiltInWidgets.kBooleanBox).withPosition(6, 0)
       .withSize(1, 1);
+      tab.addDouble("Intake Rel Pos",()->(intakeMotor.getRotorPosition().getValueAsDouble()));
+      tab.addBoolean("isReached",()->(intakeMotor.getRotorPosition().getValueAsDouble() >= Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL));
+
    }
 
 

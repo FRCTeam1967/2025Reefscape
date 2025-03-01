@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.Xbox;
@@ -267,6 +268,7 @@ public class RobotContainer {
         coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
         intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.15));
         led.setDefaultCommand(new BlackLED(led));
+        coralIntake.setDefaultCommand(new RunCoralIntake(coralIntake, 0));
 
         //RESET GYRO
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -335,7 +337,8 @@ public class RobotContainer {
             //new ParallelRaceGroup(
                 //new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST),
                 new RunCoralIntake(coralIntake, Constants.CoralIntake.SLOW),//)
-            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(0.1)
+                new WaitCommand(3),
+            new StageCoral(coralIntake, Constants.CoralIntake.SLOW)
         ));
 
         //ALGAE L2 REMOVAL

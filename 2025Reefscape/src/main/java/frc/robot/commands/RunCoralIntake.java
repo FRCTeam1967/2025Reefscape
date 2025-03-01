@@ -2,6 +2,8 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
@@ -24,6 +26,11 @@ public class RunCoralIntake extends Command {
       //stopwatch = new Timer();
       addRequirements(intake);
    }
+
+   @Override
+  public void initialize() {
+   //  intake.zeroEncoder();
+  }
 /** sets the intake motors to a certain speed defined in SLOW or HIGH in Constants */
    public void execute() {
       intake.setMotor(speed);
@@ -31,6 +38,9 @@ public class RunCoralIntake extends Command {
 /** stops the intake motors and sets the LED to red when the command is done */
    public void end(boolean interrupted) {
       intake.stopMotor();
+      //new WaitCommand(3);
+      //intake.zeroEncoder();
+      //new StageCoral(intake, speed);
       //stopwatch.reset();
       //stopwatch.start();
       //while (stopwatch.get() < 3) {
