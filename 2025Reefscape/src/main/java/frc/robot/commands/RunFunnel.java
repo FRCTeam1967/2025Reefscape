@@ -12,12 +12,12 @@ import frc.robot.subsystems.CoralIntake;
 public class RunFunnel extends Command {
   private final Funnel funnel;
   private final double speed;
-  private final CoralIntake intake;
+  //private final CoralIntake intake;
 
   /** Creates a new RunFunnel. */
-  public RunFunnel(Funnel funnel, CoralIntake intake, double speed) {
+  public RunFunnel(Funnel funnel, double speed) {
     this.funnel = funnel;
-    this.intake = intake;
+    //this.intake = intake;
     this.speed = speed;
     addRequirements(funnel);
     
@@ -42,7 +42,8 @@ public class RunFunnel extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intake.isBroken();
+    return false;
+    //return intake.isBroken();
     //return false;
   }
 }

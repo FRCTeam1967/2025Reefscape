@@ -75,7 +75,7 @@ public class RobotContainer {
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
-    private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain, "limelight-santos");
+    //private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain, "limelight-santos");
 
     /* Path follower */
     public static SendableChooser<Command> autoChooserLOL;
@@ -263,7 +263,7 @@ public class RobotContainer {
 
         //DEFAULT COMMANDS
         algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.Algae.SAFE));
-        elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
+        //elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
         coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
         intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.15));
         led.setDefaultCommand(new BlackLED(led));
@@ -318,16 +318,25 @@ public class RobotContainer {
         ));
 
         //CORAL INTAKE
+        /* 
         operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.CORAL_STATION),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.CORAL_SCORING_ANGLE),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_STATION_INTAKE_ANGLE)).withTimeout(1),
-            new RunFunnel(funnel, coralIntake, Constants.Funnel.FUNNEL_SPEED_FAST),
+            new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST).withTimeout(3),
             new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(0.07),
             new RunScrollingRainbow(led).withTimeout(2),
             new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.EXTRA_CORAL_SCORING_ANGLE), new RunAlgaeIntake(intake, -0.1))));
+        */
+
+        operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
+            //new ParallelRaceGroup(
+                //new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST),
+                new RunCoralIntake(coralIntake, Constants.CoralIntake.SLOW),//)
+            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(0.1)
+        ));
 
         //ALGAE L2 REMOVAL
         operatorController.povDown().whileTrue(new SequentialCommandGroup(

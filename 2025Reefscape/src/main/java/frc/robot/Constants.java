@@ -156,12 +156,12 @@ public final class Constants {
   public class CoralIntake {
     public static final int INTAKE_MOTOR_ID = 18;
 
-    public static final double SLOW = 0.3;
+    public static final double SLOW = 0.05;
     public static final double HIGH = 0.5; //0.5 //0.6 //0.75
     public static final double REVERSE_SLOW = -0.25;
     public static final double REVERSE_HIGH = -0.75;
 
-    public static final int BEAM_ID = 9;
+    public static final int BEAM_ID = 4;
    }
 
   public static class Funnel {

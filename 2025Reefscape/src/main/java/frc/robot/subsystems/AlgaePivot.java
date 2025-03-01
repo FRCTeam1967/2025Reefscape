@@ -39,7 +39,7 @@ public class AlgaePivot extends SubsystemBase {
       CANcoderConfiguration ccdConfigs = new CANcoderConfiguration();
 
       ccdConfigs.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-      ccdConfigs.MagnetSensor.MagnetOffset = -0.29900390625;
+      ccdConfigs.MagnetSensor.MagnetOffset = 0.337646484375;
 
       //set slot configs
       var slot0Configs = talonFXConfigs.Slot0;
