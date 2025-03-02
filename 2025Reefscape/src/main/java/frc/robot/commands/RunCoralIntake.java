@@ -4,11 +4,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
+import java.lang.constant.Constable;
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants;
 import frc.robot.subsystems.CoralIntake;
 
 
@@ -33,7 +35,7 @@ public class RunCoralIntake extends Command {
   }
 /** sets the intake motors to a certain speed defined in SLOW or HIGH in Constants */
    public void execute() {
-      intake.setMotor(speed);
+      intake.setVelocity(speed);
    }
 /** stops the intake motors and sets the LED to red when the command is done */
    public void end(boolean interrupted) {

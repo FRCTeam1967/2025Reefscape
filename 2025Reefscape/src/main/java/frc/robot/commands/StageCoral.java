@@ -17,13 +17,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 public class StageCoral extends Command {
   /** Creates a new StageCoral. */
   private final CoralIntake intake;
-  private final double speed;
+  private final double rotations;
   private double initialPos;
-  public StageCoral(CoralIntake intake, double speed) {
+  private double finalPos;
+
+  public StageCoral(CoralIntake intake, double rotations) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
-    this.speed = speed;
-    initialPos = intake.getRotorPos();
+    this.rotations = rotations;
   }
 
   // Called when the command is initially scheduled.
@@ -31,6 +32,7 @@ public class StageCoral extends Command {
   public void initialize() {
     SmartDashboard.putString("did we run?", "yes!");
     initialPos = intake.getRotorPos();
+    finalPos = initialPos + rotations;
     //intake.zeroEncoder();
 
   }
@@ -38,11 +40,7 @@ public class StageCoral extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Math.abs(intake.getRotorPos()-initialPos) >= Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL){
-      intake.setMotor(0);
-    }else{
-      intake.setMotor(speed);
-    }
+    intake.moveTo(finalPos);
   }
 
   // Called once the command ends or is interrupted.
@@ -55,6 +53,8 @@ public class StageCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(intake.getRotorPos()-initialPos) >= Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL);
+    double currentPosition = intake.getRotorPos();
+    double error = Math.abs(finalPos - currentPosition);
+    return (error < Constants.CoralIntake.ERROR_THRESHOLD);
   }
 }

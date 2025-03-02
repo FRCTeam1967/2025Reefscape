@@ -52,7 +52,7 @@ public class RobotContainer {
     public final Elevator elevator = new Elevator();
     public final AlgaePivot algaeMechanism = new AlgaePivot();
     public final AlgaeIntake intake = new AlgaeIntake();
-    public final LEDSubsystem led = new LEDSubsystem();
+    //public final LEDSubsystem led = new LEDSubsystem();
 
     public final static CoralPivot coralPivot = new CoralPivot();
     public final static CoralIntake coralIntake = new CoralIntake();
@@ -264,11 +264,11 @@ public class RobotContainer {
 
         //DEFAULT COMMANDS
         algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.Algae.SAFE));
-        //elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
+        elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
         coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
         intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.15));
-        led.setDefaultCommand(new BlackLED(led));
-        coralIntake.setDefaultCommand(new RunCoralIntake(coralIntake, 0));
+        //led.setDefaultCommand(new BlackLED(led));
+        //coralIntake.setDefaultCommand(new RunCoralIntake(coralIntake, 0));
 
         //RESET GYRO
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -336,9 +336,9 @@ public class RobotContainer {
         operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
             //new ParallelRaceGroup(
                 //new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST),
-                new RunCoralIntake(coralIntake, Constants.CoralIntake.SLOW),//)
-                new WaitCommand(3),
-            new StageCoral(coralIntake, Constants.CoralIntake.SLOW)
+                new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY),//)
+                new WaitCommand(0.1),
+            new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
         ));
 
         //ALGAE L2 REMOVAL

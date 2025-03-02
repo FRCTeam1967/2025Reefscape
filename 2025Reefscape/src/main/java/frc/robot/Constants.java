@@ -156,15 +156,32 @@ public final class Constants {
   public class CoralIntake {
     public static final int INTAKE_MOTOR_ID = 18;
 
-    public static final int INTAKE_GEAR_RATIO = 3/1;
-
     public static final double SLOW = 0.05;
-    public static final double HIGH = 0.5; //0.5 //0.6 //0.75
+    public static final double VELOCITY = 50/2;
+
+    public static final double HIGH = 0.3; //0.5 //0.6 //0.75
     public static final double REVERSE_SLOW = -0.25;
     public static final double REVERSE_HIGH = -0.75;
 
     public static final int BEAM_ID = 4;
+
     public static final double INTAKE_ENCODER_STOP_VAL = 3;
+
+    public static final double kP = 0.5; // A position error of 2.5 rotations results in 12 V output
+    public static final double kI = 0; // no output for integrated error
+    public static final double kD = 0; // A velocity error of 1 rps results in 0.1 V output
+    public static final double kG = 0; 
+    public static final double kS = 0; 
+    public static final double kV = 0; 
+    public static final double kA = 0 ;
+
+    public static final double CRUISE_VELOCITY = 65; //80//50;
+    public static final double ACCELERATION = 80; //80 //300//150; //200 //100
+    public static final double JERK = 110; //120 //150 //600 //1000 //1600 <---how fast the acceleration is reached
+    public static final double FEED_FORWARD = 0;
+
+    public static final double ERROR_THRESHOLD = 0.5;
+
    }
 
   public static class Funnel {
@@ -204,9 +221,9 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 65; //80//50;
-    public static final double ACCELERATION = 60; //80 //300//150; //200 //100
-    public static final double JERK = 110; //120 //150 //600 //1000 //1600 <---how fast the acceleration is reached
+    public static final double CRUISE_VELOCITY = 25; //80//50;
+    public static final double ACCELERATION = 50; //80 //300//150; //200 //100
+    public static final double JERK = 75; //120 //150 //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
     public static final int SENSOR_ID = 0;
