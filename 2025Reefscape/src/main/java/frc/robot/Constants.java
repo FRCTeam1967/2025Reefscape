@@ -221,9 +221,9 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 25; //80//50;
-    public static final double ACCELERATION = 50; //80 //300//150; //200 //100
-    public static final double JERK = 75; //120 //150 //600 //1000 //1600 <---how fast the acceleration is reached
+    public static final double CRUISE_VELOCITY = 175; //80//50;
+    public static final double ACCELERATION = 250; //80 //300//150; //200 //100
+    public static final double JERK = 350; //120 //150 //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
     public static final int SENSOR_ID = 0;
