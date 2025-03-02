@@ -170,6 +170,9 @@ public final class Constants {
     public static final double LIMELIGHT_ANGLE_DEGREES = 0; //need to verify
     public static final double LIMELIGHT_HEIGHT_INCHES = 25.125; //need to verify
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
+    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.1556; //-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762
+    public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.1685; //0.1513 //0.2275-0.076 //0.2286, left, -.0658890
+    public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.4, 3))> 0 ? Math.pow(0.4, 3) : 0) * Swerve.SWERVE_MAX_SPEED;
   }
 
   public static class Auto {

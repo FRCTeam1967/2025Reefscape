@@ -20,6 +20,9 @@ public class ZAlign extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
   private SlewRateLimiter xLimiter, yLimiter;
+  private double zSpeed;
+  private boolean isInRange = false;
+  private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
 
   /** Creates a new ZAlign. */
@@ -27,17 +30,6 @@ public class ZAlign extends Command {
     this.drivetrain = drivetrain;
     this.vision = vision;
     addRequirements(drivetrain, vision);
-  }
-
-  /**
-   * Cube the input from the joystick for a smooth movement (exponential vs linear acceleration)
-   */
-  private double cleanAndScaleInput(double deadband, double input, SlewRateLimiter limiter, double speedScaling){
-    input = Math.pow(input, 3);
-    input = Math.abs(input)> deadband ? input : 0;
-    input *= speedScaling;
-
-    return input;
   }
 
   // Called when the command is initially scheduled.
@@ -48,48 +40,42 @@ public class ZAlign extends Command {
    */
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.0254);
+    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001); //test with 1 inch first
   }
 
 
   // Called every time the scheduler runs while the command is scheduled.
   /**
    * Moves the robot (left-right) by controlling chassis speeds until aligned <br></br>
-   * 1) Checks if the xOffset is in range within 5 degrees of the "center" <br></br>
+   * 1) Checks if the y? z? Offset is in range within 5 degrees of the "center" <br></br>
    * 2) If so, applies ChassisSpeeds object to the drivetrain (direction specificed based on where the robot currently is) <br></br>
    * 3) When the robot is within 5 degrees of the "center," apply 0 ChassisSpeeds (stop movement)
    */
   @Override
   public void execute() {
-    if (vision.getOffset() >= 3.0){
-      double xSpeed = cleanAndScaleInput(0.0, -0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
-      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
-      
-      drivetrain.setControl(request.withSpeeds(chassisSpeeds));
-
-    } else if (vision.getOffset() < 3.0 && vision.getOffset() >= -1.0) {
-      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
-      
-      drivetrain.setControl(request.withSpeeds(chassisSpeeds));
-
-    } else{
-      double xSpeed = cleanAndScaleInput(0.0, 0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
-      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, xSpeed, 0.0);
-      
-      drivetrain.setControl(request.withSpeeds(chassisSpeeds));
+    if (vision.getYOffset() >= 3.0){
+      zSpeed = Constants.Vision.ALIGNMENT_SPEED;
+      chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);
+    } else if (vision.getYOffset() < 3.0 && vision.getYOffset() >= -1.0) {
+      isInRange = true;
+    } else {
+      zSpeed = -Constants.Vision.ALIGNMENT_SPEED;
+      chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);
     }
+    drivetrain.setControl(request.withSpeeds(chassisSpeeds));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);   
-    RobotContainer.drivetrain.setControl(request.withSpeeds(chassisSpeeds));
+    drivetrain.setControl(request.withSpeeds(chassisSpeeds));
+    isInRange = false;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return vision.getVisionAbility();
+    return isInRange || vision.isVisionDisabled();
   }
 }

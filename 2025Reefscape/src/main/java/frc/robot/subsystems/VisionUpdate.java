@@ -18,33 +18,26 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionUpdate extends SubsystemBase {
-  private final String hostName;
   private final CommandSwerveDrivetrain drivetrain;
   private final LimelightTarget_Retro retro = new LimelightTarget_Retro();
   private final StructPublisher<Pose2d> limelightPublisher;
 
   /** Creates a new VisionUpdate. */
-  public VisionUpdate(CommandSwerveDrivetrain drivetrain, String hostName) {
+  public VisionUpdate(CommandSwerveDrivetrain drivetrain) {
     this.drivetrain = drivetrain;
-    this.hostName = hostName;
-
-    limelightPublisher = NetworkTableInstance.getDefault().getStructTopic("Limelight Pose", Pose2d.struct).publish();
+    limelightPublisher = NetworkTableInstance.getDefault().getTable("limelight-santos").getStructTopic("Limelight Pose", Pose2d.struct).publish();
   }
 
   @Override
   public void periodic() {
     //This method will be called once per scheduler run
-    PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(hostName);
+    PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-santos");    
 
     if (poseEstimator.tagCount >= 2) {
       RobotContainer.drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
-      RobotContainer.drivetrain.addVisionMeasurement(poseEstimator.pose, poseEstimator.timestampSeconds);
-    } else {
-      RobotContainer.drivetrain.addVisionMeasurement(poseEstimator.pose, poseEstimator.timestampSeconds);
     }
 
-    //System.out.println(RobotContainer.drivetrain.getState().Pose);
-    //System.out.println(retro.getRobotPose_FieldSpace());
+    RobotContainer.drivetrain.addVisionMeasurement(poseEstimator.pose, poseEstimator.timestampSeconds);
 
     limelightPublisher.set(poseEstimator.pose);
   }
