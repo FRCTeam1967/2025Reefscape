@@ -143,7 +143,7 @@ public final class Constants {
 
     public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 40.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
-    public static final double L4 = 26.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //35 works //33 works too
+    public static final double L4 = 28 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
@@ -215,14 +215,14 @@ public final class Constants {
     public static final double PROCESSOR_HEIGHT = 5;
     public static final double CORAL_L2_HEIGHT = 6.0; //5.25 //17
     public static final double CORAL_L3_HEIGHT = 14.25; //21.75; //31.75
-    public static final double CORAL_L4_HEIGHT = 26.25; //26.0
+    public static final double CORAL_L4_HEIGHT = 26; //26.0
 
     public static final double ALGAE_L2_HEIGHT = 15;
     public static final double ALGAE_L3_HEIGHT = 24;
     public static final double VISION_HEIGHT = 20.0;
 
 
-    public static final double CORAL_STATION = 14;
+    public static final double CORAL_STATION = 13.5;
 
 
     //public static final double EXTEND_ROTATIONS = INCHES*(GEAR_RATIO/SPROCKET_PITCH_CIRCUMFERENCE);
