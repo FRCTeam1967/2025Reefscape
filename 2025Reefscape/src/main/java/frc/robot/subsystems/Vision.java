@@ -11,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 import frc.robot.commands.AlignBranch;
@@ -24,7 +25,7 @@ public class Vision extends SubsystemBase {
   private boolean disableVision = false;
   // private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
 
-  private NetworkTable limelightTable, limelightOdometryTable;
+  public NetworkTable limelightTable, limelightOdometryTable;
   public LimelightTarget_Fiducial limelightTargetFiducial = new LimelightTarget_Fiducial();
 
   public Pose3d targetPose = new Pose3d();
@@ -105,6 +106,8 @@ public class Vision extends SubsystemBase {
     tab.addDouble("LL zOffset", () -> limelightTable.getEntry("tz")
     .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
     .withPosition(7, 2).withSize(1, 1);
+
+    tab.addDouble("alignment z fiducial", () -> Constants.Vision.LIMELIGHT_ALIGN_Z_OFFSET).withWidget(BuiltInWidgets.kTextView);
   }
 
   /**
@@ -125,7 +128,7 @@ public class Vision extends SubsystemBase {
     return vAlignmentCheck;
   }
 
-  public double getZOffsetS() {
+  public double getZOffsets() {
     return zAlignmentOffset;
   }
 

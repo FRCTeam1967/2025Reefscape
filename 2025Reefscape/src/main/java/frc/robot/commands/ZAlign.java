@@ -19,7 +19,7 @@ import frc.robot.subsystems.Vision;
 public class ZAlign extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
-  private SlewRateLimiter xLimiter, yLimiter;
+  private double alignmentOffset = 0.0;
   private double zSpeed;
   private boolean isInRange = false;
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
@@ -40,7 +40,7 @@ public class ZAlign extends Command {
    */
   @Override
   public void initialize() {
-    LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001); //test with 1 inch first
+    vision.setInRangeFalse();
   }
 
 
@@ -53,16 +53,25 @@ public class ZAlign extends Command {
    */
   @Override
   public void execute() {
-    if (vision.getYOffset() >= 3.0){
-      zSpeed = Constants.Vision.ALIGNMENT_SPEED;
-      chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);
-    } else if (vision.getYOffset() < 3.0 && vision.getYOffset() >= -1.0) {
-      isInRange = true;
+    if (vision.getAlignmentCheck() == 0) {
+      ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);   
+      drivetrain.setControl(request.withSpeeds(chassisSpeeds));
     } else {
-      zSpeed = -Constants.Vision.ALIGNMENT_SPEED;
-      chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);
+      alignmentOffset = vision.getZOffsets();
+      if (alignmentOffset >= 3.0){
+        zSpeed = Constants.Vision.ALIGNMENT_SPEED;
+        chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);
+        drivetrain.setControl(request.withSpeeds(chassisSpeeds));
+        vision.setInRangeFalse();
+      } else if (alignmentOffset < 3.0 && alignmentOffset >= 0.0) {
+        vision.setInRangeTrue();
+      } else {
+        zSpeed = -Constants.Vision.ALIGNMENT_SPEED;
+        chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);
+        drivetrain.setControl(request.withSpeeds(chassisSpeeds));
+        vision.setInRangeFalse();
+      }
     }
-    drivetrain.setControl(request.withSpeeds(chassisSpeeds));
   }
 
   // Called once the command ends or is interrupted.
@@ -70,12 +79,11 @@ public class ZAlign extends Command {
   public void end(boolean interrupted) {
     ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);   
     drivetrain.setControl(request.withSpeeds(chassisSpeeds));
-    isInRange = false;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isInRange || vision.isVisionDisabled();
+    return vision.getInRange() || vision.isVisionDisabled();
   }
 }
