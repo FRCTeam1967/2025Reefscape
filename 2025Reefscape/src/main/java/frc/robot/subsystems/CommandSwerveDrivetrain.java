@@ -15,9 +15,13 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -34,6 +38,7 @@ import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 
 
@@ -48,7 +53,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     
     //vision
     public static double kMaxSpeed = 12.0;
-    public static double kMaxAngularSpeed = 2 * Math.PI;
+    public static double kMaxAngularSpeed = 2 * Math.PI;    
+    private final StructPublisher<Pose2d> limelightPublisher = NetworkTableInstance.getDefault().getTable("limelight-santos").getStructTopic("Limelight Pose", Pose2d.struct).publish();
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -271,6 +277,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      */
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.dynamic(direction);
+    }
+
+    //TODO: TEST NEW UPDATE POSE ESTIMATOR CODE, THIS IS CALLED IN AUTO PERIODIC
+    public void updateOdometryPoseEstimator(){
+        LimelightHelpers.PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-santos");    
+        
+        if (poseEstimator.tagCount >= 2) {
+        RobotContainer.drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+        }
+
+        RobotContainer.drivetrain.addVisionMeasurement(poseEstimator.pose, poseEstimator.timestampSeconds);
+
+        //limelightPublisher.set(poseEstimator.pose); << this is just for putting the pose on NW tables, you can uncomment but there is no code to retrieve it yet (you may be able to open it through simluation)
     }
 
     //************************ new limelight method for drive */

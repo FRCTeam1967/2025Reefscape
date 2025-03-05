@@ -76,8 +76,6 @@ public class RobotContainer {
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
-    private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain, "limelight-santos");
-
     /* Path follower */
     public static SendableChooser<Command> autoChooserLOL;
 
@@ -128,23 +126,8 @@ public class RobotContainer {
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         NamedCommands.registerCommand("Align and Score Coral Right L4", new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignBranch(drivetrain, vision)),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
-            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
-            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
-            new ParallelCommandGroup(
-                new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2)));//maybe change to 2.5
-
-        NamedCommands.registerCommand("Align and Score Coral Right L4", new SequentialCommandGroup(
             new SequentialCommandGroup( // center align
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.0)),
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, Constants.Vision.LIMELIGHT_ALIGN_CENTER_OFFSET)), //TODO: fiducial would be distance from center robot - alignment limelight
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
                 new AlignBranch(drivetrain, vision)),
             new SequentialCommandGroup( // z align
@@ -514,7 +497,7 @@ public class RobotContainer {
             fieldRelative = false;
         }
 
-        drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative, 1);
+    drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative, 1);
 
     }
 }

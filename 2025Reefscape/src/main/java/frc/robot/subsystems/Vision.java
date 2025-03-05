@@ -50,16 +50,16 @@ public class Vision extends SubsystemBase {
   /** Update x offset value */
   public void updateAlignmentValues() {
     xAlignmentOffset = limelightTable.getEntry("tx").getDouble(0.0);
-    yAlignmentOffset = limelightTable.getEntry("ty").getDouble(0.0);
-    zAlignmentOffset = limelightTable.getEntry("tz").getDouble(0.0);
+    yAlignmentOffset = limelightTable.getEntry("tz").getDouble(0.0);
+    zAlignmentOffset = limelightTable.getEntry("ty").getDouble(0.0);
     vAlignmentCheck = limelightTable.getEntry("tv").getDouble(0.0);
   }
 
   /** Update x offset value */
   public void updateOdometryValues() {
     xOdometryOffset = limelightOdometryTable.getEntry("tx").getDouble(0.0);
-    yOdometryOffset = limelightOdometryTable.getEntry("ty").getDouble(0.0);
-    zOdometryOffset = limelightOdometryTable.getEntry("tz").getDouble(0.0);
+    yOdometryOffset = limelightOdometryTable.getEntry("tz").getDouble(0.0);
+    zOdometryOffset = limelightOdometryTable.getEntry("ty").getDouble(0.0);
   }
 
   /**
