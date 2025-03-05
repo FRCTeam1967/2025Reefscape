@@ -197,6 +197,9 @@ public final class Constants {
     public static final double LIMELIGHT_ANGLE_DEGREES = 0; //need to verify
     public static final double LIMELIGHT_HEIGHT_INCHES = 25.125; //need to verify
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
+    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.1256; //-0.156 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762
+    public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.1885; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890
+    public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.425, 3))> 0 ? Math.pow(0.425, 3) : 0) * Swerve.SWERVE_MAX_SPEED;
   }
 
   public static class Auto {
@@ -221,9 +224,9 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 175; //80//50;
-    public static final double ACCELERATION = 250; //80 //300//150; //200 //100
-    public static final double JERK = 350; //120 //150 //600 //1000 //1600 <---how fast the acceleration is reached
+    public static final double CRUISE_VELOCITY = 175;//175; //80//50;
+    public static final double ACCELERATION = 250;//250; //80 //300//150; //200 //100
+    public static final double JERK = 350;//350; //120 //150 //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
     public static final int SENSOR_ID = 0;
@@ -241,12 +244,12 @@ public final class Constants {
     public static final double CORAL_L3_HEIGHT = 14.25; //21.75; //31.75
     public static final double CORAL_L4_HEIGHT = 26.0; //26.0
 
-    public static final double ALGAE_L2_HEIGHT = 15;
+    public static final double ALGAE_L2_HEIGHT = 16.5;
     public static final double ALGAE_L3_HEIGHT = 24;
     public static final double VISION_HEIGHT = 20.0;
 
 
-    public static final double CORAL_STATION = 0.1;
+    public static final double CORAL_STATION = 0.3; //0.1
 
 
     //public static final double EXTEND_ROTATIONS = INCHES*(GEAR_RATIO/SPROCKET_PITCH_CIRCUMFERENCE);
@@ -303,7 +306,7 @@ public final class Constants {
     public static final double FEED_FORWARD = 0.0;
 
     public static final double GROUND_INTAKE_HEIGHT = 80 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
-    public static final double ALGAE_DOWN = 90 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double ALGAE_DOWN = 80 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double PROCESSOR_HEIGHT = 70 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 8.4 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 

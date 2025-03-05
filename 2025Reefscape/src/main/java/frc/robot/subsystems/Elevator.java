@@ -92,7 +92,8 @@ public class Elevator extends SubsystemBase {
   * Confirms if the elevator is at the target position
   */
   public boolean atHeight(){
-    double currentPosition = (leftMotor.getRotorPosition().getValueAsDouble() + rightMotor.getRotorPosition().getValueAsDouble())/2;
+    //double currentPosition = (leftMotor.getRotorPosition().getValueAsDouble() + rightMotor.getRotorPosition().getValueAsDouble())/2;
+    double currentPosition = leftMotor.getRotorPosition().getValueAsDouble();
     double targetPosition = rotations;
     double error = Math.abs(targetPosition - currentPosition);
     return (error < Constants.Elevator.ERROR_THRESHOLD);

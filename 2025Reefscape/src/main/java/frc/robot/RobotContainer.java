@@ -12,7 +12,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.Xbox;
@@ -53,11 +53,10 @@ public class RobotContainer {
     public final Elevator elevator = new Elevator();
     public final AlgaePivot algaeMechanism = new AlgaePivot();
     public final AlgaeIntake intake = new AlgaeIntake();
-    //public final LEDSubsystem led = new LEDSubsystem();
+    public final LEDSubsystem led = new LEDSubsystem();
 
     public final static CoralPivot coralPivot = new CoralPivot();
     public final static CoralIntake coralIntake = new CoralIntake();
-    public final static Funnel funnel = new Funnel();
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -70,14 +69,14 @@ public class RobotContainer {
 
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    public static final Vision vision = new Vision("limelight"); 
-    public static final Vision odometryVision = new Vision("limelight-santos");
+    public static final Vision vision = new Vision(); 
+    public static final Vision odometryVision = new Vision();
 
     private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
-    //private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain, "limelight-santos");
+    private final VisionUpdate visionUpdate = new VisionUpdate(drivetrain, "limelight-santos");
 
     /* Path follower */
     public static SendableChooser<Command> autoChooserLOL;
@@ -87,16 +86,6 @@ public class RobotContainer {
     public ShuffleboardTab limelightTab = Shuffleboard.getTab("Limelight");
 
     public RobotContainer() {
-        NamedCommands.registerCommand("Align and Score Coral Right L2", new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
-            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
-            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
-
         NamedCommands.registerCommand("Remove Algae L2", new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.ALGAE_L2_HEIGHT),
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
@@ -118,8 +107,9 @@ public class RobotContainer {
         
         NamedCommands.registerCommand("Align and Score Coral Right L2", new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -128,8 +118,9 @@ public class RobotContainer {
         
         NamedCommands.registerCommand("Align and Score Coral Right L3",new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -138,8 +129,9 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Align and Score Coral Right L4", new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision)).withTimeout(3),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
@@ -152,8 +144,9 @@ public class RobotContainer {
         
         NamedCommands.registerCommand("Align and Score Coral Left L2", new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -169,8 +162,10 @@ public class RobotContainer {
         
         NamedCommands.registerCommand("Align and Score Coral Left L4", new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision)).withTimeout(3),
+                new ZAlign(drivetrain, vision).withTimeout(3),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
@@ -187,24 +182,12 @@ public class RobotContainer {
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(2)); //maybe change to 2.5
         
-        
-       
+    
         vision.configDashboard(matchTab);
-        odometryVision.odometryConfigDashboard(matchTab);
+        vision.configLLTab(limelightTab);
         
         autoChooserLOL = AutoBuilder.buildAutoChooser();
         fieldTab.add("Field", CommandSwerveDrivetrain.m_field).withWidget(BuiltInWidgets.kField).withSize(8, 4);
-        
-        HttpCamera httpCamera1 = new HttpCamera("limelight", "http://10.19.67.12:5801/"); //http://10.19.67.202:5801/
-        CameraServer.addCamera(httpCamera1);
-
-        HttpCamera httpCamera2 = new HttpCamera("limelight-santos", "http://10.19.67.11:5801/"); //http://10.19.67.11:5801/
-        CameraServer.addCamera(httpCamera2);
-
-        limelightTab.add(httpCamera1).withWidget(BuiltInWidgets.kCameraStream).withPosition(0, 0)
-        .withSize(3, 2);
-        limelightTab.add(httpCamera2).withWidget(BuiltInWidgets.kCameraStream).withPosition(3, 0)
-        .withSize(3, 2);
 
         //limelightTab.addString("limelight stream", () -> "http://10.19.67.12:5801/")
 
@@ -263,13 +246,17 @@ public class RobotContainer {
         // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
+        joystick.x().onTrue(new SequentialCommandGroup(
+            new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
+            new ZAlign(drivetrain, vision)
+        ));
+
         //DEFAULT COMMANDS
         algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.Algae.SAFE));
         elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
         coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
-        intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.08)); //-0.15
-        //led.setDefaultCommand(new BlackLED(led));
-        //coralIntake.setDefaultCommand(new RunCoralIntake(coralIntake, 0));
+        intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.03));
+        led.setDefaultCommand(new BlackLED(led));
 
         //RESET GYRO
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -301,12 +288,14 @@ public class RobotContainer {
 
         //DRIVER CONTROLLER VISION ALIGNMENT
         joystick.rightBumper().onTrue(new SequentialCommandGroup(
+            new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
             new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-            new AlignRightBranch(drivetrain, vision)));
+            new AlignBranch(drivetrain, vision)));
 
         joystick.leftBumper().onTrue(new SequentialCommandGroup(
+            new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
             new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-            new AlignLeftBranch(drivetrain, vision)));
+            new AlignBranch(drivetrain, vision)));
 
         //DISABLE VISION
         joystick.y().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
@@ -321,19 +310,6 @@ public class RobotContainer {
         ));
 
         //CORAL INTAKE
-        /* 
-        operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
-            new MoveElevator(elevator, Constants.Elevator.CORAL_STATION),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.CORAL_SCORING_ANGLE),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_STATION_INTAKE_ANGLE)).withTimeout(1),
-            new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST).withTimeout(3),
-            new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
-            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(0.07),
-            new RunScrollingRainbow(led).withTimeout(2),
-            new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.EXTRA_CORAL_SCORING_ANGLE), new RunAlgaeIntake(intake, -0.1))));
-        */
-
         operatorController.R2().whileTrue(new SequentialCommandGroup(
             //new ParallelRaceGroup(
                 //new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST),
@@ -366,33 +342,36 @@ public class RobotContainer {
         //RIGHT BRANCH L2
         operatorController.cross().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision).withTimeout(2)),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         //RIGHT BRANCH L3
         operatorController.square().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision).withTimeout(2)),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         //RIGHT BRANCH L4
         operatorController.triangle().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignRightBranch(drivetrain, vision).withTimeout(2)),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(0.5),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
             new ParallelCommandGroup(
@@ -403,33 +382,36 @@ public class RobotContainer {
         //LEFT BRANCH L2
         operatorController.cross().and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision).withTimeout(2)),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         //LEFT BRANCH L3
         operatorController.square().and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision).withTimeout(2)),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         //LEFT BRANCH L4
         operatorController.triangle().and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
-                new AlignLeftBranch(drivetrain, vision).withTimeout(2)),
+                new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(0.5),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
             new ParallelCommandGroup(
@@ -439,25 +421,25 @@ public class RobotContainer {
         
 
         //BARGE SCORING 
-        operatorController.circle().whileTrue(
-        new SequentialCommandGroup(
-            new ParallelCommandGroup(
-                new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2),
+        // operatorController.circle().whileTrue(
+        // new SequentialCommandGroup(
+        //     new ParallelCommandGroup(
+        //         new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
+        //         new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
+        //     ).withTimeout(2),
 
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE).withTimeout(2),
-                new RunAlgaeIntake(intake, Constants.Algae.BARGE_SCORING_SPEED).withTimeout(5)
-            )
-        )
-        );
+        //     new ParallelCommandGroup(
+        //         new MoveAlgaePivot(algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE).withTimeout(2),
+        //         new RunAlgaeIntake(intake, Constants.Algae.BARGE_SCORING_SPEED).withTimeout(5)
+        //     )
+        // )
+        // );
         
 
         //L1 CORAL SCORING   
-        // operatorController.b().whileTrue(new SequentialCommandGroup(
-        //     new RunCoralFastIntake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1),
-        //     new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1)));
+        operatorController.circle().whileTrue(new SequentialCommandGroup(
+            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1),
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1)));
     }
 
 

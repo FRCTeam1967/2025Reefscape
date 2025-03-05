@@ -61,13 +61,13 @@ public class ZAlign extends Command {
    */
   @Override
   public void execute() {
-    if (vision.getOffset() >= 3.0){
+    if (vision.getAlignmentOffset() >= 3.0){
       double xSpeed = cleanAndScaleInput(0.0, -0.45, xLimiter, Constants.Swerve.SWERVE_MAX_SPEED);
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
 
-    } else if (vision.getOffset() < 3.0 && vision.getOffset() >= -1.0) {
+    } else if (vision.getAlignmentOffset() < 3.0 && vision.getAlignmentOffset() >= -1.0) {
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);
       
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
@@ -90,6 +90,6 @@ public class ZAlign extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return vision.getVisionAbility();
+    return vision.isVisionDisabled();
   }
 }
