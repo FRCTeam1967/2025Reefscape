@@ -124,13 +124,13 @@ public class Elevator extends SubsystemBase {
 
   public void configDashboard(ShuffleboardTab tab) {
       tab.addNumber("Elev height in.",() -> getHeight()).withWidget(BuiltInWidgets.kTextView)
-      .withPosition(3, 1).withSize(1, 1);
+      .withPosition(2, 1).withSize(1, 1);
       tab.addNumber("Elev height revs", () -> (rightMotor.getRotorPosition()
       .getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2)
-      .withWidget(BuiltInWidgets.kTextView).withPosition(4, 1)
+      .withWidget(BuiltInWidgets.kTextView).withPosition(3, 1)
       .withSize(1, 1);
       tab.addBoolean("Elev Sensor Val", () -> !sensor.get())
-      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 1)
+      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(4, 1)
       .withSize(1, 1);
    }
   
