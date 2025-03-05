@@ -12,6 +12,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -46,7 +47,7 @@ public class RobotContainer {
     public boolean visionEnabled = true;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    private final CommandXboxController operatorController = new CommandXboxController(Xbox.OPERATOR_CONTROLLER_PORT);
+    private final CommandPS4Controller operatorController = new CommandPS4Controller(Xbox.OPERATOR_CONTROLLER_PORT);
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final Elevator elevator = new Elevator();
@@ -311,7 +312,7 @@ public class RobotContainer {
         joystick.y().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
         
         //SCORE PROCESSOR
-        operatorController.rightBumper().whileTrue(new SequentialCommandGroup(
+        operatorController.R1().whileTrue(new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT), 
                 new RunAlgaeIntake(intake, Constants.Algae.ALGAE_DEFAULT_SPEED))
@@ -333,7 +334,7 @@ public class RobotContainer {
             new ParallelCommandGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.EXTRA_CORAL_SCORING_ANGLE), new RunAlgaeIntake(intake, -0.1))));
         */
 
-        operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
+        operatorController.R2().whileTrue(new SequentialCommandGroup(
             //new ParallelRaceGroup(
                 //new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST),
                 new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY),//)
@@ -356,13 +357,13 @@ public class RobotContainer {
         ));
 
         //ALGAE GROUND INTAKE
-        operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
+        operatorController.L2().whileTrue(new SequentialCommandGroup(
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.GROUND_INTAKE_HEIGHT),
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
         ));
 
         //RIGHT BRANCH L2
-        operatorController.a().whileTrue(new SequentialCommandGroup(
+        operatorController.cross().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
                 new AlignRightBranch(drivetrain, vision).withTimeout(2)),
@@ -373,7 +374,7 @@ public class RobotContainer {
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         //RIGHT BRANCH L3
-        operatorController.x().whileTrue(new SequentialCommandGroup(
+        operatorController.square().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
                 new AlignRightBranch(drivetrain, vision).withTimeout(2)),
@@ -384,7 +385,7 @@ public class RobotContainer {
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         //RIGHT BRANCH L4
-        operatorController.y().whileTrue(new SequentialCommandGroup(
+        operatorController.triangle().whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
                 new AlignRightBranch(drivetrain, vision).withTimeout(2)),
@@ -399,7 +400,7 @@ public class RobotContainer {
             ).withTimeout(2))); //maybe change to 2.5
 
         //LEFT BRANCH L2
-        operatorController.a().and(operatorController.leftBumper()).whileTrue(new SequentialCommandGroup(
+        operatorController.cross().and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
                 new AlignLeftBranch(drivetrain, vision).withTimeout(2)),
@@ -410,7 +411,7 @@ public class RobotContainer {
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         //LEFT BRANCH L3
-        operatorController.x().and(operatorController.leftBumper()).whileTrue(new SequentialCommandGroup(
+        operatorController.square().and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
                 new AlignLeftBranch(drivetrain, vision).withTimeout(2)),
@@ -421,7 +422,7 @@ public class RobotContainer {
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         //LEFT BRANCH L4
-        operatorController.y().and(operatorController.leftBumper()).whileTrue(new SequentialCommandGroup(
+        operatorController.triangle().and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT),
                 new AlignLeftBranch(drivetrain, vision).withTimeout(2)),
@@ -437,7 +438,7 @@ public class RobotContainer {
         
 
         //BARGE SCORING 
-        operatorController.b().whileTrue(
+        operatorController.circle().whileTrue(
         new SequentialCommandGroup(
             new ParallelCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT),
