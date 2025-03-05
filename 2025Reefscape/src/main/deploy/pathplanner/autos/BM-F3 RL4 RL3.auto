@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BM-F3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align and Score Coral Right L4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F3-CS"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Coral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CS-F3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align and Score Coral Right L3"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "BM 2PC RL4 RL3",
+  "choreoAuto": true
+}
