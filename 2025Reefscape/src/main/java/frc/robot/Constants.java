@@ -246,7 +246,7 @@ public final class Constants {
     public static final double VISION_HEIGHT = 20.0;
 
 
-    public static final double CORAL_STATION = 14;
+    public static final double CORAL_STATION = 0.1;
 
 
     //public static final double EXTEND_ROTATIONS = INCHES*(GEAR_RATIO/SPROCKET_PITCH_CIRCUMFERENCE);

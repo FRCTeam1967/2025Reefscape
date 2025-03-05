@@ -267,7 +267,7 @@ public class RobotContainer {
         algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.Algae.SAFE));
         elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE));
         coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
-        intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.15));
+        intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.08)); //-0.15
         //led.setDefaultCommand(new BlackLED(led));
         //coralIntake.setDefaultCommand(new RunCoralIntake(coralIntake, 0));
 
@@ -337,6 +337,7 @@ public class RobotContainer {
         operatorController.R2().whileTrue(new SequentialCommandGroup(
             //new ParallelRaceGroup(
                 //new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST),
+                new MoveElevator(elevator, Constants.Elevator.CORAL_STATION),
                 new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY),//)
                 new WaitCommand(0.1),
             new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
