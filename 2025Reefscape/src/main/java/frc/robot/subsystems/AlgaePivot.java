@@ -101,6 +101,10 @@ public class AlgaePivot extends SubsystemBase {
          return Math.abs(((algaePivot.getRotorPosition().getValueAsDouble()/Constants.Algae.GEAR_RATIO)*360) - ((revsToMove/Constants.Algae.GEAR_RATIO)*360)) < 5.0;
    
       }
+
+   public void maintainPosition() {
+      moveTo(Constants.Algae.SAFE);
+   }
    
    public void configDashboard(ShuffleboardTab tab) {
       tab.addNumber("APivotRelPosDeg",() -> ((algaePivot.getRotorPosition()

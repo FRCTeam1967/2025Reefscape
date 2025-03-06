@@ -51,6 +51,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_robotContainer.elevator.setSafe();
+    m_robotContainer.coralPivot.maintainPosition();
+    m_robotContainer.algaeMechanism.maintainPosition();
     //m_robotContainer.algaeMechanism.setReltoAbs();
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
@@ -60,6 +62,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
     SignalLogger.start();
+
   }
 
   @Override

@@ -13,6 +13,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Center and Z Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Align and Score Coral Right L4"
           }
         },
@@ -32,6 +38,12 @@
           "type": "path",
           "data": {
             "pathName": "CS-F2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Center and Z Align"
           }
         },
         {

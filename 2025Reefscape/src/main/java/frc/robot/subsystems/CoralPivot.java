@@ -89,6 +89,10 @@ public class CoralPivot extends SubsystemBase {
       return Math.abs(((pivotMotor.getRotorPosition().getValueAsDouble()/Constants.CoralPivot.GEAR_RATIO)*360) - (revsToMove*360)) < 5.0;
    }
 
+   public void maintainPosition() {
+      moveTo(Constants.CoralPivot.SAFE);
+   }
+
    public void periodic() {
       checkLimit();
    }
