@@ -58,6 +58,8 @@ public class ZAlign extends Command {
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
     } else {
       alignmentOffset = vision.getZOffsets();
+      // MS: These offset values really ought to be in Constants so it's easier to tune them. Maybe even have them be on the dashboard and read so that
+      // tuning doesn't require redeploying
       if (alignmentOffset >= 3.0){
         zSpeed = Constants.Vision.ALIGNMENT_SPEED;
         chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);

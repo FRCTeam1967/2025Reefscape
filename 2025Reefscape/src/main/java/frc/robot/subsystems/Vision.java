@@ -33,8 +33,12 @@ public class Vision extends SubsystemBase {
 
   //Limelight Updating Values
   private double xAlignmentOffset, yAlignmentOffset, zAlignmentOffset, vAlignmentCheck;
-  private double xOdometryOffset, yOdometryOffset, zOdometryOffset;
+  private double xOdometryOffset, yOdometryOffset, zOdometryOffset; // MS: These are set but never used
 
+  // MS: It's a little weird that the commands are responsible for setting and getting this value, and the subsystem
+  // doesn't do anything with it. I probably would have had the commands either own the value (but then you lose the 
+  // dashboard entry) or have the commands tell the Vision system what the acceptable range (min, max) is, and have
+  // the Vision system compute whether it's in range or not, and what side of the range it was on.
   private boolean isInRange = false;
   
   /** Creates new Vision */
@@ -42,7 +46,7 @@ public class Vision extends SubsystemBase {
     limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
     limelightOdometryTable = NetworkTableInstance.getDefault().getTable("limelight-santos");
 
-    targetPose = limelightTargetFiducial.getTargetPose_RobotSpace();
+    targetPose = limelightTargetFiducial.getTargetPose_RobotSpace(); // MS: This is not used
     updateAlignmentValues();
     updateOdometryValues();
   }
@@ -50,7 +54,7 @@ public class Vision extends SubsystemBase {
   /** Update x offset value */
   public void updateAlignmentValues() {
     xAlignmentOffset = limelightTable.getEntry("tx").getDouble(0.0);
-    yAlignmentOffset = limelightTable.getEntry("tz").getDouble(0.0);
+    yAlignmentOffset = limelightTable.getEntry("tz").getDouble(0.0); // MS: AFAIK, this value doesn't exist in the Limelight
     zAlignmentOffset = limelightTable.getEntry("ty").getDouble(0.0);
     vAlignmentCheck = limelightTable.getEntry("tv").getDouble(0.0);
   }
@@ -58,7 +62,7 @@ public class Vision extends SubsystemBase {
   /** Update x offset value */
   public void updateOdometryValues() {
     xOdometryOffset = limelightOdometryTable.getEntry("tx").getDouble(0.0);
-    yOdometryOffset = limelightOdometryTable.getEntry("tz").getDouble(0.0);
+    yOdometryOffset = limelightOdometryTable.getEntry("tz").getDouble(0.0); // MS: AFAIK, this value doesn't exist in the Limelight
     zOdometryOffset = limelightOdometryTable.getEntry("ty").getDouble(0.0);
   }
 
@@ -81,6 +85,7 @@ public class Vision extends SubsystemBase {
   }
 
   public void configLLTab(ShuffleboardTab tab) {
+    // MS: These should really be constants
     HttpCamera httpCamera1 = new HttpCamera("limelight", "http://10.19.67.12:5801/"); //http://10.19.67.202:5801/
     CameraServer.addCamera(httpCamera1);
 
@@ -136,6 +141,8 @@ public class Vision extends SubsystemBase {
     return yAlignmentOffset;
   }
 
+  // MS: This isn't a great name since it implies it would disable it, not toggle it. setVisionEnabled(boolean enabled) or 
+  // if you really need a toggle, you could call it toggleVisionEnabled().
   public void disableVision(){
     disableVision = !disableVision;
   }
@@ -151,6 +158,7 @@ public class Vision extends SubsystemBase {
     return isInRange;
   }
 
+  // MDS: Why not setInRange(boolean inRange)? 
   public void setInRangeTrue() {
     isInRange = true;
   }

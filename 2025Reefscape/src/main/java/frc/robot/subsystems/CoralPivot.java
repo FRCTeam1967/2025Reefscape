@@ -86,6 +86,7 @@ public class CoralPivot extends SubsystemBase {
 
    /** checks if the position the motor is at is within error threshold of the end goal */
    public boolean isReached() {
+      // MS: We should move these tolerance values (5.0, here) to the Constants class so it's easier to tune them.
       return Math.abs(((pivotMotor.getRotorPosition().getValueAsDouble()/Constants.CoralPivot.GEAR_RATIO)*360) - (revsToMove*360)) < 5.0;
    }
 

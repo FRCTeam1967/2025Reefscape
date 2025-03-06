@@ -25,11 +25,15 @@ public class StageCoral extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.rotations = rotations;
+    // MS: Shouldn't this declare a requirement on the intake?
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // MS: This obviously makes it hard to tell whether it ran after it has run the first time. If that's important, you could have a static
+    // integer in the command, and increment it and publish it to the dashboard here. Have it start at zero, and then you can just make sure
+    // it increments every time you want to see if it ran.
     SmartDashboard.putString("did we run?", "yes!");
     initialPos = intake.getRotorPos();
     finalPos = initialPos + rotations;
