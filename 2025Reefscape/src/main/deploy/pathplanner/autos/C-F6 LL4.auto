@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RM-F5"
+            "pathName": "C-F6"
           }
         },
         {
@@ -20,6 +20,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "RM 1PC LL4",
+  "folder": "C 1PC LL4",
   "choreoAuto": true
 }

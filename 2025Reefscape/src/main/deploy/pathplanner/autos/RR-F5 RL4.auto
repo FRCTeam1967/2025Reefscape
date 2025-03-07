@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RM-F5"
+            "pathName": "RR-F5"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Align and Score Coral Left L4"
+            "name": "Align and Score Coral Right L4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "RM 1PC LL4",
+  "folder": "RR 1PC RL4",
   "choreoAuto": true
 }
