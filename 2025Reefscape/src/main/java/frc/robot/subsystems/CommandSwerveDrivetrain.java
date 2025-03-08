@@ -279,18 +279,17 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return m_sysIdRoutineToApply.dynamic(direction);
     }
 
-    //TODO: TEST NEW UPDATE POSE ESTIMATOR CODE, THIS IS CALLED IN AUTO PERIODIC
-    public void updateOdometryPoseEstimator(){
-        LimelightHelpers.PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-santos");    
+    // public void updateOdometryPoseEstimator(){
+    //     LimelightHelpers.PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-santos");    
         
-        if (poseEstimator.tagCount >= 2) {
-        RobotContainer.drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
-        }
+    //     if (poseEstimator.tagCount >= 2) {
+    //     RobotContainer.drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+    //     }
 
-        RobotContainer.drivetrain.addVisionMeasurement(poseEstimator.pose, poseEstimator.timestampSeconds);
+    //     RobotContainer.drivetrain.addVisionMeasurement(poseEstimator.pose, poseEstimator.timestampSeconds);
 
-        //limelightPublisher.set(poseEstimator.pose); << this is just for putting the pose on NW tables, you can uncomment but there is no code to retrieve it yet (you may be able to open it through simluation)
-    }
+    //     //limelightPublisher.set(poseEstimator.pose); << this is just for putting the pose on NW tables, you can uncomment but there is no code to retrieve it yet (you may be able to open it through simluation)
+    // }
 
     //************************ new limelight method for drive */
 

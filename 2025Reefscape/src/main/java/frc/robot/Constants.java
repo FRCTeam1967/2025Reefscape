@@ -194,7 +194,7 @@ public final class Constants {
     public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.1885; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890
     public static final double LIMELIGHT_ALIGN_Z_OFFSET = (0.3048 - (0.864)) / Math.tan(42.095 + RobotContainer.vision.getZOffsets()); // LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
-    public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.425, 3))> 0 ? Math.pow(0.425, 3) : 0) * Swerve.SWERVE_MAX_SPEED;
+    public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.5, 3))> 0 ? Math.pow(0.5, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.425
   }
 
   public static class Auto {

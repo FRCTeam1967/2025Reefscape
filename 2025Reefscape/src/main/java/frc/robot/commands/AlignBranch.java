@@ -59,7 +59,7 @@ public class AlignBranch extends Command {
           chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
           drivetrain.setControl(request.withSpeeds(chassisSpeeds));
           vision.setInRangeFalse();
-        } else if (alignmentOffset < 3.0 && alignmentOffset >= 0.0) {
+        } else if (alignmentOffset < 3.0 && alignmentOffset >= -1.0) { //0.0
           vision.setInRangeTrue();
         } else {
           xSpeed = Constants.Vision.ALIGNMENT_SPEED;
