@@ -159,7 +159,7 @@ public final class Constants {
     public static final double SLOW = 0.05;
     public static final double VELOCITY = 50/2;
 
-    public static final double HIGH = 0.3; //0.5 //0.6 //0.75
+    public static final double HIGH = 0.5; //0.5 //0.6 //0.75
     public static final double REVERSE_SLOW = -0.25;
     public static final double REVERSE_HIGH = -0.75;
 
