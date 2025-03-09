@@ -11,15 +11,10 @@
     "BM 2PC RL4 RL3",
     "BR 1PC LL4",
     "BR 1PC RL4",
-    "C 1PC LL4",
-    "C 1PC RL4",
-    "RL 1PC LL4",
-    "RL 1PC RL4",
-    "RM 1PC LL4",
-    "RM 1PC RL4",
     "RM 2PC RL4 RL3",
-    "RR 1PC LL4",
-    "RR 1PC RL4"
+    "RL 1PC LL4",
+    "RM 1PC LL4",
+    "RM 1PC RL4"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

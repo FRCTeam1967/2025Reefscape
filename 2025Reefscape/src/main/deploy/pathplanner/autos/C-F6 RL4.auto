@@ -13,6 +13,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Center and Z Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Align and Score Coral Right L4"
           }
         }
@@ -20,6 +26,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "C 1PC RL4",
+  "folder": null,
   "choreoAuto": true
 }
