@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C-F1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Center and Z Align"
+            "pathName": "RM-F3"
           }
         },
         {
@@ -26,6 +20,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "C 1PC LL4",
+  "folder": "RM 1PC LL4",
   "choreoAuto": true
 }

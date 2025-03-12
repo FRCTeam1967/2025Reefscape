@@ -143,10 +143,10 @@ public final class Constants {
 
     public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
-    public static final double L4 = 33.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
+    public static final double L4 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
-    public static final double SAFE = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 
@@ -157,9 +157,9 @@ public final class Constants {
     public static final int INTAKE_MOTOR_ID = 18;
 
     public static final double SLOW = 0.05;
-    public static final double VELOCITY = 50/2;
+    public static final double VELOCITY = 75/2;
 
-    public static final double HIGH = 0.7; //0.5
+    public static final double HIGH = 1.3; //0.5, .9
     public static final double REVERSE_SLOW = -0.25;
     public static final double REVERSE_HIGH = -0.75;
 
@@ -302,7 +302,7 @@ public final class Constants {
     public static final double ALGAE_DOWN = 80 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double PROCESSOR_HEIGHT = 70 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 6 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
-    public static final double SAFE_SAFE = 0.5 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE_SAFE = 0.0 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
     public static final double CORAL_SCORING_ANGLE = 165* Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double EXTRA_CORAL_SCORING_ANGLE = 168 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
