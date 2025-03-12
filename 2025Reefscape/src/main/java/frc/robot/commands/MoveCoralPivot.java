@@ -11,7 +11,7 @@ public class MoveCoralPivot extends Command {
    public MoveCoralPivot(CoralPivot pivot, double targetPosition ) {
       this.pivot = pivot;
       this.targetPosition = targetPosition;
-      addRequirements(this.pivot);
+      addRequirements(pivot);
    }
 
    public void initialize() {

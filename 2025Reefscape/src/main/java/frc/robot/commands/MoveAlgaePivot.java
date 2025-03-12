@@ -10,7 +10,7 @@ public class MoveAlgaePivot extends Command {
    public MoveAlgaePivot(AlgaePivot pivot, double targetPosition ) {
       this.pivot = pivot;
       this.targetPosition = targetPosition;
-      addRequirements(this.pivot);
+      addRequirements(pivot);
    }
 
    public void initialize() {

@@ -25,6 +25,7 @@ public class StageCoral extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.rotations = rotations;
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.

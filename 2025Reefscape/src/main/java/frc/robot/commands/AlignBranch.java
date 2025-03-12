@@ -28,7 +28,8 @@ public class AlignBranch extends Command {
     public AlignBranch(CommandSwerveDrivetrain drivetrain, Vision vision) {
       this.drivetrain = drivetrain;
       this.vision = vision;
-      addRequirements(drivetrain, vision);
+      addRequirements(drivetrain);
+      addRequirements(vision);
     }
   
     // Called when the command is initially scheduled. 

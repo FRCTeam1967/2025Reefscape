@@ -143,7 +143,7 @@ public final class Constants {
 
     public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
-    public static final double L4 = 34.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
+    public static final double L4 = 33.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
@@ -159,7 +159,7 @@ public final class Constants {
     public static final double SLOW = 0.05;
     public static final double VELOCITY = 50/2;
 
-    public static final double HIGH = 0.5; //0.5 //0.6 //0.75
+    public static final double HIGH = 0.7; //0.5
     public static final double REVERSE_SLOW = -0.25;
     public static final double REVERSE_HIGH = -0.75;
 
@@ -190,7 +190,7 @@ public final class Constants {
     public static final double LIMELIGHT_ANGLE_DEGREES = 0; //need to verify
     public static final double LIMELIGHT_HEIGHT_INCHES = 25.125; //need to verify
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
-    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762
+    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.1200; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762
     public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.1885; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890
     public static final double LIMELIGHT_ALIGN_Z_OFFSET = (0.3048 - (0.864)) / Math.tan(42.095 + RobotContainer.vision.getZOffsets()); // LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
@@ -277,9 +277,7 @@ public final class Constants {
    public static final double ERROR_THRESHOLD = 2;//0.5; 
     // public static final double EXTEND_HEIGHT = 1000; //need to check
   }
-
   public class Algae {
-
     //PIVOT CONSTANTS
     public static final int PIVOT_ID = 16;
 
@@ -304,6 +302,7 @@ public final class Constants {
     public static final double ALGAE_DOWN = 80 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double PROCESSOR_HEIGHT = 70 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 6 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double SAFE_SAFE = 0.5 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
     public static final double CORAL_SCORING_ANGLE = 165* Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double EXTRA_CORAL_SCORING_ANGLE = 168 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
@@ -331,8 +330,8 @@ public final class Constants {
 
     public static final double CURRENT_LIMIT = 35; //TODO: test later for correct value
 
-
   }
+
   public static final double ROBOT_PERIOD = 0;
   
 }

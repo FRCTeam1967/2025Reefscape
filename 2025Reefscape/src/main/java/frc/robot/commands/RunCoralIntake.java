@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.CoralIntake;
 
-
-
 public class RunCoralIntake extends Command {
    public final CoralIntake intake;
    private final double speed;
