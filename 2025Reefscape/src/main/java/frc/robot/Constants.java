@@ -143,7 +143,8 @@ public final class Constants {
 
     public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
-    public static final double L4 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
+    public static final double L4 = 40.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
+    public static final double LEFT_L4 = 47.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
@@ -190,7 +191,7 @@ public final class Constants {
     public static final double LIMELIGHT_ANGLE_DEGREES = 0; //need to verify
     public static final double LIMELIGHT_HEIGHT_INCHES = 25.125; //need to verify
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
-    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.13605; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
+    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.1175; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
     public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.1885; //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
     public static final double LIMELIGHT_ALIGN_Z_OFFSET = (0.3048 - (0.864)) / Math.tan(42.095 + RobotContainer.vision.getZOffsets()); // LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
@@ -240,8 +241,8 @@ public final class Constants {
     public static final double CORAL_L3_HEIGHT = 14.25; //21.75; //31.75
     public static final double CORAL_L4_HEIGHT = 26.5; //26.0
 
-    public static final double ALGAE_L2_HEIGHT = 16.5;
-    public static final double ALGAE_L3_HEIGHT = 24;
+    public static final double ALGAE_L2_HEIGHT = 13; //16.5
+    public static final double ALGAE_L3_HEIGHT = 20.5; //24
     public static final double VISION_HEIGHT = 20.0;
 
 
