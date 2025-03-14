@@ -143,8 +143,8 @@ public final class Constants {
 
     public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
-    public static final double L4 = 40.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
-    public static final double LEFT_L4 = 47.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
+    public static final double L4 = 50.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
+    public static final double LEFT_L4 = 50.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
@@ -241,8 +241,8 @@ public final class Constants {
     public static final double CORAL_L3_HEIGHT = 14.25; //21.75; //31.75
     public static final double CORAL_L4_HEIGHT = 26.5; //26.0
 
-    public static final double ALGAE_L2_HEIGHT = 13; //16.5
-    public static final double ALGAE_L3_HEIGHT = 20.5; //24
+    public static final double ALGAE_L2_HEIGHT = 14.5; //16.5
+    public static final double ALGAE_L3_HEIGHT = 22; //24
     public static final double VISION_HEIGHT = 20.0;
 
 
@@ -324,7 +324,7 @@ public final class Constants {
     public static final double ALGAE_OUTTAKE_SPEED = 0.5;
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
 
-    public static final double BARGE_SCORING_SPEED = 1.0;
+    public static final double BARGE_SCORING_SPEED = 12.0;
 
     //public static final double INTAKE_SAFE = 0.31666666666666665;
     //public static final double INTAKE_DOWN = 0.02777777777777778;

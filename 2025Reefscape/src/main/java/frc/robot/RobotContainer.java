@@ -135,16 +135,10 @@ public class RobotContainer {
             new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism)));
 
         NamedCommands.registerCommand("Align and Score Coral Right L4", new SequentialCommandGroup(
-            new SequentialCommandGroup( // center align
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.0)),
-                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
-                new AlignBranch(drivetrain, vision)),
-            new SequentialCommandGroup( // z align
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, Constants.Vision.LIMELIGHT_ALIGN_Z_OFFSET)),
-                new ZAlign(drivetrain, vision)),
-            new SequentialCommandGroup( // horizontal align
+            new SequentialCommandGroup(
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
+                new ZAlign(drivetrain, vision).withTimeout(3),
                 new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
@@ -153,9 +147,9 @@ public class RobotContainer {
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
             new ParallelCommandGroup(
                 new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2),
-            new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism)));//maybe change to 2.5
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE))
+                .withTimeout(2),
+                new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism)));
             
         
         NamedCommands.registerCommand("Align and Score Coral Left L2", new SequentialCommandGroup(
@@ -459,7 +453,6 @@ public class RobotContainer {
                 new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(2),
-
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE).withTimeout(2),
                 new RunAlgaeIntake(intake, Constants.Algae.BARGE_SCORING_SPEED).withTimeout(5)
