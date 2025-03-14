@@ -29,15 +29,19 @@ public class MoveElevator extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (inches == Constants.Elevator.CORAL_L4_HEIGHT){
-      algaeAngle = Constants.Algae.L4_CORAL_SCORING_ANGLE;
-    } else if (inches == Constants.Elevator.CORAL_L2_HEIGHT){
-      algaeAngle = Constants.Algae.L2L3_CORAL_SCORING_ANGLE;
-    } else if(inches == Constants.Elevator.CORAL_L3_HEIGHT) {
-      algaeAngle = Constants.Algae.L2L3_CORAL_SCORING_ANGLE;
-    } else {
-      algaeAngle = Constants.Algae.SAFE;
+    if (inches > Constants.Elevator.SAFE){
+      algaeAngle = Constants.Algae.UP_SAFE;
     }
+
+    // if (inches == Constants.Elevator.CORAL_L4_HEIGHT){
+    //   algaeAngle = Constants.Algae.L4_CORAL_SCORING_ANGLE;
+    // } else if (inches == Constants.Elevator.CORAL_L2_HEIGHT){
+    //   algaeAngle = Constants.Algae.L2L3_CORAL_SCORING_ANGLE;
+    // } else if(inches == Constants.Elevator.CORAL_L3_HEIGHT) {
+    //   algaeAngle = Constants.Algae.L2L3_CORAL_SCORING_ANGLE;
+    // } else {
+    //   algaeAngle = Constants.Algae.SAFE;
+    // }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -233,8 +233,9 @@ public final class Constants {
     public static final double MIDDLE = 12;
 
     public static final double SAFE = 0.3; //5
+    public static final double SPIN_HEIGHT = 5;
 
-    public static final double PROCESSOR_HEIGHT = 5;
+    public static final double PROCESSOR_HEIGHT = 0.3;
     public static final double CORAL_L2_HEIGHT = 6.0; //5.25 //17
     public static final double CORAL_L3_HEIGHT = 14.25; //21.75; //31.75
     public static final double CORAL_L4_HEIGHT = 26.5; //26.0
@@ -302,7 +303,7 @@ public final class Constants {
     public static final double ALGAE_DOWN = 80 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double PROCESSOR_HEIGHT = 70 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 6 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
-    public static final double SAFE_SAFE = 0.0 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double UP_SAFE = 0.3 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
     public static final double CORAL_SCORING_ANGLE = 165* Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double EXTRA_CORAL_SCORING_ANGLE = 168 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
