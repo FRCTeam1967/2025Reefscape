@@ -55,12 +55,12 @@ public class AlignBranch extends Command {
         drivetrain.setControl(request.withSpeeds(chassisSpeeds));
       } else {
         alignmentOffset = vision.getAlignmentOffset();
-        if (alignmentOffset >= 3.0){
+        if (alignmentOffset >= 1.0){ //3.0
           xSpeed = -Constants.Vision.ALIGNMENT_SPEED;
           chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
           drivetrain.setControl(request.withSpeeds(chassisSpeeds));
           vision.setInRangeFalse();
-        } else if (alignmentOffset < 3.0 && alignmentOffset >= -1.0) { //0.0
+        } else if (alignmentOffset < 1.0 && alignmentOffset >= -1.0) { //0.0 //3.0 and -1.0
           vision.setInRangeTrue();
         } else {
           xSpeed = Constants.Vision.ALIGNMENT_SPEED;
