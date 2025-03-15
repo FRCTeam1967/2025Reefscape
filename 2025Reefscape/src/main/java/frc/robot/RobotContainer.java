@@ -237,6 +237,7 @@ public class RobotContainer {
 
                     if (elevator.getHeight() >= 2){
                         currMaxSpeed = MaxSpeed/5;
+                        
                         currAngularRate = MaxAngularRate/5;
                     }else{
                         currMaxSpeed = MaxSpeed;

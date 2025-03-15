@@ -192,7 +192,7 @@ public final class Constants {
     public static final double LIMELIGHT_HEIGHT_INCHES = 25.125; //need to verify
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
     public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.1175; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
-    public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.1885; //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
+    public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.15875; //0.17145 //0.1524 //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
     public static final double LIMELIGHT_ALIGN_Z_OFFSET = (0.3048 - (0.864)) / Math.tan(42.095 + RobotContainer.vision.getZOffsets()); // LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
     public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.5, 3))> 0 ? Math.pow(0.5, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.425
@@ -220,8 +220,8 @@ public final class Constants {
     public static final int LEFT_MOTOR_IDX = 11;
     public static final int RIGHT_MOTOR_IDX = 10;
 
-    public static final double CRUISE_VELOCITY = 175;//175; //80//50;
-    public static final double ACCELERATION = 250;//250; //80 //300//150; //200 //100
+    public static final double CRUISE_VELOCITY = 160;//175; //80//50;
+    public static final double ACCELERATION = 240;//250; //80 //300//150; //200 //100
     public static final double JERK = 350;//350; //120 //150 //600 //1000 //1600 <---how fast the acceleration is reached
     public static final double FEED_FORWARD = 0;
 
@@ -237,9 +237,9 @@ public final class Constants {
     public static final double SPIN_HEIGHT = 5;
 
     public static final double PROCESSOR_HEIGHT = 0.3;
-    public static final double CORAL_L2_HEIGHT = 6.0; //5.25 //17
-    public static final double CORAL_L3_HEIGHT = 14.25; //21.75; //31.75
-    public static final double CORAL_L4_HEIGHT = 26.5; //26.0
+    public static final double CORAL_L2_HEIGHT = 5.5; //5.25 //17 // 6.0
+    public static final double CORAL_L3_HEIGHT = 13.75; //21.75; //31.75 // 14.25
+    public static final double CORAL_L4_HEIGHT = 26; //26.5
 
     public static final double ALGAE_L2_HEIGHT = 14.5; //16.5
     public static final double ALGAE_L3_HEIGHT = 22; //24
@@ -321,7 +321,7 @@ public final class Constants {
     public static final int ENCODER_ID = 14;
 
     public static final double ALGAE_INTAKE_SPEED = -0.7;
-    public static final double ALGAE_OUTTAKE_SPEED = 0.5;
+    public static final double ALGAE_OUTTAKE_SPEED = 0.425;
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
 
     public static final double BARGE_SCORING_SPEED = 12.0;
