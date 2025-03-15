@@ -197,7 +197,7 @@ public class RobotContainer {
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                 new AlignBranch(drivetrain, vision)),
             new SequentialCommandGroup( // z align
-                new ZAlign(drivetrain, vision).withTimeout(3))));
+                new ZAlign(drivetrain, vision).withTimeout(2))));
         
     
         vision.configDashboard(matchTab);
