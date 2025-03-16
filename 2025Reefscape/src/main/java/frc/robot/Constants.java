@@ -240,7 +240,6 @@ public final class Constants {
     public static final double CORAL_L2_HEIGHT = 5.5; //5.25 //17 // 6.0
     public static final double CORAL_L3_HEIGHT = 13.75; //21.75; //31.75 // 14.25
     public static final double CORAL_L4_HEIGHT = 26; //26.5
-    public static final double EXTRA_HEIGHT = 27;
 
     public static final double ALGAE_L2_HEIGHT = 14.5; //16.5
     public static final double ALGAE_L3_HEIGHT = 22; //24

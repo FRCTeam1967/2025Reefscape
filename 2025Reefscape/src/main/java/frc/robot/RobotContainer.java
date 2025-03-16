@@ -399,8 +399,8 @@ public class RobotContainer {
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
             new ParallelCommandGroup(
                 new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveElevator(elevator, Constants.Elevator.EXTRA_HEIGHT, algaeMechanism)).withTimeout(2),
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE).withTimeout(2)));
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
+            ).withTimeout(2))); //maybe change to 2.5
 
         //LEFT BRANCH L2
         operatorController.cross().and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
@@ -443,8 +443,8 @@ public class RobotContainer {
             new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
             new ParallelCommandGroup(
                 new RunCoralFastIntake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveElevator(elevator, Constants.Elevator.EXTRA_HEIGHT, algaeMechanism)).withTimeout(2),
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE).withTimeout(2)));
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
+            ).withTimeout(2)) ); //maybe change to 2.5
         
 
         //BARGE SCORING 
