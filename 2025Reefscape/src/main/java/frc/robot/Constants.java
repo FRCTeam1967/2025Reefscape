@@ -158,7 +158,7 @@ public final class Constants {
     public static final int INTAKE_MOTOR_ID = 18;
 
     public static final double SLOW = 0.05;
-    public static final double VELOCITY = 75/2;
+    public static final double VELOCITY = 120/2;
 
     public static final double HIGH = 1.3; //0.5, .9
     public static final double REVERSE_SLOW = -0.25;
@@ -193,7 +193,7 @@ public final class Constants {
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
     public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.1175; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
     public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.15875; //0.17145 //0.1524 //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
-    public static final double LIMELIGHT_ALIGN_Z_OFFSET = (0.3048 - (0.864)) / Math.tan(42.095 + RobotContainer.vision.getZOffsets()); // LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
+    public static final double LIMELIGHT_ALIGN_Z_OFFSET = 0.0; //LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
     public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.5, 3))> 0 ? Math.pow(0.5, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.425
   }
@@ -240,6 +240,7 @@ public final class Constants {
     public static final double CORAL_L2_HEIGHT = 5.5; //5.25 //17 // 6.0
     public static final double CORAL_L3_HEIGHT = 13.75; //21.75; //31.75 // 14.25
     public static final double CORAL_L4_HEIGHT = 26; //26.5
+    public static final double EXTRA_HEIGHT = 27;
 
     public static final double ALGAE_L2_HEIGHT = 14.5; //16.5
     public static final double ALGAE_L3_HEIGHT = 22; //24

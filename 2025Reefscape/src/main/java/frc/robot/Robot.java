@@ -7,6 +7,7 @@ package frc.robot;
 import com.ctre.phoenix6.SignalLogger;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -85,6 +86,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+   var rotationFlipped = m_robotContainer.drivetrain.getState().Pose.getRotation().plus(Rotation2d.k180deg);
+    m_robotContainer.drivetrain.resetRotation(rotationFlipped);
+
     SignalLogger.start();
     m_robotContainer.elevator.setSafe();
   }
