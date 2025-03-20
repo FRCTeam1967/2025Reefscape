@@ -18,14 +18,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class CoralIntake extends SubsystemBase {
-   private DigitalInput sensor;
+   private DigitalInput intakeBeamBreak;
+   private DigitalInput tunnelBeamBreak;
    private TalonFX intakeMotor;
 
    /** Initializes left motor, right motor, and beam break sensor IDs  */
    public CoralIntake() {
       //kraken motors
       intakeMotor = new TalonFX(Constants.CoralIntake.INTAKE_MOTOR_ID);
-      sensor = new DigitalInput(Constants.CoralIntake.BEAM_ID);
+      intakeBeamBreak = new DigitalInput(Constants.CoralIntake.INTAKE_BEAM_ID);
+      tunnelBeamBreak = new DigitalInput(Constants.CoralIntake.TUNNEL_BEAM_ID);
 
       var talonFXConfigs = new TalonFXConfiguration();
 
@@ -86,9 +88,14 @@ public class CoralIntake extends SubsystemBase {
       intakeMotor.stopMotor();
    }
 
-   /** Checks if the beam in the beam break sensor has been broken */
-   public boolean isBroken(){
-      return !(sensor.get());
+   /** Checks if the beams in the intake and tunnel beam break sensor have been broken */
+   public boolean bothBroken(){
+      return !(intakeBeamBreak.get()) && !(tunnelBeamBreak.get());
+   }
+   
+   /** Checks if the beams in the intake beam break sensor has been broken and that it can still detect the tunnel beam */
+   public boolean intakeBroken(){
+      return !(intakeBeamBreak.get()) && tunnelBeamBreak.get();
    }
 
    public double getRotorPos() {
@@ -102,14 +109,15 @@ public class CoralIntake extends SubsystemBase {
 
 
    public void periodic() {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-      SmartDashboard.putBoolean("Beambreak Sensor", isBroken());
+      SmartDashboard.putBoolean("Both Beambreak Sensors Broken?", bothBroken());
 
    }
    /**Adds value to shuffleboard
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.addBoolean("CBeamBreak?", ()-> !(sensor.get()))
+      tab.addBoolean("IntakeBeamBreak?", ()-> !(intakeBeamBreak.get()));
+      tab.addBoolean("TunnelBeamBreak?", ()-> !(tunnelBeamBreak.get()))
       .withWidget(BuiltInWidgets.kBooleanBox).withPosition(6, 0)
       .withSize(1, 1);
       tab.addDouble("Intake Rel Pos",()->(intakeMotor.getRotorPosition().getValueAsDouble()));

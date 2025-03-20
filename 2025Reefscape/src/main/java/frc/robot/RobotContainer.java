@@ -335,7 +335,8 @@ public class RobotContainer {
         operatorController.R2().whileTrue(new SequentialCommandGroup(
             new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY),
             new WaitCommand(0.1),
-            new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
+            //new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
+            new RunCoralFastIntake(coralIntake, Constants.CoralIntake.VELOCITY)
         ));
         
         //ALGAE L2 REMOVAL
