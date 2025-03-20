@@ -164,8 +164,8 @@ public final class Constants {
     public static final double REVERSE_SLOW = -0.25;
     public static final double REVERSE_HIGH = -0.75;
 
-    public static final int BEAM1_ID = 4;
-    public static final int BEAM1_ID = 9;
+    public static final int INTAKE_BEAM_ID = 4;
+    public static final int TUNNEL_BEAM_ID = 9;
 
     public static final double INTAKE_ENCODER_STOP_VAL = 3;
 
