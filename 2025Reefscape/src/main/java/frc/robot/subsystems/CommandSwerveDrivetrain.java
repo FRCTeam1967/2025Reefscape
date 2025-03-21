@@ -278,18 +278,27 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.dynamic(direction);
     }
+    
+    public void updateOdometryPoseEstimator(){
+        // Tell Limelight what our current orientation is
+        LimelightHelpers.SetRobotOrientation("limelight-santos", drivetrain.getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
+        boolean doRejectUpdate = false;
 
-    // public void updateOdometryPoseEstimator(){
-    //     LimelightHelpers.PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-santos");    
-        
-    //     if (poseEstimator.tagCount >= 2) {
-    //     RobotContainer.drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
-    //     }
+        // If we don't see any tags, the pose can't be good
+        if(mt2.tagCount == 0) {
+            doRejectUpdate = true;
+        }
 
-    //     RobotContainer.drivetrain.addVisionMeasurement(poseEstimator.pose, poseEstimator.timestampSeconds);
-
-    //     //limelightPublisher.set(poseEstimator.pose); << this is just for putting the pose on NW tables, you can uncomment but there is no code to retrieve it yet (you may be able to open it through simluation)
-    // }
+        if(!doRejectUpdate) {
+            drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+            drivetrain.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+            limelightPublisher.set(mt2.pose);
+            updatePublisher.set(++odometryUpdates);
+        } else {
+            discardPublisher.set(++odometryDiscards);
+        }
+    }
 
     //************************ new limelight method for drive */
 

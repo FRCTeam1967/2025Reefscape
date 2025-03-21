@@ -68,9 +68,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    //m_robotContainer.drivetrain.updateOdometryPoseEstimator();
-    //PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");    
-    //RobotContainer.drivetrain.addVisionMeasurement(poseEstimator.pose, poseEstimator.timestampSeconds);
+    m_robotContainer.drivetrain.updateOdometryPoseEstimator();
   }
 
   @Override
