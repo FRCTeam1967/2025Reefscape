@@ -467,8 +467,11 @@ public class RobotContainer {
         operatorController.circle().whileTrue(new SequentialCommandGroup(
             new RunCoralSecondIntake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1),
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1)));
-    }
 
+        //BARGE SCORING
+        //operatorController.circle().whileTrue(new BargeScoring(algaeMechanism, elevator, intake));
+    } 
+    
 
     public Command getAutonomousCommand() {
         return autoChooserLOL.getSelected();

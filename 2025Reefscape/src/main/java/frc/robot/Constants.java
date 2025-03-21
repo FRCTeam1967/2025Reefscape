@@ -241,11 +241,12 @@ public final class Constants {
     public static final double CORAL_L2_HEIGHT = 5.5; //5.25 //17 // 6.0
     public static final double CORAL_L3_HEIGHT = 13.75; //21.75; //31.75 // 14.25
     public static final double CORAL_L4_HEIGHT = 26; //26.5
-    public static final double EXTRA_HEIGHT = 27;
+    public static final double MAX_HEIGHT = 27;
 
     public static final double ALGAE_L2_HEIGHT = 14.5; //16.5
     public static final double ALGAE_L3_HEIGHT = 22; //24
     public static final double VISION_HEIGHT = 20.0;
+    public static final double BARGE_SCORING_HEIGHT = 20; //TODO test/change value
 
 
     public static final double CORAL_STATION = 0.3; //0.1
@@ -311,7 +312,7 @@ public final class Constants {
     public static final double CORAL_SCORING_ANGLE = 165* Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double EXTRA_CORAL_SCORING_ANGLE = 168 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
-    public static final double BARGE_SCORING_ANGLE = 30 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double BARGE_SCORING_ANGLE = 30 * Constants.Algae.DEGREES_TO_REVOLUTIONS; //TODO test/change value
 
     public static final double L2L3_CORAL_SCORING_ANGLE = 11 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double L4_CORAL_SCORING_ANGLE = 10 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
@@ -326,7 +327,7 @@ public final class Constants {
     public static final double ALGAE_OUTTAKE_SPEED = 0.425;
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
 
-    public static final double BARGE_SCORING_SPEED = 12.0;
+    public static final double BARGE_SCORING_SPEED = 12.0; 
 
     //public static final double INTAKE_SAFE = 0.31666666666666665;
     //public static final double INTAKE_DOWN = 0.02777777777777778;
