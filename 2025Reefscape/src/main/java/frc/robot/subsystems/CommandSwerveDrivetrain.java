@@ -281,7 +281,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     
     public void updateOdometryPoseEstimator(){
         // Tell Limelight what our current orientation is
-        LimelightHelpers.SetRobotOrientation("limelight-santos", drivetrain.getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.SetRobotOrientation("limelight-santos", getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
         boolean doRejectUpdate = false;
 
@@ -291,12 +291,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         if(!doRejectUpdate) {
-            drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-            drivetrain.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+            setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+            addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
             limelightPublisher.set(mt2.pose);
-            updatePublisher.set(++odometryUpdates);
-        } else {
-            discardPublisher.set(++odometryDiscards);
         }
     }
 
