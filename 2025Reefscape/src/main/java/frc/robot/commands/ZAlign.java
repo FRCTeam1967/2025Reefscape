@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -53,14 +54,23 @@ public class ZAlign extends Command {
    */
   @Override
   public void execute() {
+    // It's poor practice to check the same value more than once because it could change between checks. But I'm trying to
+    // minimize code changes.
+    boolean canSeeTag = vision.getAlignmentCheck() != 0.0; // Also poor that this is a double, but that's what Limelight does...
+    DogLog.log("ZAlign/seesTag", canSeeTag);
+
+    // This should be refactored. Have the branches set chassis speeds, and then set the control at the end.
     if (vision.getAlignmentCheck() == 0) {
       ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);   
+      DogLog.log("ZAlign/appliedChassisSpeeds", chassisSpeeds);
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
     } else {
       alignmentOffset = vision.getZOffsets();
+      DogLog.log("ZAlign/offset", alignmentOffset);
       if (alignmentOffset >= 3.0){
         zSpeed = Constants.Vision.ALIGNMENT_SPEED;
         chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);
+        DogLog.log("ZAlign/appliedChassisSpeeds", chassisSpeeds);
         drivetrain.setControl(request.withSpeeds(chassisSpeeds));
         vision.setInRangeFalse();
       } else if (alignmentOffset < 3.0 && alignmentOffset >= 0.0) {
@@ -68,6 +78,7 @@ public class ZAlign extends Command {
       } else {
         zSpeed = -Constants.Vision.ALIGNMENT_SPEED;
         chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);
+        DogLog.log("ZAlign/appliedChassisSpeeds", chassisSpeeds);
         drivetrain.setControl(request.withSpeeds(chassisSpeeds));
         vision.setInRangeFalse();
       }
@@ -78,6 +89,7 @@ public class ZAlign extends Command {
   @Override
   public void end(boolean interrupted) {
     ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);   
+    DogLog.log("ZAlign/appliedChassisSpeeds", chassisSpeeds);
     drivetrain.setControl(request.withSpeeds(chassisSpeeds));
   }
 
