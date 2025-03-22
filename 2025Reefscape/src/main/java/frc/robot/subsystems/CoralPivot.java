@@ -90,7 +90,7 @@ public class CoralPivot extends SubsystemBase {
    }
 
    public void maintainPosition() {
-      moveTo(Constants.CoralPivot.SAFE);
+      moveTo(Constants.CoralPivot.CORAL_INTAKE);
    }
 
    public void periodic() {

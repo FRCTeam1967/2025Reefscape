@@ -148,6 +148,7 @@ public final class Constants {
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+    public static final double CORAL_INTAKE = -6.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 
@@ -158,7 +159,7 @@ public final class Constants {
     public static final int INTAKE_MOTOR_ID = 18;
 
     public static final double SLOW = 0.05;
-    public static final double VELOCITY = 120/2;
+    public static final double VELOCITY = 50;
 
     public static final double HIGH = 1.3; //0.5, .9
     public static final double REVERSE_SLOW = -0.25;

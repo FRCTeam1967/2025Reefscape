@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class RunCoralSecondIntake extends Command {
+public class RunCoralOuttake extends Command {
 
   private final CoralIntake intake;
   private final double speed;
@@ -24,7 +24,7 @@ public class RunCoralSecondIntake extends Command {
    * @param - intake
    * @param - speed
    */
-  public RunCoralSecondIntake(CoralIntake intake, double speed) {
+  public RunCoralOuttake(CoralIntake intake, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.speed = speed;
@@ -54,6 +54,7 @@ public class RunCoralSecondIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intake.intakeBroken(); 
+    //return intake.intakeBroken(); 
+    return false;
   }
 }

@@ -48,6 +48,6 @@ public class RunCoralIntake extends Command {
      }
 /** checks if beam in beam break sensor has been broken*/
    public boolean isFinished() {
-      return intake.bothBroken();
+      return intake.intakeBroken();
    }
 }
