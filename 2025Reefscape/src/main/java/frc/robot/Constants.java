@@ -301,6 +301,19 @@ public final class Constants {
     public static final double kV = 0.12;
     public static final double kA = 0.01;
 
+    public static final double INTAKE_kS = 0.0;
+    public static final double INTAKE_kV = 0.0;
+    public static final double INTAKE_kA = 0.0;
+    public static final double INTAKE_kP = 0.5;
+    public static final double INTAKE_kI = 0.0;
+    public static final double INTAKE_kD = 0.0;
+
+    public static final double INTAKE_CRUISE_VELOCITY = 100;
+    public static final double INTAKE_ACCELERATION = 200;
+    public static final double INTAKE_JERK = 300;
+
+    public static final double ALGAE_BARGE_OUTTAKE = 100;
+
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 

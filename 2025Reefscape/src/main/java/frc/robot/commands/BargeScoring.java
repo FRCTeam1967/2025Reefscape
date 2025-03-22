@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.AlgaePivot;
 import frc.robot.Constants;
 import frc.robot.subsystems.*;
 
@@ -19,7 +18,8 @@ public class BargeScoring extends Command {
     this.elevator = elevator;
     this.algaePivot = algaePivot;
     this.algaeIntake = algaeIntake;
-    // Use addRequirements() here to declare subsystem dependencies.
+    // Use addRequirements() here to declare subsystem dependencies.1
+    addRequirements(this.elevator, this.algaePivot, this.algaeIntake);
   }
 
   // Called when the command is initially scheduled.
@@ -32,7 +32,7 @@ public class BargeScoring extends Command {
     algaePivot.moveTo(Constants.Algae.BARGE_SCORING_ANGLE);
     elevator.moveTo(Constants.Elevator.MAX_HEIGHT);
     if ( elevator.getHeight() > Constants.Elevator.BARGE_SCORING_HEIGHT) {
-      algaeIntake.runIntake(Constants.Algae.ALGAE_OUTTAKE_SPEED);
+      algaeIntake.setVelocity(Constants.Algae.ALGAE_BARGE_OUTTAKE);
     }
 
   }
