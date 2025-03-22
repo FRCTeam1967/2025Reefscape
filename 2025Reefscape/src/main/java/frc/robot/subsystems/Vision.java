@@ -34,6 +34,7 @@ public class Vision extends SubsystemBase {
   //Limelight Updating Values
   private double xAlignmentOffset, yAlignmentOffset, zAlignmentOffset, vAlignmentCheck;
   private double xOdometryOffset, yOdometryOffset, zOdometryOffset;
+  private double alignSpeed;
 
   private boolean isInRange = false;
   
@@ -53,6 +54,7 @@ public class Vision extends SubsystemBase {
     yAlignmentOffset = limelightTable.getEntry("tz").getDouble(0.0);
     zAlignmentOffset = limelightTable.getEntry("ty").getDouble(0.0);
     vAlignmentCheck = limelightTable.getEntry("tv").getDouble(0.0);
+    alignSpeed = AlignBranch.getAlignmentSpeed();
   }
 
   /** Update x offset value */
@@ -107,6 +109,9 @@ public class Vision extends SubsystemBase {
     .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
     .withPosition(7, 2).withSize(1, 1);
 
+    tab.addDouble("LL alignmentSpeed", () -> alignSpeed)
+    .withPosition(7, 3).withSize(1, 1);
+
     tab.addDouble("alignment z fiducial", () -> Constants.Vision.LIMELIGHT_ALIGN_Z_OFFSET).withWidget(BuiltInWidgets.kTextView);
   }
 
@@ -128,7 +133,7 @@ public class Vision extends SubsystemBase {
     return vAlignmentCheck;
   }
 
-  public double getZOffsets() {
+  public double getZOffset() {
     return zAlignmentOffset;
   }
 

@@ -64,5 +64,6 @@ public class MoveElevator extends Command {
   @Override
   public boolean isFinished() {
     return elevator.atHeight();
+    //return false;
   }
 }
