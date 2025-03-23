@@ -6,6 +6,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -34,7 +35,7 @@ public class Vision extends SubsystemBase {
   //Limelight Updating Values
   private double xAlignmentOffset, yAlignmentOffset, zAlignmentOffset, vAlignmentCheck;
   private double xOdometryOffset, yOdometryOffset, zOdometryOffset;
-  private double alignSpeed;
+  private ChassisSpeeds alignSpeed;
 
   private boolean isInRange = false;
   
@@ -109,8 +110,11 @@ public class Vision extends SubsystemBase {
     .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
     .withPosition(7, 2).withSize(1, 1);
 
-    tab.addDouble("LL alignmentSpeed", () -> alignSpeed)
+    tab.addDouble("LL alignmentSpeedY", () -> alignSpeed.vyMetersPerSecond)
     .withPosition(7, 3).withSize(1, 1);
+
+    tab.addDouble("LL alignmentSpeedX", () -> alignSpeed.vxMetersPerSecond)
+    .withPosition(7, 4).withSize(1, 1);
 
     tab.addDouble("alignment z fiducial", () -> Constants.Vision.LIMELIGHT_ALIGN_Z_OFFSET).withWidget(BuiltInWidgets.kTextView);
   }
