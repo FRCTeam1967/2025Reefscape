@@ -18,8 +18,8 @@ public class AlignBranch extends Command {
   private final Vision vision;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
   private static ChassisSpeeds alignmentSpeed;
-  private static boolean isLeft;
-  private static boolean useForward;
+  private boolean isLeft;
+  private boolean useForward;
 
   // Create a simple helper class to we can return two values from a method
   // nicely.
@@ -37,6 +37,8 @@ public class AlignBranch extends Command {
   public AlignBranch(CommandSwerveDrivetrain drivetrain, Vision vision, boolean isLeft, boolean useForward) {
     this.drivetrain = drivetrain;
     this.vision = vision;
+    this.isLeft = isLeft;
+    this.useForward = useForward;
     addRequirements(drivetrain);
     addRequirements(vision);
   }
