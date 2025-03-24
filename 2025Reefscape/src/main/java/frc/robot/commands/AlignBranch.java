@@ -17,7 +17,7 @@ public class AlignBranch extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
-  private static ChassisSpeeds alignmentSpeed;
+  private static ChassisSpeeds alignmentSpeed = new ChassisSpeeds(0.0, 0.0, 0.0);
   private boolean isLeft;
   private boolean useForward;
 
@@ -61,7 +61,7 @@ public class AlignBranch extends Command {
   // robot is considered in range in this dimension.
   private PIDResult calculateAlignSpeed(double offset, double targetOffset, double kP, double threshold) {
     double error = offset - targetOffset;
-    double alignSpeed = error * kP * Constants.Swerve.SWERVE_MAX_SPEED;
+    double alignSpeed = error * kP;
     double clampedSpeed = MathUtil.clamp(alignSpeed, -Constants.Vision.ALIGNMENT_SPEED,
         Constants.Vision.ALIGNMENT_SPEED);
     boolean isInRange = Math.abs(error) < threshold;

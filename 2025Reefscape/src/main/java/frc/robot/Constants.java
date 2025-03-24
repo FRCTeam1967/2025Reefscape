@@ -143,8 +143,8 @@ public final class Constants {
 
     public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
-    public static final double L4 = 50.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
-    public static final double LEFT_L4 = 50.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //26.0 //35 works //33 works too
+    public static final double L4 = 45.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
+    public static final double LEFT_L4 = 45.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
@@ -159,7 +159,7 @@ public final class Constants {
     public static final int INTAKE_MOTOR_ID = 18;
 
     public static final double SLOW = 0.05;
-    public static final double VELOCITY = 20;
+    public static final double VELOCITY = 15; //20
 
     public static final double HIGH = 1.3; //0.5, .9
     public static final double REVERSE_SLOW = -0.25;
@@ -197,16 +197,16 @@ public final class Constants {
     public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.15875; //0.17145 //0.1524 //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
     public static final double LIMELIGHT_ALIGN_Z_OFFSET = 0.0; //LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
-    public static final double ALIGNMENT_SPEED = 2.0;
+    public static final double ALIGNMENT_SPEED = 1.3;
     //(Math.abs(Math.pow(0.5, 3))> 0 ? Math.pow(0.5, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.425
     public static final double ALIGNMENT_THRESHOLD = 0.5;
     public static final double FORWARD_ALIGNMENT_THRESHOLD = 0.0;
-    public static final double ALIGNMENT_LEFT_OFFSET = 11.0; //TODO: test at EPA
-    public static final double ALIGNMENT_RIGHT_OFFSET = -10.0; //TODO: test at EPA
-    public static final double ALIGNMENT_FORWARD_OFFSET = -10.0; //TODO: test at EPA
+    public static final double ALIGNMENT_LEFT_OFFSET = 9.76; //TODO: test at EPA
+    public static final double ALIGNMENT_RIGHT_OFFSET = -13.1; //TODO: test at EPA
+    public static final double ALIGNMENT_FORWARD_OFFSET = 0.0; //TODO: test at EPA //-5.16 center for left branch aligned
 
-    public static final double ALIGNMENT_X_KP = -0.17;  // Used for aligning Robot X (forward), which is "ty" in Limelight terms
-    public static final double ALIGNMENT_Y_KP = -0.17;  // Used for aligning Robot Y (side-side), which is "tx" in Limelight terms
+    public static final double ALIGNMENT_X_KP = -0.1;  //0.708 // Used for aligning Robot X (forward), which is "ty" in Limelight terms
+    public static final double ALIGNMENT_Y_KP = -0.1;  // Used for aligning Robot Y (side-side), which is "tx" in Limelight terms
   }
 
   public static class Auto {
@@ -250,7 +250,7 @@ public final class Constants {
     public static final double PROCESSOR_HEIGHT = 0.3;
     public static final double CORAL_L2_HEIGHT = 5.5; //5.25 //17 // 6.0
     public static final double CORAL_L3_HEIGHT = 13.75; //21.75; //31.75 // 14.25
-    public static final double CORAL_L4_HEIGHT = 26; //26.5
+    public static final double CORAL_L4_HEIGHT = 26.75; //26.5
     public static final double MAX_HEIGHT = 27;
 
     public static final double ALGAE_L2_HEIGHT = 14.5; //16.5
@@ -347,10 +347,10 @@ public final class Constants {
     public static final int ENCODER_ID = 14;
 
     public static final double ALGAE_INTAKE_SPEED = -0.7;
-    public static final double ALGAE_OUTTAKE_SPEED = 0.425;
+    public static final double ALGAE_OUTTAKE_SPEED = 0.3; //0.425
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
 
-    public static final double BARGE_SCORING_SPEED = 12.0; 
+    public static final double BARGE_SCORING_SPEED = 12.0; //THIS IS OUTDATED
 
     //public static final double INTAKE_SAFE = 0.31666666666666665;
     //public static final double INTAKE_DOWN = 0.02777777777777778;

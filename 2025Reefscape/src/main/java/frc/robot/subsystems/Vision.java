@@ -35,7 +35,7 @@ public class Vision extends SubsystemBase {
   //Limelight Updating Values
   private double xAlignmentOffset, yAlignmentOffset, zAlignmentOffset, vAlignmentCheck;
   private double xOdometryOffset, yOdometryOffset, zOdometryOffset;
-  private ChassisSpeeds alignSpeed;
+  private ChassisSpeeds alignSpeed = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   private boolean isInRange = false;
   
@@ -44,6 +44,7 @@ public class Vision extends SubsystemBase {
     limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
     limelightOdometryTable = NetworkTableInstance.getDefault().getTable("limelight-santos");
 
+    this.alignSpeed = alignSpeed;
     targetPose = limelightTargetFiducial.getTargetPose_RobotSpace();
     updateAlignmentValues();
     updateOdometryValues();

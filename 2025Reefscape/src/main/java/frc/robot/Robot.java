@@ -84,8 +84,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-   var rotationFlipped = m_robotContainer.drivetrain.getState().Pose.getRotation().plus(Rotation2d.k180deg);
-    m_robotContainer.drivetrain.resetRotation(rotationFlipped);
+    
+   //var rotationFlipped = m_robotContainer.drivetrain.getState().Pose.getRotation().plus(Rotation2d.k180deg);
+   // m_robotContainer.drivetrain.resetRotation(rotationFlipped);
 
     SignalLogger.start();
     m_robotContainer.elevator.setSafe();
