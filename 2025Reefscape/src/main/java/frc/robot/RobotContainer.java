@@ -340,10 +340,11 @@ public class RobotContainer {
 
         //CORAL INTAKE
         operatorController.R2().whileTrue(new SequentialCommandGroup(
-            new ParallelCommandGroup(
+            new ParallelRaceGroup(
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_INTAKE),
                 new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY)
-            )
+            ),
+            new RunCoralIntakeBack(coralIntake, Constants.CoralIntake.REVERSE_VELOCITY)
             //new WaitCommand(0.1),
             //new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
             //new RunCoralSecondIntake(coralIntake, Constants.CoralIntake.VELOCITY)
@@ -480,8 +481,10 @@ public class RobotContainer {
         
         //L1 CORAL SCORING 
         operatorController.circle().whileTrue(new SequentialCommandGroup(
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1),
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1)));
+            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1).withTimeout(1),
+            new RunCoralOuttake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1)
+
+            ));
 
         //BARGE SCORING
         //operatorController.circle().whileTrue(new BargeScoring(algaeMechanism, elevator, intake));

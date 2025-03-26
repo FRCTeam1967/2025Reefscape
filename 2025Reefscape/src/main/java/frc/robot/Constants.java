@@ -158,8 +158,9 @@ public final class Constants {
   public class CoralIntake {
     public static final int INTAKE_MOTOR_ID = 18;
 
-    public static final double SLOW = 0.05;
+    public static final double SLOW = 0.2;
     public static final double VELOCITY = 15; //20
+    public static final double REVERSE_VELOCITY = -15;
 
     public static final double HIGH = 1.3; //0.5, .9
     public static final double REVERSE_SLOW = -0.25;
