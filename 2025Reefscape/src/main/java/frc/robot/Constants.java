@@ -321,8 +321,6 @@ public final class Constants {
     public static final double INTAKE_ACCELERATION = 200;
     public static final double INTAKE_JERK = 300;
 
-    public static final double ALGAE_BARGE_OUTTAKE = 100;
-
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
@@ -349,8 +347,7 @@ public final class Constants {
     public static final double ALGAE_INTAKE_SPEED = -0.7;
     public static final double ALGAE_OUTTAKE_SPEED = 0.3; //0.425
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
-
-    public static final double BARGE_SCORING_SPEED = 12.0; //THIS IS OUTDATED
+    public static final double ALGAE_BARGE_OUTTAKE = 20;
 
     //public static final double INTAKE_SAFE = 0.31666666666666665;
     //public static final double INTAKE_DOWN = 0.02777777777777778;

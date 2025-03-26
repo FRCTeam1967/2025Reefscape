@@ -258,7 +258,7 @@ public class RobotContainer {
         );
 
         //spin to get coral off
-        joystick.leftTrigger().whileTrue(new SequentialCommandGroup(new MoveElevator(elevator, Constants.Elevator.SPIN_HEIGHT, algaeMechanism),
+        joystick.leftTrigger().whileTrue(new ParallelCommandGroup(new MoveElevator(elevator, Constants.Elevator.SPIN_HEIGHT, algaeMechanism),
             drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                 .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                 .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
@@ -474,7 +474,7 @@ public class RobotContainer {
             ).withTimeout(2),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE).withTimeout(2),
-                new RunAlgaeIntake(intake, Constants.Algae.BARGE_SCORING_SPEED).withTimeout(5)
+                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE).withTimeout(5)
             )
         ));
         
@@ -494,50 +494,50 @@ public class RobotContainer {
     
     /******************************************/
 
-    //limelight methods for alignment
-    //for X alignment (how rotational it should align)
-    private double limelight_aim_proportional() {
-        double kP = 0.1; //test -> fix large errors
-        double kI = 0.2; //test -> reduce steady-state error (+ oscillation)
-        double kD = 0.2; //test -> slow down when reaching target (stability)
+    // //limelight methods for alignment
+    // //for X alignment (how rotational it should align)
+    // private double limelight_aim_proportional() {
+    //     double kP = 0.1; //test -> fix large errors
+    //     double kI = 0.2; //test -> reduce steady-state error (+ oscillation)
+    //     double kD = 0.2; //test -> slow down when reaching target (stability)
         
-        //TX -> x-axis offset in degrees, multiply by angular speed to be radians/second
-        double targetingAngularVelocity = (LimelightHelpers.getTX("limelight") * kP) * CommandSwerveDrivetrain.kMaxAngularSpeed;
+    //     //TX -> x-axis offset in degrees, multiply by angular speed to be radians/second
+    //     double targetingAngularVelocity = (LimelightHelpers.getTX("limelight") * kP) * CommandSwerveDrivetrain.kMaxAngularSpeed;
         
-        targetingAngularVelocity *= 1.0;
-        return targetingAngularVelocity;
-    }
+    //     targetingAngularVelocity *= 1.0;
+    //     return targetingAngularVelocity;
+    // }
 
-    //for Y alignment (how forward/backward it should go)
-    private double limelight_range_proportional() {    
-        double kP = 0.02; //test
+    // //for Y alignment (how forward/backward it should go)
+    // private double limelight_range_proportional() {    
+    //     double kP = 0.02; //test
 
-        //TY -> y-axis offset in degrees, multiply by angular speed to be raidans/second
-        double targetingForwardSpeed = (LimelightHelpers.getTY("limelight") * kP) * CommandSwerveDrivetrain.kMaxSpeed;
+    //     //TY -> y-axis offset in degrees, multiply by angular speed to be raidans/second
+    //     double targetingForwardSpeed = (LimelightHelpers.getTY("limelight") * kP) * CommandSwerveDrivetrain.kMaxSpeed;
 
-        targetingForwardSpeed *= -1.0;
-        return targetingForwardSpeed;
-    }
+    //     targetingForwardSpeed *= -1.0;
+    //     return targetingForwardSpeed;
+    // }
 
-    //drive for robot container
-    public void drive(boolean fieldRelative) {
-        var xSpeed = -m_xspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftY(), 0.02)) * CommandSwerveDrivetrain.kMaxSpeed;
-        var ySpeed = -m_yspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftX(), 0.02)) * CommandSwerveDrivetrain.kMaxSpeed;
-        var rot = -m_rotLimiter.calculate(MathUtil.applyDeadband(joystick.getRightX(), 0.02)) * CommandSwerveDrivetrain.kMaxAngularSpeed;
+    // //drive for robot container
+    // public void drive(boolean fieldRelative) {
+    //     var xSpeed = -m_xspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftY(), 0.02)) * CommandSwerveDrivetrain.kMaxSpeed;
+    //     var ySpeed = -m_yspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftX(), 0.02)) * CommandSwerveDrivetrain.kMaxSpeed;
+    //     var rot = -m_rotLimiter.calculate(MathUtil.applyDeadband(joystick.getRightX(), 0.02)) * CommandSwerveDrivetrain.kMaxAngularSpeed;
 
-        // while the left-bumper is pressed, overwrite some of the driving values with the output of limelight override method
-        if (joystick.leftTrigger().getAsBoolean()){
-            final var rot_limelight = limelight_aim_proportional();
-            rot = rot_limelight;
+    //     // while the left-bumper is pressed, overwrite some of the driving values with the output of limelight override method
+    //     if (joystick.leftTrigger().getAsBoolean()){
+    //         final var rot_limelight = limelight_aim_proportional();
+    //         rot = rot_limelight;
 
-            final var forward_limelight = limelight_range_proportional();
-            xSpeed = forward_limelight;
+    //         final var forward_limelight = limelight_range_proportional();
+    //         xSpeed = forward_limelight;
 
-            //turn off field relative
-            fieldRelative = false;
-        }
+    //         //turn off field relative
+    //         fieldRelative = false;
+    //     }
 
-    drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative, 1);
-
-    }
+    // drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative, 1);
+    // }
+    
 }
