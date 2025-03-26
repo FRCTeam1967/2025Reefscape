@@ -150,6 +150,9 @@ public final class Constants {
     public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double CORAL_INTAKE = -6.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
 
+    public static final double CORAL_REVERSE_INTAKE = 4 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+
+
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 
     public static final double CURRENT_LIMIT = 40;
