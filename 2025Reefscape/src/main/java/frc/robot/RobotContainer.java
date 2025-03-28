@@ -209,7 +209,9 @@ public class RobotContainer {
             new SequentialCommandGroup( // center align
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, Constants.Vision.LIMELIGHT_ALIGN_CENTER_OFFSET)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
-                new AlignBranch(drivetrain, vision, false, true)))); //forward align
+                new AlignBranch(drivetrain, vision, true, false)),
+            new SequentialCommandGroup(
+                new ZAlign(drivetrain, vision).withTimeout(2))));
         
     
         vision.configDashboard(matchTab);
