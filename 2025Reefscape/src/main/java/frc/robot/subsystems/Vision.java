@@ -56,7 +56,6 @@ public class Vision extends SubsystemBase {
     yAlignmentOffset = limelightTable.getEntry("tz").getDouble(0.0);
     zAlignmentOffset = limelightTable.getEntry("ty").getDouble(0.0);
     vAlignmentCheck = limelightTable.getEntry("tv").getDouble(0.0);
-    alignSpeed = AlignBranch.getAlignmentSpeed();
   }
 
   /** Update x offset value */
