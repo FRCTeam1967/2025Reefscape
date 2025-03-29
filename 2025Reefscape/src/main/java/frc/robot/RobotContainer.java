@@ -184,7 +184,7 @@ public class RobotContainer {
         
         NamedCommands.registerCommand("Align and Score Coral Left L4", new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_AUTO_LEFT_OFFSET, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                 // new ZAlign(drivetrain, vision).withTimeout(3),
                 new AlignBranch(drivetrain, vision)),
@@ -384,8 +384,9 @@ public class RobotContainer {
         //RIGHT BRANCH L2
         buttonBoxR.button(7).or(operatorController.cross()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate))), () -> !vision.isVisionDisabled())),
+                new ConditionalCommand(new AlignBranch(drivetrain, vision), drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate)), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
@@ -395,8 +396,9 @@ public class RobotContainer {
         //RIGHT BRANCH L3
         buttonBoxR.button(8).or(operatorController.square()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate))), () -> !vision.isVisionDisabled())),
+                new ConditionalCommand(new AlignBranch(drivetrain, vision), drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate)), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
@@ -406,8 +408,9 @@ public class RobotContainer {
         //RIGHT BRANCH L4
         buttonBoxR.button(9).or(operatorController.triangle()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate))), () -> !vision.isVisionDisabled())),
+                new ConditionalCommand(new AlignBranch(drivetrain, vision), drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate)), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
@@ -419,10 +422,11 @@ public class RobotContainer {
             ).withTimeout(2))); //maybe change to 2.5
 
         //LEFT BRANCH L2
-        buttonBoxR.button(2).or(operatorController.cross().and(operatorController.L1())).whileTrue(new SequentialCommandGroup(
+        operatorController.cross().and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate))), () -> !vision.isVisionDisabled())),
+                new ConditionalCommand(new AlignBranch(drivetrain, vision), drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate)), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
@@ -434,8 +438,9 @@ public class RobotContainer {
         //LEFT BRANCH L3
         buttonBoxR.button(3).or(operatorController.square().and(operatorController.L1())).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate))), () -> !vision.isVisionDisabled())),
+                new ConditionalCommand(new AlignBranch(drivetrain, vision), drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate)), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
@@ -445,8 +450,9 @@ public class RobotContainer {
         //LEFT BRANCH L4
         buttonBoxR.button(4).or(operatorController.triangle().and(operatorController.L1())).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate))), () -> !vision.isVisionDisabled())),
+                new ConditionalCommand(new AlignBranch(drivetrain, vision), drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed).withVelocityY(-joystick.getLeftX() * MaxSpeed).withRotationalRate(-joystick.getRightX() * MaxAngularRate)), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
@@ -471,7 +477,7 @@ public class RobotContainer {
             )
         ));
         
-        //L1 CORAL SCORING 
+        //REAL BARGE SCORING 
         buttonBoxR.button(1).or(operatorController.circle()).whileTrue(new SequentialCommandGroup(
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1).withTimeout(1),
             new RunCoralOuttake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1)
