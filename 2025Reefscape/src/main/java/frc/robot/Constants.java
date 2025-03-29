@@ -197,7 +197,7 @@ public final class Constants {
     public static final double LIMELIGHT_ANGLE_DEGREES = 0; //need to verify
     public static final double LIMELIGHT_HEIGHT_INCHES = 25.125; //need to verify
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
-    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.125; //-0.1175; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
+    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.125; // -0.125 //-0.1175; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
     public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.165; //0.15875; //0.17145 //0.1524 //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
     public static final double LIMELIGHT_ALIGN_Z_OFFSET = 0.0; //LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
@@ -248,7 +248,7 @@ public final class Constants {
     public static final double UP = 26.5; //DO NOT CHANGE---MAX PHYSICAL HEIGHT
     public static final double MIDDLE = 12;
 
-    public static final double SAFE = 0.3; //5
+    public static final double SAFE = 0.1; //5 //.3
     public static final double SPIN_HEIGHT = 5;
 
     public static final double PROCESSOR_HEIGHT = 0.3;
