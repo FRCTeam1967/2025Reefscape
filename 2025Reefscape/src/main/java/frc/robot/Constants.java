@@ -143,8 +143,8 @@ public final class Constants {
 
     public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
-    public static final double L4 = 52.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
-    public static final double LEFT_L4 = 58.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
+    public static final double L4 = 65.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
+    public static final double LEFT_L4 = 65.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
@@ -197,13 +197,14 @@ public final class Constants {
     public static final double LIMELIGHT_ANGLE_DEGREES = 0; //need to verify
     public static final double LIMELIGHT_HEIGHT_INCHES = 25.125; //need to verify
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
-    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.125; // -0.125 //-0.1175; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
-    public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.165; //0.15875; //0.17145 //0.1524 //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
+    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.125;//-0.1175; // -0.125 //-0.1175; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
+    public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.18; //0.15875; //0.17145 //0.1524 //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
     public static final double LIMELIGHT_ALIGN_Z_OFFSET = 0.0; //LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
     public static final double LIMELIGHT_AUTO_LEFT_OFFSET = -0.1175;
-    public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.5, 3))> 0 ? Math.pow(0.5, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.425
-    public static final double ALIGNMENT_THRESHOLD = 0.5;
+    public static final double LIMELIGHT_L4_LEFT_OFFSET = -0.1;
+    public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.43, 3))> 0 ? Math.pow(0.43, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.425
+    public static final double ALIGNMENT_THRESHOLD = 1.0;
     public static final double FORWARD_ALIGNMENT_THRESHOLD = 0.0;
     public static final double ALIGNMENT_LEFT_OFFSET = 9.76; //TODO: test at EPA
     public static final double ALIGNMENT_RIGHT_OFFSET = -13.1; //TODO: test at EPA
@@ -348,7 +349,7 @@ public final class Constants {
     public static final int INTAKE_ID = 15;
     public static final int ENCODER_ID = 14;
 
-    public static final double ALGAE_INTAKE_SPEED = -0.7;
+    public static final double ALGAE_INTAKE_SPEED = -0.7; //TODO: maybe up the speed
     public static final double ALGAE_OUTTAKE_SPEED = 0.3; //0.425
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
     public static final double ALGAE_BARGE_OUTTAKE = 20;

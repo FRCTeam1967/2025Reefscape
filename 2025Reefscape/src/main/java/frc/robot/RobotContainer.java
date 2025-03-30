@@ -334,7 +334,7 @@ public class RobotContainer {
             new AlignBranch(drivetrain, vision)));
 
         //DISABLE VISION
-        joystick.y().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
+        joystick.x().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
         
         //SCORE PROCESSOR
         buttonBoxR.button(11).or(operatorController.R1()).whileTrue(new SequentialCommandGroup(
@@ -354,7 +354,8 @@ public class RobotContainer {
             new ParallelCommandGroup(
                 new RunCoralIntakeBack(coralIntake, Constants.CoralIntake.REVERSE_VELOCITY),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_REVERSE_INTAKE)
-            )
+            ),
+            new RumbleController(joystick, operatorController).withTimeout(2)
             //new WaitCommand(0.1),
             //new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
             //new RunCoralSecondIntake(coralIntake, Constants.CoralIntake.VELOCITY)
@@ -450,7 +451,7 @@ public class RobotContainer {
         //LEFT BRANCH L4
         buttonBoxR.button(4).or(operatorController.triangle().and(operatorController.L1())).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
                 new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> System.out.println("hello")), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
@@ -476,6 +477,8 @@ public class RobotContainer {
                 new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE).withTimeout(5)
             )
         ));
+
+        joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
         
         //REAL BARGE SCORING 
         buttonBoxR.button(1).or(operatorController.circle()).whileTrue(new SequentialCommandGroup(
