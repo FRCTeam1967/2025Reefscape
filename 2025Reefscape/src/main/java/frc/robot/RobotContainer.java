@@ -377,7 +377,7 @@ public class RobotContainer {
         //operatorController.circle().whileTrue(new BargeScoring(algaeMechanism, elevator, intake));
     }
 
-    private SequentialCommandGroup realBargeScoringSequence() {
+    private Command realBargeScoringSequence() {
         return new SequentialCommandGroup(
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1).withTimeout(1),
             new RunCoralOuttake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1)
@@ -386,7 +386,7 @@ public class RobotContainer {
     }
 
     // If the above is "real" barge scoring, is this fake scoring?!
-    private SequentialCommandGroup bargeScoringSequence() {
+    private Command bargeScoringSequence() {
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
@@ -399,7 +399,7 @@ public class RobotContainer {
         );
     }
 
-    private SequentialCommandGroup scoreLeftBranchL4Sequence() {
+    private Command scoreLeftBranchL4Sequence() {
         return new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET, 0.0)),
@@ -416,7 +416,7 @@ public class RobotContainer {
             ).withTimeout(2));
     }
 
-    private SequentialCommandGroup scoreLeftBranchL3Sequence() {
+    private Command scoreLeftBranchL3Sequence() {
         return new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
@@ -429,7 +429,7 @@ public class RobotContainer {
             new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1));
     }
 
-    private SequentialCommandGroup scoreLeftBranchL2Sequence() {
+    private Command scoreLeftBranchL2Sequence() {
         return new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
@@ -442,7 +442,7 @@ public class RobotContainer {
             new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1));
     }
 
-    private SequentialCommandGroup scoreRightBranchL4Sequence() {
+    private Command scoreRightBranchL4Sequence() {
         return new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
@@ -459,7 +459,7 @@ public class RobotContainer {
             ).withTimeout(2));
     }
 
-    private SequentialCommandGroup scoreRightBranchL3Sequence() {
+    private Command scoreRightBranchL3Sequence() {
         return new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
@@ -472,7 +472,7 @@ public class RobotContainer {
             new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1));
     }
 
-    private SequentialCommandGroup scoreRightBranchL2Sequence() {
+    private Command scoreRightBranchL2Sequence() {
         return new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
@@ -485,7 +485,7 @@ public class RobotContainer {
             new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1));
     }
 
-    private SequentialCommandGroup algaeGroundIntakeSequence() {
+    private Command algaeGroundIntakeSequence() {
         return new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.GROUND_INTAKE_HEIGHT),
@@ -493,7 +493,7 @@ public class RobotContainer {
         );
     }
 
-    private SequentialCommandGroup algaeRemovalL3Sequence() {
+    private Command algaeRemovalL3Sequence() {
         return new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.ALGAE_L3_HEIGHT, algaeMechanism),
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
@@ -501,7 +501,7 @@ public class RobotContainer {
         );
     }
 
-    private SequentialCommandGroup algaeRemovalL2Sequence() {
+    private Command algaeRemovalL2Sequence() {
         return new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.ALGAE_L2_HEIGHT, algaeMechanism),
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
@@ -509,7 +509,7 @@ public class RobotContainer {
         );
     }
 
-    private SequentialCommandGroup coralIntakeSequence() {
+    private Command coralIntakeSequence() {
         return new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_INTAKE),
@@ -526,7 +526,7 @@ public class RobotContainer {
         );
     }
 
-    private SequentialCommandGroup scoreProcessorSequence() {
+    private Command scoreProcessorSequence() {
         return new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.PROCESSOR_HEIGHT, algaeMechanism),
             new ParallelCommandGroup(
