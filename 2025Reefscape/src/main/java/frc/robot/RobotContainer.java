@@ -96,25 +96,15 @@ public class RobotContainer {
 
     public RobotContainer() {
         NamedCommands.registerCommand("Remove Algae L2", algaeRemovalL2Sequence());
-        
         NamedCommands.registerCommand("Remove Algae L3", algaeRemovalL3Sequence());
-
         NamedCommands.registerCommand("Intake Coral", autoIntakeCoralSequence());
-        
         NamedCommands.registerCommand("Align and Score Coral Right L2", autoScoreRightL2Sequence());
-        
         NamedCommands.registerCommand("Align and Score Coral Right L3", autoScoreRightL3Sequence());
-
         NamedCommands.registerCommand("Align and Score Coral Right L4", autoScoreRightL4Sequence());
-        
         NamedCommands.registerCommand("Align and Score Coral Left L2", autoScoreLeftL2Sequence());
-        
         NamedCommands.registerCommand("Align and Score Coral Left L4", autoScoreLeftL4Sequence());
-
         NamedCommands.registerCommand("Score Processor", autoScoreProcessorSequence()); //maybe change to 2.5
-
         NamedCommands.registerCommand("Center and Z Align", autoCenterAndZAlignSequence());
-        
     
         vision.configDashboard(matchTab);
         vision.configLLTab(limelightTab);
