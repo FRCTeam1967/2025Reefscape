@@ -307,6 +307,13 @@ public class RobotContainer {
      * @param side branch (left/right) to be scored on
      * @param level level of the reef to be scored on
      * @return command sequence that can be bound to button(s) to perform the scoring action
+     * @implNote This sequence factory is *very* similar to the auto scoring factory. Auto uses different
+     * fiducial offsets, but that can be handled in the helper method. This method runs the algae and
+     * coral pivot moves in parallel, but auto does them serially; I suspect that auto could do
+     * what this is doing and behave a litte faster. And this method uses timeouts that are a bit
+     * more aggressive; again, auto could probably adopt those. Finally, auto doesn't run the last
+     * part of the sequence in one particular case, but that's probably a bug; I suspect the 
+     * difference in not intentional.
      */
     private Command coralScoringSequence(BranchSide side, ScoringLevel level) {
         double coralScoringAngle = getCoralScoringAngle(side, level);
