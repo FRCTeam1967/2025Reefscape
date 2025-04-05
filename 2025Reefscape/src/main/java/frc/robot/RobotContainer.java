@@ -6,22 +6,19 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.Function;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.HttpCamera;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -32,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.Xbox;
 import frc.robot.Constants.BranchSide;
@@ -51,14 +49,11 @@ public class RobotContainer {
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     public boolean visionEnabled = true;
 
-    // Replace with CommandPS4Controller or CommandJoystick if needed
-    private final CommandPS4Controller operatorController = new CommandPS4Controller(Xbox.OPERATOR_CONTROLLER_PORT);
-
-    private final CommandGenericHID buttonBoxL = new CommandGenericHID(2);
-    private final CommandGenericHID buttonBoxR = new CommandGenericHID(3);
-
-    //private final CommandXboxController operatorController = new CommandXboxController(Xbox.OPERATOR_CONTROLLER_PORT);
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    // Replace with CommandXboxController, CommandPS4Controllerk or CommandJoystick if needed
+    private CommandPS4Controller operatorController;
+    private CommandGenericHID buttonBoxL;
+    private CommandGenericHID buttonBoxR;
+    private CommandXboxController joystick;
 
     public final Elevator elevator = new Elevator();
     public final AlgaePivot algaeMechanism = new AlgaePivot();
@@ -105,6 +100,18 @@ public class RobotContainer {
         NamedCommands.registerCommand("Align and Score Coral Left L4", autoScoringSequence(BranchSide.LEFT, ScoringLevel.L4));
         NamedCommands.registerCommand("Score Processor", autoScoreProcessorSequence()); //maybe change to 2.5
         NamedCommands.registerCommand("Center and Z Align", autoCenterAndZAlignSequence());
+
+        // We defer joystick creation to initialization time so we can figure out if we have a button box or an operator controller
+        // or both.
+        joystick = new CommandXboxController(Xbox.DRIVER_CONTROLLER_PORT);  // We better have this one!
+        operatorController = new CommandPS4Controller(Xbox.OPERATOR_CONTROLLER_PORT);
+        if (DriverStation.isJoystickConnected(Xbox.BUTTON_BOX_LEFT) && DriverStation.isJoystickConnected(Xbox.BUTTON_BOX_RIGHT)) {
+            buttonBoxL = new CommandGenericHID(Xbox.BUTTON_BOX_LEFT);
+            buttonBoxR = new CommandGenericHID(Xbox.BUTTON_BOX_RIGHT);
+        }
+
+        // Make sure we've got something to operate the robot!
+
     
         vision.configDashboard(matchTab);
         vision.configLLTab(limelightTab);
@@ -229,48 +236,49 @@ public class RobotContainer {
         joystick.x().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
         
         //SCORE PROCESSOR
-        buttonBoxR.button(11).or(operatorController.R1()).whileTrue(scoreProcessorSequence());
+        getOperatorTrigger(CommandPS4Controller::R1, buttonBoxR, 11).whileTrue(scoreProcessorSequence());
 
         //CORAL INTAKE
-        buttonBoxL.button(11).or(operatorController.R2()).whileTrue(coralIntakeSequence());
+        getOperatorTrigger(CommandPS4Controller::R2, buttonBoxL, 11).whileTrue(coralIntakeSequence());
         
         //ALGAE L2 REMOVAL
-        buttonBoxL.button(2).or(operatorController.povDown()).whileTrue(algaeRemovalL2Sequence());
+        getOperatorTrigger(CommandPS4Controller::povDown, buttonBoxL, 2).whileTrue(algaeRemovalL2Sequence());
 
         //ALGAE L3 REMOVAL
-        buttonBoxL.button(3).or(operatorController.povUp()).whileTrue(algaeRemovalL3Sequence());
+        getOperatorTrigger(CommandPS4Controller::povUp, buttonBoxL, 3).whileTrue(algaeRemovalL3Sequence());
 
         //ALGAE GROUND INTAKE
-        buttonBoxL.button(4).or(operatorController.L2()).whileTrue(algaeGroundIntakeSequence());
+        getOperatorTrigger(CommandPS4Controller::L2, buttonBoxL, 4).whileTrue(algaeGroundIntakeSequence());
 
         //RIGHT BRANCH L2
-        buttonBoxR.button(7).or(operatorController.cross()).whileTrue(coralScoringSequence(BranchSide.RIGHT, ScoringLevel.L2));
+        getOperatorTrigger(CommandPS4Controller::cross, buttonBoxR, 7).whileTrue(coralScoringSequence(BranchSide.RIGHT, ScoringLevel.L2));
 
         //RIGHT BRANCH L3
-        buttonBoxR.button(8).or(operatorController.square()).whileTrue(coralScoringSequence(BranchSide.RIGHT, ScoringLevel.L3));
+        getOperatorTrigger(CommandPS4Controller::square, buttonBoxR, 8).whileTrue(coralScoringSequence(BranchSide.RIGHT, ScoringLevel.L3));
 
         //RIGHT BRANCH L4
-        buttonBoxR.button(9).or(operatorController.triangle()).whileTrue(coralScoringSequence(BranchSide.RIGHT, ScoringLevel.L4)); 
+        getOperatorTrigger(CommandPS4Controller::triangle, buttonBoxR, 9).whileTrue(coralScoringSequence(BranchSide.RIGHT, ScoringLevel.L4)); 
 
         //LEFT BRANCH L2
+        // No button box binding?!
         operatorController.cross().and(operatorController.L1()).whileTrue(coralScoringSequence(BranchSide.LEFT, ScoringLevel.L2));
 
         joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
 
         //LEFT BRANCH L3
-        buttonBoxR.button(3).or(operatorController.square().and(operatorController.L1())).whileTrue(coralScoringSequence(BranchSide.LEFT, ScoringLevel.L3));
+        getOperatorTrigger(CommandPS4Controller::square, CommandPS4Controller::L1, buttonBoxR, 3).whileTrue(coralScoringSequence(BranchSide.LEFT, ScoringLevel.L3));
 
         //LEFT BRANCH L4
-        buttonBoxR.button(4).or(operatorController.triangle().and(operatorController.L1())).whileTrue(coralScoringSequence(BranchSide.LEFT, ScoringLevel.L4)); 
+        getOperatorTrigger(CommandPS4Controller::triangle, CommandPS4Controller::L1, buttonBoxR, 4).whileTrue(coralScoringSequence(BranchSide.LEFT, ScoringLevel.L4)); 
         
 
         //BARGE SCORING 
-        buttonBoxL.button(8).or(operatorController.povLeft()).whileTrue(bargeScoringSequence());
+        getOperatorTrigger(CommandPS4Controller::povLeft, buttonBoxL, 8).whileTrue(bargeScoringSequence());
 
         joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
         
         //REAL BARGE SCORING 
-        buttonBoxR.button(1).or(operatorController.circle()).whileTrue(realBargeScoringSequence());
+        getOperatorTrigger(CommandPS4Controller::circle, buttonBoxR, 1).whileTrue(realBargeScoringSequence());
 
         //BARGE SCORING
         //operatorController.circle().whileTrue(new BargeScoring(algaeMechanism, elevator, intake));
@@ -475,6 +483,69 @@ public class RobotContainer {
     
     // Helper methods
 
+    /**
+     * Returns the operator trigger to use as a binding for a command. It is given the Trigger
+     * supplier for the operator controller, as well as the button box HID object, and the 
+     * button number to use. Either the operator controller or the button box can be null,
+     * but not both. If both are present, an or is used so that whatever is bound to the
+     * returned triger will be executed if either trigger is triggered.
+     * @param triggerSupplier the method reference to apply to a command controller, 
+     * e.g., CommandPS4Controller:R1
+     * @param buttonBoxHID the button box CommandGenericHID object (may be null)
+     * @param button the button index to use for the binding on the button box HID
+     * @return the (possibly combined) trigger to use for binding an action
+     */
+    private Trigger getOperatorTrigger(Function<CommandPS4Controller, Trigger> triggerSupplier, CommandGenericHID buttonBoxHID, int button) {
+        Trigger operatorTrigger = null, buttonBoxTrigger = null;
+        if (operatorController != null) {
+            operatorTrigger = triggerSupplier.apply(operatorController);
+        }
+        if (buttonBoxHID != null) {
+            buttonBoxTrigger = buttonBoxHID.button(button);
+        }
+
+        if (operatorTrigger != null && buttonBoxTrigger != null) {
+            return operatorTrigger.or(buttonBoxTrigger);
+        } else if (operatorTrigger != null) {
+            return operatorTrigger;
+        } else {
+            return buttonBoxTrigger;
+        }
+    }
+
+    /**
+     * Returns the operator trigger to use as a binding for a command. It is given two Trigger
+     * suppliers for the operator controller, both of which must be true, as well as the 
+     * button box HID object, and the button number to use. Either the operator controller or 
+     * the button box can be null, but not both. If both are present, an or is used so that 
+     * whatever is bound to the returned triger will be executed if either trigger is triggered.
+     * @param triggerSupplier1 the method reference to apply to a command controller, 
+     * e.g., CommandPS4Controller:R1
+     * @param triggerSupplier2 the method reference to apply to a command controller, 
+     * e.g., CommandPS4Controller:L1
+     * @param buttonBoxHID the button box CommandGenericHID object (may be null)
+     * @param button the button index to use for the binding on the button box HID
+     * @return the (possibly combined) trigger to use for binding an action
+     */
+    private Trigger getOperatorTrigger(Function<CommandPS4Controller, Trigger> triggerSupplier1, Function<CommandPS4Controller, Trigger> triggerSupplier2, CommandGenericHID buttonBoxHID, int button) {
+        Trigger operatorTrigger = null, buttonBoxTrigger = null;
+        if (operatorController != null) {
+            operatorTrigger = triggerSupplier1.apply(operatorController).and(triggerSupplier2.apply(operatorController));
+        }
+        if (buttonBoxHID != null) {
+            buttonBoxTrigger = buttonBoxHID.button(button);
+        }
+
+        if (operatorTrigger != null && buttonBoxTrigger != null) {
+            return operatorTrigger.or(buttonBoxTrigger);
+        } else if (operatorTrigger != null) {
+            return operatorTrigger;
+        } else {
+            return buttonBoxTrigger;
+        }
+    }
+
+
     // We should convert some of these into a lookup tables
 
     /**
@@ -484,7 +555,7 @@ public class RobotContainer {
      * @param level the branch level we intend to score on
      * @return the coral pivot angle to be used
      */
-    double getCoralScoringAngle(BranchSide side, ScoringLevel level) {
+    private double getCoralScoringAngle(BranchSide side, ScoringLevel level) {
         double angle = Constants.CoralPivot.SAFE;
         switch (level) {
             case L4:
@@ -509,7 +580,7 @@ public class RobotContainer {
      * @param level the branch level we intend to score on
      * @return the algae pivot angle to be used
      */
-    double getAlgaeCoralScoringAngle(BranchSide side, ScoringLevel level) {
+    private double getAlgaeCoralScoringAngle(BranchSide side, ScoringLevel level) {
         double angle = Constants.Algae.SAFE;
         switch (level) {
             case L4:
@@ -536,7 +607,7 @@ public class RobotContainer {
      * @param level the branch level we intend to score on
      * @return the elevator height to accomplish scoring
      */
-    double getCoralScoringElevatorHeight(BranchSide side, ScoringLevel level) {
+    private double getCoralScoringElevatorHeight(BranchSide side, ScoringLevel level) {
         double height = Constants.Elevator.SAFE;
         switch (level) {
             case L4:
@@ -564,7 +635,7 @@ public class RobotContainer {
      * @param level the branch level we intend to score on
      * @return the fiducial offset to accomplish scoring alignment
      */
-    double getCoralScoringFiducialOffset(BranchSide side, ScoringLevel level) {
+    private double getCoralScoringFiducialOffset(BranchSide side, ScoringLevel level) {
         // There are few enough cases, this would be simpler with an if tree, but this makes it easier for us to add other special
         // cases. 
         double offset = 0.0;
@@ -584,7 +655,6 @@ public class RobotContainer {
 
         return offset;
     }
-
     
     public Command getAutonomousCommand() {
         return autoChooserLOL.getSelected();

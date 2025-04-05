@@ -38,7 +38,10 @@ public final class Constants {
 
   //paste here >>>
   public static class Xbox { 
-    public static final int DRIVER_CONTROLLER_PORT = 0, OPERATOR_CONTROLLER_PORT = 1;
+    public static final int DRIVER_CONTROLLER_PORT = 0;
+    public static final int OPERATOR_CONTROLLER_PORT = 1;
+    public static final int BUTTON_BOX_LEFT = 2;
+    public static final int BUTTON_BOX_RIGHT = 3;
   }
 
   public static class Swerve {
