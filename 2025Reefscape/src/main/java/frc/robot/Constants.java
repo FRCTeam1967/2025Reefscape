@@ -18,6 +18,20 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  // Needs to be static to be used outside of this file
+  public static enum ScoringLevel {
+    L1,
+    L2,
+    L3,
+    L4
+  };
+
+  public static enum BranchSide {
+    LEFT,
+    RIGHT
+  };
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }

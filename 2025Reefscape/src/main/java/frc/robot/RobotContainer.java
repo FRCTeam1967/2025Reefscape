@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
@@ -33,6 +34,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.Xbox;
+import frc.robot.Constants.BranchSide;
+import frc.robot.Constants.ScoringLevel;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -345,24 +348,24 @@ public class RobotContainer {
         buttonBoxL.button(4).or(operatorController.L2()).whileTrue(algaeGroundIntakeSequence());
 
         //RIGHT BRANCH L2
-        buttonBoxR.button(7).or(operatorController.cross()).whileTrue(scoreRightBranchL2Sequence());
+        buttonBoxR.button(7).or(operatorController.cross()).whileTrue(coralScoringSequence(BranchSide.RIGHT, ScoringLevel.L2));
 
         //RIGHT BRANCH L3
-        buttonBoxR.button(8).or(operatorController.square()).whileTrue(scoreRightBranchL3Sequence());
+        buttonBoxR.button(8).or(operatorController.square()).whileTrue(coralScoringSequence(BranchSide.RIGHT, ScoringLevel.L3));
 
         //RIGHT BRANCH L4
-        buttonBoxR.button(9).or(operatorController.triangle()).whileTrue(scoreRightBranchL4Sequence()); //maybe change to 2.5
+        buttonBoxR.button(9).or(operatorController.triangle()).whileTrue(coralScoringSequence(BranchSide.RIGHT, ScoringLevel.L4)); 
 
         //LEFT BRANCH L2
-        operatorController.cross().and(operatorController.L1()).whileTrue(scoreLeftBranchL2Sequence());
+        operatorController.cross().and(operatorController.L1()).whileTrue(coralScoringSequence(BranchSide.LEFT, ScoringLevel.L2));
 
         joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
 
         //LEFT BRANCH L3
-        buttonBoxR.button(3).or(operatorController.square().and(operatorController.L1())).whileTrue(scoreLeftBranchL3Sequence());
+        buttonBoxR.button(3).or(operatorController.square().and(operatorController.L1())).whileTrue(coralScoringSequence(BranchSide.LEFT, ScoringLevel.L3));
 
         //LEFT BRANCH L4
-        buttonBoxR.button(4).or(operatorController.triangle().and(operatorController.L1())).whileTrue(scoreLeftBranchL4Sequence()); //maybe change to 2.5
+        buttonBoxR.button(4).or(operatorController.triangle().and(operatorController.L1())).whileTrue(coralScoringSequence(BranchSide.LEFT, ScoringLevel.L4)); 
         
 
         //BARGE SCORING 
@@ -376,6 +379,8 @@ public class RobotContainer {
         //BARGE SCORING
         //operatorController.circle().whileTrue(new BargeScoring(algaeMechanism, elevator, intake));
     }
+
+    // Factory methods that return command sequences to be used in button bindings
 
     private Command realBargeScoringSequence() {
         return new SequentialCommandGroup(
@@ -399,90 +404,36 @@ public class RobotContainer {
         );
     }
 
-    private Command scoreLeftBranchL4Sequence() {
+    /**
+     * Factory method to construct a coral scoring sequence given the side and level of the reef
+     * to be scored on. Uses conditional commands to determine whether to run vision alignment as
+     * part of the sequence.
+     * @param side branch (left/right) to be scored on
+     * @param level level of the reef to be scored on
+     * @return command sequence that can be bound to button(s) to perform the scoring action
+     */
+    private Command coralScoringSequence(BranchSide side, ScoringLevel level) {
+        double coralScoringAngle = getCoralScoringAngle(side, level);
+        double algaeCoralScoringAngle = getAlgaeCoralScoringAngle(side, level);
+        double elevatorHeight = getCoralScoringElevatorHeight(side, level);
+        double fiducialOffset = getCoralScoringFiducialOffset(side, level);
+
         return new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET, 0.0)),
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, fiducialOffset, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> System.out.println("hello")), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
+                new ConditionalCommand(new AlignBranch(drivetrain, vision), new PrintCommand("Vision disabled; skipping alignment"), () -> !vision.isVisionDisabled())
+            ),
+            new MoveElevator(elevator, elevatorHeight, algaeMechanism),
             new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(0.5)),
+                new MoveAlgaePivot(algaeMechanism, algaeCoralScoringAngle).withTimeout(1), 
+                new MoveCoralPivot(coralPivot, coralScoringAngle).withTimeout(0.5)
+            ),
             new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
             new ParallelCommandGroup(
                 new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(2));
-    }
-
-    private Command scoreLeftBranchL3Sequence() {
-        return new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> System.out.println("hello")), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1));
-    }
-
-    private Command scoreLeftBranchL2Sequence() {
-        return new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> System.out.println("hello")), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1));
-    }
-
-    private Command scoreRightBranchL4Sequence() {
-        return new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> System.out.println("hello")), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
-            new ParallelCommandGroup(
-                new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2));
-    }
-
-    private Command scoreRightBranchL3Sequence() {
-        return new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> System.out.println("hello")), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1));
-    }
-
-    private Command scoreRightBranchL2Sequence() {
-        return new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new InstantCommand(() -> System.out.println("hello")), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1));
     }
 
     private Command algaeGroundIntakeSequence() {
@@ -535,8 +486,120 @@ public class RobotContainer {
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_OUTTAKE_SPEED).withTimeout(2)
         );
     } 
-    
 
+    // Helper methods
+
+    // We should convert some of these into a lookup tables
+
+    /**
+     * Compute the coral pivot angle we should use when attempting to socre on the 
+     * given side and level of the reef.
+     * @param side the branch side we intend to score on
+     * @param level the branch level we intend to score on
+     * @return the coral pivot angle to be used
+     */
+    double getCoralScoringAngle(BranchSide side, ScoringLevel level) {
+        double angle = Constants.CoralPivot.SAFE;
+        switch (level) {
+            case L4:
+                angle = Constants.CoralPivot.L4;
+                break;
+            case L3:
+            case L2:
+                angle = Constants.CoralPivot.L2L3;
+                break;
+            default:
+                System.out.println("Unhandled coral scoring angle!");
+                break;
+        }
+
+        return angle;
+    }
+
+    /**
+     * Compute the algae pivot angle we should use when attempting to socre on the 
+     * given side and level of the reef.
+     * @param side the branch side we intend to score on (currently ignored)
+     * @param level the branch level we intend to score on
+     * @return the algae pivot angle to be used
+     */
+    double getAlgaeCoralScoringAngle(BranchSide side, ScoringLevel level) {
+        double angle = Constants.Algae.SAFE;
+        switch (level) {
+            case L4:
+                angle = Constants.Algae.L4_CORAL_SCORING_ANGLE;
+                break;
+            case L3:
+            case L2:
+                angle = Constants.Algae.L2L3_CORAL_SCORING_ANGLE;
+                break;
+            default:
+                System.out.println("Unhandled scoring angle for algae!");
+                break;
+        }
+
+        return angle;
+    }
+
+    /**
+     * Compute the elevator height to score coral on a given side and level. This method
+     * currently ignores the side, but the value is passed in case we need to make 
+     * adjustments. We could even have this method take the reef face as an argument if
+     * we found we needed to make per-face adjustments.
+     * @param side the branch side we intend to score on (currently ignored)
+     * @param level the branch level we intend to score on
+     * @return the elevator height to accomplish scoring
+     */
+    double getCoralScoringElevatorHeight(BranchSide side, ScoringLevel level) {
+        double height = Constants.Elevator.SAFE;
+        switch (level) {
+            case L4:
+                height = Constants.Elevator.CORAL_L4_HEIGHT;
+                break;
+            case L3:
+                height = Constants.Elevator.CORAL_L3_HEIGHT;
+                break;
+            case L2:
+                height = Constants.Elevator.CORAL_L2_HEIGHT;
+                break;
+            case L1:
+            default:
+                System.out.println("Unhandled scoring height!");
+                break;
+        }
+
+        return height;
+    }
+
+    /**
+     * Compute the fiducial offset we should use when attempting to socre on the 
+     * given side and level of the reef.
+     * @param side the branch side we intend to score on
+     * @param level the branch level we intend to score on
+     * @return the fiducial offset to accomplish scoring alignment
+     */
+    double getCoralScoringFiducialOffset(BranchSide side, ScoringLevel level) {
+        // There are few enough cases, this would be simpler with an if tree, but this makes it easier for us to add other special
+        // cases. 
+        double offset = 0.0;
+        switch (level) {
+            case L4:
+                offset = side == BranchSide.RIGHT ? Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET : Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET;
+                break;
+            case L3:
+            case L2:
+                offset = side == BranchSide.RIGHT ? Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET : Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET;
+                break;
+            case L1:
+            default:
+                System.out.println("Unhandled scoring fiducial offset!");
+                break;
+        }
+
+        return offset;
+    }
+
+    
     public Command getAutonomousCommand() {
         return autoChooserLOL.getSelected();
     }
