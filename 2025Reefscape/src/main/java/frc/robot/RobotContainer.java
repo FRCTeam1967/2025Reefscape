@@ -327,7 +327,7 @@ public class RobotContainer {
         double coralScoringAngle = getCoralScoringAngle(side, level);
         double algaeCoralScoringAngle = getAlgaeCoralScoringAngle(side, level);
         double elevatorHeight = getCoralScoringElevatorHeight(side, level);
-        double fiducialOffset = getCoralScoringFiducialOffset(side, level);
+        double fiducialOffset = getCoralScoringFiducialOffset(side, level, false);
 
         return new SequentialCommandGroup(
             new SequentialCommandGroup(
@@ -421,8 +421,7 @@ public class RobotContainer {
      * @return command sequence to perform the scoring action
      */
     private Command autoScoringSequence(BranchSide side, ScoringLevel level) {
-        // We use different fiducial offsets in auto. Since they're simpler, just use ?: here instead of a method.
-        double fiducialOffset = side == BranchSide.LEFT ? Constants.Vision.LIMELIGHT_AUTO_LEFT_OFFSET : Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET;
+        double fiducialOffset = getCoralScoringFiducialOffset(side, level, true);
         double algaeAngle = getAlgaeCoralScoringAngle(side, level);
         double coralAngle = getCoralScoringAngle(side, level);
         double elevatorHeight = getCoralScoringElevatorHeight(side, level);
@@ -628,22 +627,26 @@ public class RobotContainer {
      * @param level the branch level we intend to score on
      * @return the fiducial offset to accomplish scoring alignment
      */
-    private double getCoralScoringFiducialOffset(BranchSide side, ScoringLevel level) {
+    private double getCoralScoringFiducialOffset(BranchSide side, ScoringLevel level, boolean isAuto) {
         // There are few enough cases, this would be simpler with an if tree, but this makes it easier for us to add other special
         // cases. 
         double offset = 0.0;
-        switch (level) {
-            case L4:
-                offset = side == BranchSide.RIGHT ? Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET : Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET;
-                break;
-            case L3:
-            case L2:
-                offset = side == BranchSide.RIGHT ? Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET : Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET;
-                break;
-            case L1:
-            default:
-                System.out.println("Unhandled scoring fiducial offset!");
-                break;
+        if (isAuto) {
+            offset = side == BranchSide.LEFT ? Constants.Vision.LIMELIGHT_AUTO_LEFT_OFFSET : Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET;
+        } else {
+            switch (level) {
+                case L4:
+                    offset = side == BranchSide.RIGHT ? Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET : Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET;
+                    break;
+                case L3:
+                case L2:
+                    offset = side == BranchSide.RIGHT ? Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET : Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET;
+                    break;
+                case L1:
+                default:
+                    System.out.println("Unhandled scoring fiducial offset!");
+                    break;
+            }
         }
 
         return offset;
