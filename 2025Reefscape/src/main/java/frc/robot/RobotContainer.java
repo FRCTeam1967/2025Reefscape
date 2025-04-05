@@ -329,11 +329,20 @@ public class RobotContainer {
         double elevatorHeight = getCoralScoringElevatorHeight(side, level);
         double fiducialOffset = getCoralScoringFiducialOffset(side, level, false);
 
+        // WARNING! We can allow the driver to keep driving the robot through most of this command sequence by using a 
+        // proxy command for the align portion of the command. It's critical that the subsystem(s) being used by any 
+        // proxy commands are *only* used by other proxy commands in this sequence, or else the whole sequence will
+        // cancel itself as soon as the proxied command starts running.
+        Command conditionalAlignCommand = new ConditionalCommand(new AlignBranch(drivetrain, vision), new PrintCommand("Vision disabled; skipping alignment"), () -> !vision.isVisionDisabled());
+        if (Constants.RobotBehavior.allowDriveInputWhileScoring) {
+            conditionalAlignCommand = conditionalAlignCommand.asProxy();
+        }
+
         return new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, fiducialOffset, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision), new PrintCommand("Vision disabled; skipping alignment"), () -> !vision.isVisionDisabled())
+                conditionalAlignCommand
             ),
             new MoveElevator(elevator, elevatorHeight, algaeMechanism),
             new ParallelCommandGroup(

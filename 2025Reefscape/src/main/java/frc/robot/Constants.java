@@ -32,8 +32,8 @@ public final class Constants {
     RIGHT
   };
 
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+  public static class RobotBehavior {
+    public static boolean allowDriveInputWhileScoring = false;
   }
 
   //paste here >>>
