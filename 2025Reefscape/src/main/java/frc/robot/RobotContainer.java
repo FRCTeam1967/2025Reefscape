@@ -90,8 +90,8 @@ public class RobotContainer {
     public ShuffleboardTab limelightTab = Shuffleboard.getTab("Limelight");
 
     public RobotContainer() {
-        NamedCommands.registerCommand("Remove Algae L2", algaeRemovalL2Sequence());
-        NamedCommands.registerCommand("Remove Algae L3", algaeRemovalL3Sequence());
+        NamedCommands.registerCommand("Remove Algae L2", algaeRemovalSequence(ScoringLevel.L2));
+        NamedCommands.registerCommand("Remove Algae L3", algaeRemovalSequence(ScoringLevel.L3));
         NamedCommands.registerCommand("Intake Coral", autoIntakeCoralSequence());
         NamedCommands.registerCommand("Align and Score Coral Right L2", autoScoringSequence(BranchSide.RIGHT, ScoringLevel.L2));
         NamedCommands.registerCommand("Align and Score Coral Right L3", autoScoringSequence(BranchSide.RIGHT, ScoringLevel.L3));
@@ -242,10 +242,10 @@ public class RobotContainer {
         getOperatorTrigger(CommandPS4Controller::R2, buttonBoxL, 11).whileTrue(coralIntakeSequence());
         
         //ALGAE L2 REMOVAL
-        getOperatorTrigger(CommandPS4Controller::povDown, buttonBoxL, 2).whileTrue(algaeRemovalL2Sequence());
+        getOperatorTrigger(CommandPS4Controller::povDown, buttonBoxL, 2).whileTrue(algaeRemovalSequence(ScoringLevel.L2));
 
         //ALGAE L3 REMOVAL
-        getOperatorTrigger(CommandPS4Controller::povUp, buttonBoxL, 3).whileTrue(algaeRemovalL3Sequence());
+        getOperatorTrigger(CommandPS4Controller::povUp, buttonBoxL, 3).whileTrue(algaeRemovalSequence(ScoringLevel.L3));
 
         //ALGAE GROUND INTAKE
         getOperatorTrigger(CommandPS4Controller::L2, buttonBoxL, 4).whileTrue(algaeGroundIntakeSequence());
@@ -355,17 +355,10 @@ public class RobotContainer {
         );
     }
 
-    private Command algaeRemovalL3Sequence() {
+    private Command algaeRemovalSequence(ScoringLevel level) {
+        assert(level == ScoringLevel.L2 || level == ScoringLevel.L3);
         return new SequentialCommandGroup(
-            new MoveElevator(elevator, Constants.Elevator.ALGAE_L3_HEIGHT, algaeMechanism),
-            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
-            new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
-        );
-    }
-
-    private Command algaeRemovalL2Sequence() {
-        return new SequentialCommandGroup(
-            new MoveElevator(elevator, Constants.Elevator.ALGAE_L2_HEIGHT, algaeMechanism),
+            new MoveElevator(elevator, level == ScoringLevel.L3 ? Constants.Elevator.ALGAE_L3_HEIGHT : Constants.Elevator.ALGAE_L2_HEIGHT, algaeMechanism),
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
         );
