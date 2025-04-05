@@ -98,11 +98,11 @@ public class RobotContainer {
         NamedCommands.registerCommand("Remove Algae L2", algaeRemovalL2Sequence());
         NamedCommands.registerCommand("Remove Algae L3", algaeRemovalL3Sequence());
         NamedCommands.registerCommand("Intake Coral", autoIntakeCoralSequence());
-        NamedCommands.registerCommand("Align and Score Coral Right L2", autoScoreRightL2Sequence());
-        NamedCommands.registerCommand("Align and Score Coral Right L3", autoScoreRightL3Sequence());
-        NamedCommands.registerCommand("Align and Score Coral Right L4", autoScoreRightL4Sequence());
-        NamedCommands.registerCommand("Align and Score Coral Left L2", autoScoreLeftL2Sequence());
-        NamedCommands.registerCommand("Align and Score Coral Left L4", autoScoreLeftL4Sequence());
+        NamedCommands.registerCommand("Align and Score Coral Right L2", autoScoringSequence(BranchSide.RIGHT, ScoringLevel.L2));
+        NamedCommands.registerCommand("Align and Score Coral Right L3", autoScoringSequence(BranchSide.RIGHT, ScoringLevel.L3));
+        NamedCommands.registerCommand("Align and Score Coral Right L4", autoScoringSequence(BranchSide.RIGHT, ScoringLevel.L4));
+        NamedCommands.registerCommand("Align and Score Coral Left L2", autoScoringSequence(BranchSide.LEFT, ScoringLevel.L2));
+        NamedCommands.registerCommand("Align and Score Coral Left L4", autoScoringSequence(BranchSide.LEFT, ScoringLevel.L4));
         NamedCommands.registerCommand("Score Processor", autoScoreProcessorSequence()); //maybe change to 2.5
         NamedCommands.registerCommand("Center and Z Align", autoCenterAndZAlignSequence());
     
@@ -406,101 +406,53 @@ public class RobotContainer {
         );
     }
 
-    private Command autoScoreLeftL4Sequence() {
-        return new SequentialCommandGroup(
+    /**
+     * Construct an auto scoring sequence for scoring on the given branch side and level.
+     * @param side side of the reef to be scored on
+     * @param level level to be scored on (must be L4/L3/L2)
+     * @return command sequence to perform the scoring action
+     */
+    private Command autoScoringSequence(BranchSide side, ScoringLevel level) {
+        // We use different fiducial offsets in auto. Since they're simpler, just use ?: here instead of a method.
+        double fiducialOffset = side == BranchSide.LEFT ? Constants.Vision.LIMELIGHT_AUTO_LEFT_OFFSET : Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET;
+        double algaeAngle = getAlgaeCoralScoringAngle(side, level);
+        double coralAngle = getCoralScoringAngle(side, level);
+        double elevatorHeight = getCoralScoringElevatorHeight(side, level);
+
+        // Not sure if this is intentional, but the right L2 scoring sequence omits the last part of the sequence used by 
+        // all of the others. (Also, there is no left L3 sequence defined, but this method could now create one.)
+        // I'm replicating this right L2 behavior, so you can see how one could do that, but it's probably a bug since the 
+        // right L2 sequence doesn't do this.
+
+        var commandSequence =  new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_AUTO_LEFT_OFFSET, 0.0)),
+                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, fiducialOffset, 0.0)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                 // new ZAlign(drivetrain, vision).withTimeout(3),
                 new AlignBranch(drivetrain, vision)
             ),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
+            new MoveElevator(elevator, elevatorHeight, algaeMechanism),
+            new MoveAlgaePivot(algaeMechanism, algaeAngle).withTimeout(1), 
+            new MoveCoralPivot(coralPivot, coralAngle).withTimeout(1),
             //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
+            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)
+        );
+
+        // Trailing sequence used by all command sequences except for right L2 for some reason...
+        var additionalCommands = new SequentialCommandGroup(
             new ParallelCommandGroup(
                 new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(3),
             new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism)
         );
-    }
 
-    private Command autoScoreLeftL2Sequence() {
-        return new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
-                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
-                new AlignBranch(drivetrain, vision)
-            ),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
-            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
-            new ParallelCommandGroup(
-                new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2),
-            new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism)
-        );
-    }
+        // Add the trailing sequence to all command sequences except right/L2.
+        if (!(side == BranchSide.RIGHT && level == ScoringLevel.L2)) {
+            commandSequence.addCommands(additionalCommands);
+        }
 
-    private Command autoScoreRightL4Sequence() {
-        return new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
-                // new ZAlign(drivetrain, vision).withTimeout(3),
-                new AlignBranch(drivetrain, vision)
-            ),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(1),
-            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
-            new ParallelCommandGroup(
-                new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2),
-            new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism)
-        );
-    }
-
-    private Command autoScoreRightL3Sequence() {
-        return new SequentialCommandGroup(
-            new SequentialCommandGroup( // horizontal align
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
-                new AlignBranch(drivetrain, vision)
-            ),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
-            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
-            new ParallelCommandGroup(
-                new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2),
-            new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism)
-        );
-    }
-
-    private Command autoScoreRightL2Sequence() {
-        return new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
-                new AlignBranch(drivetrain, vision)
-            ),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
-            //new RunCoralIntake(coralIntake, Constants.CoralIntake.HIGH),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)
-        );
+        return commandSequence;
     }
 
     private Command autoIntakeCoralSequence() {
