@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotController;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -25,15 +26,56 @@ public final class Constants {
     L2,
     L3,
     L4
-  };
+  }
 
   public static enum BranchSide {
     LEFT,
     RIGHT
-  };
+  }
+
+  public static enum OptionalSubsystem {
+    DRIVETRAIN,
+    ELEVATOR,
+    ALGAE_PIVOT,
+    ALGAE_INTAKE,
+    CORAL_INTAKE,
+    CORAL_PIVOT,
+    VISION,
+    LED;
+  }
+
+  public static enum RobotIdentity {
+    COMPBOT("ReplaceMeWithCompSerial"),
+    JANKYBOT("ReplaceMeWithJankySerial"),
+    UNKNOWN("Agrajag"),
+    SIMULATOR("");
+
+    public String serialNumber;
+    private RobotIdentity(String serialNumber) {
+      this.serialNumber = serialNumber;
+    }
+
+    public static RobotIdentity discover() {
+      String mySerial = RobotController.getSerialNumber();
+      for (RobotIdentity identity: RobotIdentity.values()) {
+        if (mySerial.equals(identity.serialNumber)) {
+          System.out.println("My identity appears to be: " + identity);
+          return identity;
+        }
+      }
+
+      System.out.println("I don't know who I am!? Please register my serial number: " + mySerial);
+      return UNKNOWN;
+    }
+  }
 
   public static class RobotBehavior {
     public static boolean allowDriveInputWhileScoring = false;
+    public static boolean stubOutCommandSequeunces = false;
+  }
+
+  public static class RobotConfiguration {
+    public static RobotIdentity identity = RobotIdentity.discover();
   }
 
   //paste here >>>

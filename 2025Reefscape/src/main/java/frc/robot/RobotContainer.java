@@ -6,6 +6,8 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.lang.StackWalker.StackFrame;
+import java.util.ArrayList;
 import java.util.function.Function;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -25,17 +27,20 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.Xbox;
 import frc.robot.Constants.BranchSide;
+import frc.robot.Constants.OptionalSubsystem;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.generated.CompTunerConstants;
+import frc.robot.generated.JankyTunerConstants;
 
 
 /**
@@ -45,8 +50,8 @@ import frc.robot.commands.*;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxSpeed;
+    private double MaxAngularRate;
     public boolean visionEnabled = true;
 
     // Replace with CommandXboxController, CommandPS4Controllerk or CommandJoystick if needed
@@ -55,27 +60,24 @@ public class RobotContainer {
     private CommandGenericHID buttonBoxR;
     private CommandXboxController joystick;
 
-    public final Elevator elevator = new Elevator();
-    public final AlgaePivot algaeMechanism = new AlgaePivot();
-    public final AlgaeIntake intake = new AlgaeIntake();
-    public final LEDSubsystem led = new LEDSubsystem();
+    public Elevator elevator;
+    public AlgaePivot algaeMechanism;
+    public AlgaeIntake intake;
+    public LEDSubsystem led;
 
-    public final CoralPivot coralPivot = new CoralPivot();
-    public final static CoralIntake coralIntake = new CoralIntake();
+    public CoralPivot coralPivot;
+    public CoralIntake coralIntake;
 
     /* Setting up bindings for necessary control of the swerve drive platform */
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private SwerveRequest.FieldCentric drive;
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+    private Telemetry logger;
 
-    public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public static CommandSwerveDrivetrain drivetrain;
 
-    public static final Vision vision = new Vision(); 
-    public static final Vision odometryVision = new Vision();
+    public Vision vision = new Vision(); 
     // public static final VisionUpdate update = new VisionUpdate(drivetrain);
 
     private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
@@ -90,6 +92,8 @@ public class RobotContainer {
     public ShuffleboardTab limelightTab = Shuffleboard.getTab("Limelight");
 
     public RobotContainer() {
+        createRobotDependentSubsystems();
+
         NamedCommands.registerCommand("Remove Algae L2", algaeRemovalSequence(ScoringLevel.L2));
         NamedCommands.registerCommand("Remove Algae L3", algaeRemovalSequence(ScoringLevel.L3));
         NamedCommands.registerCommand("Intake Coral", autoIntakeCoralSequence());
@@ -130,6 +134,48 @@ public class RobotContainer {
         coralIntake.configDashboard(matchTab);
         
         //algaeMechanism.setReltoAbs();
+    }
+
+    /**
+     * Creates subsystems that depend on which robot we're running on. Any subsystems that depend on CTRE tuner constants should be 
+     * creatred here. And any subsystems that might not be present on a robot as it's being built should be created here as well.
+     * In addition, any buttons / commands that need those subsystems need to check whther the subsystem has been created. For example,
+     * a command sequence that uses the elevator shoudln't be run if the elevator doesn't exist to avoid crashing on a null dereference.
+     * One way to handle that is to create a factory method for creating the sequence, and having that factory replace the real sequence
+     * with a PrintCommand() that prints a diagnostic message if it's triggered when the subsystems are absent.
+     */
+    private void createRobotDependentSubsystems() {
+        switch (Constants.RobotConfiguration.identity) {
+            case COMPBOT:
+            case SIMULATOR:
+            case UNKNOWN: // Assume it's compbot if we can't figure it out
+                MaxSpeed = CompTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+                MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+                drivetrain = CompTunerConstants.createDrivetrain();
+                break;
+            case JANKYBOT:
+                MaxSpeed = JankyTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+                MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+                drivetrain = JankyTunerConstants.createDrivetrain();
+            break;
+            default:
+                System.out.println("Who am I?");
+                break;
+        }
+
+        drive = new SwerveRequest.FieldCentric()
+            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+
+        logger = new Telemetry(MaxSpeed);
+
+        elevator = new Elevator();
+        algaeMechanism = new AlgaePivot();
+        intake = new AlgaeIntake();
+        led = new LEDSubsystem();
+        coralPivot = new CoralPivot();
+        coralIntake = new CoralIntake();
+        vision = new Vision();    
     }
 
     private void configureBindings() {
@@ -187,11 +233,21 @@ public class RobotContainer {
         new ZAlign(drivetrain, vision)));
 
         //DEFAULT COMMANDS
-        algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.Algae.SAFE));
-        elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism));
-        coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
-        intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.03));
-        led.setDefaultCommand(new BlackLED(led));
+        if (algaeMechanism != null) {
+            algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.Algae.SAFE));
+        }
+        if (elevator != null) {
+            elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism));
+        }
+        if (coralPivot != null) {
+            coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
+        }
+        if (intake != null) {
+            intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.03));
+        }
+        if (led != null) {
+            led.setDefaultCommand(new BlackLED(led));
+        }
 
         //RESET GYRO
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -287,15 +343,24 @@ public class RobotContainer {
     // Factory methods that return command sequences to be used in button bindings
 
     private Command realBargeScoringSequence() {
+        var substituteCommand = substitueCommand(OptionalSubsystem.CORAL_PIVOT, OptionalSubsystem.CORAL_INTAKE);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
         return new SequentialCommandGroup(
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1).withTimeout(1),
             new RunCoralOuttake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1)
-
-            );
+        );
     }
 
     // If the above is "real" barge scoring, is this fake scoring?!
     private Command bargeScoringSequence() {
+        var substituteCommand = substitueCommand(OptionalSubsystem.ELEVATOR, OptionalSubsystem.CORAL_PIVOT, OptionalSubsystem.ALGAE_PIVOT, OptionalSubsystem.ALGAE_INTAKE);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
                 new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
@@ -324,6 +389,11 @@ public class RobotContainer {
      * difference in not intentional.
      */
     private Command coralScoringSequence(BranchSide side, ScoringLevel level) {
+        var substituteCommand = substitueCommand(OptionalSubsystem.ELEVATOR, OptionalSubsystem.ALGAE_INTAKE, OptionalSubsystem.CORAL_INTAKE, OptionalSubsystem.CORAL_PIVOT, OptionalSubsystem.VISION);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
         double coralScoringAngle = getCoralScoringAngle(side, level);
         double algaeCoralScoringAngle = getAlgaeCoralScoringAngle(side, level);
         double elevatorHeight = getCoralScoringElevatorHeight(side, level);
@@ -338,7 +408,7 @@ public class RobotContainer {
             conditionalAlignCommand = conditionalAlignCommand.asProxy();
         }
 
-        return new SequentialCommandGroup(
+        var command = new SequentialCommandGroup(
             new SequentialCommandGroup(
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, fiducialOffset, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism), () -> !vision.isVisionDisabled()),
@@ -354,27 +424,48 @@ public class RobotContainer {
                 new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(2));
+
+            return command;
     }
 
     private Command algaeGroundIntakeSequence() {
-        return new SequentialCommandGroup(
+        var substituteCommand = substitueCommand(OptionalSubsystem.ELEVATOR, OptionalSubsystem.ALGAE_INTAKE, OptionalSubsystem.ALGAE_PIVOT);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
+        var command = new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.GROUND_INTAKE_HEIGHT),
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
         );
+
+        return command;
     }
 
     private Command algaeRemovalSequence(ScoringLevel level) {
+        var substituteCommand = substitueCommand(OptionalSubsystem.ELEVATOR, OptionalSubsystem.ALGAE_PIVOT, OptionalSubsystem.ALGAE_INTAKE);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
         assert(level == ScoringLevel.L2 || level == ScoringLevel.L3);
-        return new SequentialCommandGroup(
+        var command = new SequentialCommandGroup(
             new MoveElevator(elevator, level == ScoringLevel.L3 ? Constants.Elevator.ALGAE_L3_HEIGHT : Constants.Elevator.ALGAE_L2_HEIGHT, algaeMechanism),
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
         );
+
+        return command;
     }
 
     private Command coralIntakeSequence() {
-        return new SequentialCommandGroup(
+        var substituteCommand = substitueCommand(OptionalSubsystem.CORAL_PIVOT, OptionalSubsystem.CORAL_INTAKE);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
+        var command = new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_INTAKE),
                 new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY)
@@ -388,39 +479,64 @@ public class RobotContainer {
             //new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
             //new RunCoralSecondIntake(coralIntake, Constants.CoralIntake.VELOCITY)
         );
+
+        return command;
     }
 
     private Command scoreProcessorSequence() {
-        return new SequentialCommandGroup(
+        var substituteCommand = substitueCommand(OptionalSubsystem.ELEVATOR, OptionalSubsystem.ALGAE_PIVOT, OptionalSubsystem.ALGAE_INTAKE);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
+        var command = new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.PROCESSOR_HEIGHT, algaeMechanism),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT), 
                 new RunAlgaeIntake(intake, Constants.Algae.ALGAE_DEFAULT_SPEED)).withTimeout(0.75),
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_OUTTAKE_SPEED).withTimeout(2)
         );
+
+        return command;
     } 
 
     // Auto command factories
 
     private Command autoCenterAndZAlignSequence() {
-        return new SequentialCommandGroup(
+        var substituteCommand = substitueCommand(OptionalSubsystem.ELEVATOR, OptionalSubsystem.ALGAE_PIVOT, OptionalSubsystem.DRIVETRAIN, OptionalSubsystem.VISION);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
+        var command = new SequentialCommandGroup(
             new SequentialCommandGroup( // center align
                 new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, Constants.Vision.LIMELIGHT_ALIGN_CENTER_OFFSET)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                 new AlignBranch(drivetrain, vision)
             ),
             new SequentialCommandGroup(
-                new ZAlign(drivetrain, vision).withTimeout(2)));
+                new ZAlign(drivetrain, vision).withTimeout(2)
+            )
+        );
+
+        return command;
     }
 
     private Command autoScoreProcessorSequence() {
-        return new SequentialCommandGroup(
+        var substituteCommand = substitueCommand(OptionalSubsystem.ALGAE_PIVOT, OptionalSubsystem.ALGAE_INTAKE, OptionalSubsystem.CORAL_PIVOT);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
+        var command = new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT),
                 new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(2
         );
+
+        return command;
     }
 
     /**
@@ -430,6 +546,11 @@ public class RobotContainer {
      * @return command sequence to perform the scoring action
      */
     private Command autoScoringSequence(BranchSide side, ScoringLevel level) {
+        var substituteCommand = substitueCommand(OptionalSubsystem.ELEVATOR, OptionalSubsystem.ALGAE_PIVOT, OptionalSubsystem.CORAL_PIVOT, OptionalSubsystem.CORAL_INTAKE, OptionalSubsystem.DRIVETRAIN, OptionalSubsystem.VISION);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
         double fiducialOffset = getCoralScoringFiducialOffset(side, level, true);
         double algaeAngle = getAlgaeCoralScoringAngle(side, level);
         double coralAngle = getCoralScoringAngle(side, level);
@@ -472,7 +593,12 @@ public class RobotContainer {
     }
 
     private Command autoIntakeCoralSequence() {
-        return new SequentialCommandGroup(
+        var substituteCommand = substitueCommand(OptionalSubsystem.CORAL_INTAKE);
+        if (substituteCommand != null) {
+            return substituteCommand;
+        }
+
+        var command = new SequentialCommandGroup(
             //new ParallelRaceGroup(
                 //new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST),
                 //new MoveElevator(elevator, Constants.Elevator.CORAL_STATION),
@@ -480,6 +606,7 @@ public class RobotContainer {
                 new WaitCommand(0.1),
                 new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
         );
+        return command;
     }
     
     // Helper methods
@@ -660,6 +787,74 @@ public class RobotContainer {
 
         return offset;
     }
+
+    /**
+     * Returns a substitute command to be run if the given requirements are not met -- meaning those subsystems are not
+     * initialized on this robot. This is generally used by command factory methods to prevent constructing command
+     * sequences with null subsystems. Adding null as a requirement in a command results in an exception, so this 
+     * method should be used before command construction begins.
+     * @param requirements list of subsystems that are required by may not have been initialized
+     * @return returns a substitute command if one is needed, otherwise null if all requirements are met
+     */
+    private Command substitueCommand(OptionalSubsystem... requirements) {
+        ArrayList<String> missing = new ArrayList<>();
+        for (OptionalSubsystem requirement : requirements) {
+            boolean isPresent = false;
+            switch (requirement) {
+                case DRIVETRAIN:
+                    isPresent = (drivetrain != null);
+                    break;
+                case ELEVATOR:
+                    isPresent = (elevator != null);
+                    break;
+                case ALGAE_PIVOT:
+                    isPresent = (algaeMechanism != null);
+                    break;
+                case ALGAE_INTAKE:
+                    isPresent = (intake != null);
+                    break;
+                case CORAL_INTAKE:
+                    isPresent = (coralIntake != null);
+                    break;
+                case CORAL_PIVOT:
+                    isPresent = (coralPivot != null);
+                    break;
+                case LED:
+                    isPresent = (led != null);
+                    break;
+                case VISION:
+                    isPresent = (vision != null);
+                    break;
+            }
+            if (!isPresent) {
+                missing.add(requirement.name());
+            }
+        }
+
+        if (Constants.RobotBehavior.stubOutCommandSequeunces) {
+            return new PrintCommand("A command created by " + getCallerMethodName() + " was invoked");
+        } else if (!missing.isEmpty()) {
+            return new PrintCommand(getCallerMethodName() + " is missing required subsystems: " + missing);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Uses the StackWalker mechanism to find the caller of the method calling this method.
+     * @return Name of the method calling the one that called this method -- i.e., the grandparent caller of this one.
+     */
+    public static String getCallerMethodName() {
+        // Using StackWalker (Java 9 and later)
+        return StackWalker.getInstance()
+                .walk(frames -> frames
+                        .skip(2) // Skip getCallerMethodName and its caller
+                        .findFirst()
+                        .map(StackFrame::getMethodName)
+                        .orElse(null));
+    }
+
+
     
     public Command getAutonomousCommand() {
         return autoChooserLOL.getSelected();
