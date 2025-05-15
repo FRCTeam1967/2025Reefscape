@@ -116,12 +116,18 @@ public class CoralIntake extends SubsystemBase {
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.addBoolean("IntakeBeamBreak?", ()-> !(intakeBeamBreak.get()));
-      tab.addBoolean("TunnelBeamBreak?", ()-> !(tunnelBeamBreak.get()))
-      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(6, 0)
+      tab.addBoolean("IntakeBeamBreak?", ()-> !(intakeBeamBreak.get()))
+      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 1)
       .withSize(1, 1);
-      tab.addDouble("Intake Rel Pos",()->(intakeMotor.getRotorPosition().getValueAsDouble()));
-      tab.addBoolean("isReached",()->(intakeMotor.getRotorPosition().getValueAsDouble() >= Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL));
+      tab.addBoolean("TunnelBeamBreak?", ()-> !(tunnelBeamBreak.get()))
+      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 1)
+      .withSize(1, 1);
+      tab.addDouble("Intake Rel Pos",()->(intakeMotor.getRotorPosition().getValueAsDouble()))
+      .withWidget(BuiltInWidgets.kTextView).withPosition(6, 0)
+      .withSize(1, 1);
+      tab.addBoolean("isReached",()->(intakeMotor.getRotorPosition().getValueAsDouble() >= Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL))
+      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 2)
+      .withSize(1, 1);
 
    }
 
