@@ -11,10 +11,14 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.RobotContainer;
 import frc.robot.commands.AlignBranch;
 
 public class Vision extends SubsystemBase {
@@ -38,6 +42,7 @@ public class Vision extends SubsystemBase {
   private ChassisSpeeds alignSpeed = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   private boolean isInRange = false;
+  private SuppliedValueWidget isRight;
   
   /** Creates new Vision */
   public Vision() {
@@ -94,29 +99,30 @@ public class Vision extends SubsystemBase {
     .withSize(3, 2);
     tab.add(httpCamera2).withWidget(BuiltInWidgets.kCameraStream).withPosition(3, 0)
     .withSize(3, 2);
+
     tab.addBoolean("LL isInRange", () -> getInRange())
     .withWidget(BuiltInWidgets.kBooleanBox).withPosition(6, 1)
     .withSize(1, 1);
 
-    tab.addDouble("LL xOffset", () -> limelightTable.getEntry("tx")
-    .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
-    .withPosition(7, 0).withSize(1, 1);
-
-    tab.addDouble("LL yOffset", () -> limelightTable.getEntry("ty")
+    tab.addDouble("LL xOffset - Left/Right", () -> limelightTable.getEntry("tx")
     .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
     .withPosition(7, 1).withSize(1, 1);
 
-    tab.addDouble("LL zOffset", () -> limelightTable.getEntry("tz")
+    tab.addDouble("LL yOffset - Up/Down", () -> limelightTable.getEntry("ty")
+    .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
+    .withPosition(7, 1).withSize(1, 1);
+
+    tab.addDouble("LL zOffset - Forward/Backward", () -> limelightTable.getEntry("tz")
     .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
     .withPosition(7, 2).withSize(1, 1);
 
-    tab.addDouble("LL alignmentSpeedY", () -> alignSpeed.vyMetersPerSecond)
-    .withPosition(7, 3).withSize(1, 1);
+    // tab.addDouble("LL alignmentSpeedY", () -> alignSpeed.vyMetersPerSecond)
+    // .withPosition(7, 3).withSize(1, 1);
 
-    tab.addDouble("LL alignmentSpeedX", () -> alignSpeed.vxMetersPerSecond)
-    .withPosition(7, 4).withSize(1, 1);
+    // tab.addDouble("LL alignmentSpeedX", () -> alignSpeed.vxMetersPerSecond)
+    // .withPosition(7, 4).withSize(1, 1);
 
-    tab.addDouble("alignment z fiducial", () -> Constants.Vision.LIMELIGHT_ALIGN_Z_OFFSET).withWidget(BuiltInWidgets.kTextView);
+    // tab.addDouble("alignment z fiducial", () -> Constants.Vision.LIMELIGHT_ALIGN_Z_OFFSET).withWidget(BuiltInWidgets.kTextView);
   }
 
   /**
@@ -127,6 +133,10 @@ public class Vision extends SubsystemBase {
     if (isVision) limelightTable.getEntry("pipeline").setNumber(0);
     else limelightTable.getEntry("pipeline").setNumber(1);
   }
+
+  // public void setFiducials() {
+  //     new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0));
+  // }
 
   /** @return value of xOffset */
   public double getAlignmentOffset() {
@@ -157,6 +167,14 @@ public class Vision extends SubsystemBase {
   }
 
   public boolean getInRange() {
+    updateAlignmentValues();
+    
+    if (xAlignmentOffset > -1.5 && xAlignmentOffset < 1.5){
+      isInRange = true;
+    } else {
+      isInRange = false;
+    }
+    
     return isInRange;
   }
 

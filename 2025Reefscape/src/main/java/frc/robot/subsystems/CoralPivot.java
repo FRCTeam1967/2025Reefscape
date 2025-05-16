@@ -101,8 +101,9 @@ public class CoralPivot extends SubsystemBase {
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.addNumber("CPivotRelPosDeg",() -> (pivotMotor.getRotorPosition()
-      .getValueAsDouble()/Constants.CoralPivot.GEAR_RATIO)*360).withWidget(BuiltInWidgets.kTextView)
+      tab.addNumber("CPivotRelPosDeg",() -> ((pivotMotor.getRotorPosition()
+      .getValueAsDouble())/Constants.CoralPivot.GEAR_RATIO)*360)
+      .withWidget(BuiltInWidgets.kTextView)
       .withPosition(7, 0).withSize(1, 1);
       tab.addBoolean("CPivot At Target", () -> isReached()).withWidget(BuiltInWidgets.kBooleanBox)
       .withPosition(0, 1).withSize(1, 1);
