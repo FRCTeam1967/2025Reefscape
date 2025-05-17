@@ -468,24 +468,23 @@ public class RobotContainer {
         //BARGE SCORING 
         buttonBoxL.button(8).or(operatorController.povLeft()).whileTrue(
         new SequentialCommandGroup(
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE).withTimeout(2),
             new ParallelCommandGroup(
-                new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
+                new MoveElevator(elevator, Constants.Elevator.BARGE_SCORING_ALMOST_HEIGHT, algaeMechanism),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(2),
             new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE).withTimeout(2),
-                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE).withTimeout(5)
-            )
+                new MoveElevator(elevator, Constants.Elevator.BARGE_SCORING_HEIGHT, algaeMechanism),
+                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE)
+            ).withTimeout(5)
         ));
 
         joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
         
-        //REAL BARGE SCORING 
+        //L1 SCORING 
         buttonBoxR.button(1).or(operatorController.circle()).whileTrue(new SequentialCommandGroup(
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1).withTimeout(1),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1)
-
-            ));
+            new RunCoralOuttake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1)));
 
         //BARGE SCORING
         //operatorController.circle().whileTrue(new BargeScoring(algaeMechanism, elevator, intake));

@@ -261,7 +261,8 @@ public final class Constants {
     public static final double ALGAE_L2_HEIGHT = 14.5; //16.5
     public static final double ALGAE_L3_HEIGHT = 22; //24
     public static final double VISION_HEIGHT = 20.0;
-    public static final double BARGE_SCORING_HEIGHT = 20; //TODO test/change value
+    public static final double BARGE_SCORING_ALMOST_HEIGHT = 24.0;
+    public static final double BARGE_SCORING_HEIGHT = 26.75; //TODO test/change value
 
 
     public static final double CORAL_STATION = 0.3; //0.1
@@ -352,7 +353,7 @@ public final class Constants {
     public static final double ALGAE_INTAKE_SPEED = -0.7; //TODO: maybe up the speed
     public static final double ALGAE_OUTTAKE_SPEED = 0.3; //0.425
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
-    public static final double ALGAE_BARGE_OUTTAKE = 20;
+    public static final double ALGAE_BARGE_OUTTAKE = 40; //20
     public static final double ALGAE_STOP_SPINNING = 0.0;
 
     //public static final double INTAKE_SAFE = 0.31666666666666665;
