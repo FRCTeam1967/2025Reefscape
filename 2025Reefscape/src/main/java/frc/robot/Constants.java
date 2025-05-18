@@ -148,6 +148,7 @@ public final class Constants {
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+    public static final double BARGE_POSITION = -0.1 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double CORAL_INTAKE = -6.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
 
     public static final double CORAL_REVERSE_INTAKE = 4 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
@@ -339,7 +340,7 @@ public final class Constants {
     public static final double CORAL_SCORING_ANGLE = 165* Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double EXTRA_CORAL_SCORING_ANGLE = 168 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
-    public static final double BARGE_SCORING_ANGLE = 30 * Constants.Algae.DEGREES_TO_REVOLUTIONS; //TODO test/change value
+    public static final double BARGE_SCORING_ANGLE = 25 * Constants.Algae.DEGREES_TO_REVOLUTIONS; //30 //TODO test/change value
 
     public static final double L2L3_CORAL_SCORING_ANGLE = 11 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double L4_CORAL_SCORING_ANGLE = 10 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
@@ -353,7 +354,7 @@ public final class Constants {
     public static final double ALGAE_INTAKE_SPEED = -0.7; //TODO: maybe up the speed
     public static final double ALGAE_OUTTAKE_SPEED = 0.3; //0.425
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
-    public static final double ALGAE_BARGE_OUTTAKE = 40; //20
+    public static final double ALGAE_BARGE_OUTTAKE = 100.0; //100.0 //40.0; //20
     public static final double ALGAE_STOP_SPINNING = 0.0;
 
     //public static final double INTAKE_SAFE = 0.31666666666666665;

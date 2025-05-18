@@ -469,15 +469,12 @@ public class RobotContainer {
         //BARGE SCORING 
         buttonBoxL.button(8).or(operatorController.povLeft()).or(operatorXbox.povLeft()).whileTrue(
         new SequentialCommandGroup(
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE).withTimeout(2),
-            new ParallelCommandGroup(
-                new MoveElevator(elevator, Constants.Elevator.BARGE_SCORING_ALMOST_HEIGHT, algaeMechanism),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2),
-            new ParallelCommandGroup(
+            new ParallelCommandGroup(  
                 new MoveElevator(elevator, Constants.Elevator.BARGE_SCORING_HEIGHT, algaeMechanism),
-                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE)
-            ).withTimeout(5)
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.BARGE_POSITION)
+            ).withTimeout(2),
+            new MoveAlgaePivot(algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE).withTimeout(2),
+            new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE).withTimeout(5)
         ));
 
         joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));

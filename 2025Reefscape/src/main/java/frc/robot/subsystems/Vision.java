@@ -167,13 +167,13 @@ public class Vision extends SubsystemBase {
   }
 
   public boolean getInRange() {
-    updateAlignmentValues();
+    // updateAlignmentValues();
     
-    if (xAlignmentOffset > -1.5 && xAlignmentOffset < 1.5){
-      isInRange = true;
-    } else {
-      isInRange = false;
-    }
+    // if (xAlignmentOffset > -1.5 && xAlignmentOffset < 1.5){
+    //   isInRange = true;
+    // } else {
+    //   isInRange = false;
+    // }
     
     return isInRange;
   }
