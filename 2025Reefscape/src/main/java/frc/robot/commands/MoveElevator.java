@@ -13,7 +13,7 @@ public class MoveElevator extends Command {
   private Elevator elevator;
   private double inches;
   private AlgaePivot algae;
-  private double algaeAngle;
+  private double algaeAngle = 0.0;
   //private boolean goingUp;
   /** Creates a new GoUp. */
   public MoveElevator(Elevator elevator, double inches, AlgaePivot algae) {
@@ -26,13 +26,26 @@ public class MoveElevator extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+  public MoveElevator(Elevator elevator, double inches, AlgaePivot algae, double algaePosition) {
+    this.elevator = elevator;
+    this.inches = inches;
+    this.algae = algae;
+    algaeAngle = algaePosition;
+    //this.goingUp = goingUp;
+    addRequirements(elevator);
+    addRequirements(algae);
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (inches > Constants.Elevator.SAFE){
-      algaeAngle = Constants.Algae.UP_SAFE;
+    if (algaeAngle == 0.0){
+      if (inches > Constants.Elevator.SAFE){
+        algaeAngle = Constants.Algae.UP_SAFE;
+      }
     }
-
+    
     // if (inches == Constants.Elevator.CORAL_L4_HEIGHT){
     //   algaeAngle = Constants.Algae.L4_CORAL_SCORING_ANGLE;
     // } else if (inches == Constants.Elevator.CORAL_L2_HEIGHT){

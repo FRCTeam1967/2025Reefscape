@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.Xbox;
 import frc.robot.subsystems.*;
@@ -47,6 +48,7 @@ public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     public boolean visionEnabled = true;
+    public Trigger bargeTrigger;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandPS4Controller operatorController = new CommandPS4Controller(Xbox.OPERATOR_CONTROLLER_PORT);
@@ -65,6 +67,7 @@ public class RobotContainer {
 
     public final CoralPivot coralPivot = new CoralPivot();
     public final static CoralIntake coralIntake = new CoralIntake();
+
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -230,6 +233,8 @@ public class RobotContainer {
         algaeMechanism.configDashboard(matchTab);
         coralPivot.configDashboard(matchTab);
         coralIntake.configDashboard(matchTab);
+
+        bargeTrigger = new Trigger(() -> elevator.getHeight() >= Constants.Elevator.BARGE_SCORING_ALMOST_HEIGHT);
         
         //algaeMechanism.setReltoAbs();
     }
@@ -468,14 +473,16 @@ public class RobotContainer {
 
         //BARGE SCORING 
         buttonBoxL.button(8).or(operatorController.povLeft()).or(operatorXbox.povLeft()).whileTrue(
-        new SequentialCommandGroup(
             new ParallelCommandGroup(  
-                new MoveElevator(elevator, Constants.Elevator.BARGE_SCORING_HEIGHT, algaeMechanism),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.BARGE_POSITION)
-            ).withTimeout(2),
-            new MoveAlgaePivot(algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE).withTimeout(2),
+                new MoveElevator(elevator, Constants.Elevator.BARGE_SCORING_HEIGHT, algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE),
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.BARGE_POSITION).withTimeout(2)
+            )
+        );
+
+        //buttonBoxL.button(8).or(operatorController.povLeft()).or(operatorXbox.povLeft()).and(bargeTrigger).whileTrue
+        bargeTrigger.whileTrue(
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE).withTimeout(5)
-        ));
+        );
 
         joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
         
