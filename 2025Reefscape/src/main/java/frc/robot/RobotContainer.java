@@ -81,7 +81,7 @@ public class RobotContainer {
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public static final Vision vision = new Vision(); 
-    public static final Vision odometryVision = new Vision();
+    // public static final Vision odometryVision = new Vision(); // No need to create a second one of these
     // public static final VisionUpdate update = new VisionUpdate(drivetrain);
 
     private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
