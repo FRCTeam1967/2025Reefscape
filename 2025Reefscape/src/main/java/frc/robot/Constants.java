@@ -143,7 +143,7 @@ public final class Constants {
 
     public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
-    public static final double L4 = 55.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //65 //50 //26.0 //35 works //33 works too
+    public static final double L4 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //55  //65 //50 //26.0 //35 works //33 works too
     public static final double LEFT_L4 = 65.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
@@ -207,12 +207,12 @@ public final class Constants {
     public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.43, 3))> 0 ? Math.pow(0.43, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.425
     public static final double ALIGNMENT_THRESHOLD = 1.0;
     public static final double FORWARD_ALIGNMENT_THRESHOLD = 0.0;
-    public static final double ALIGNMENT_LEFT_OFFSET = 9.76; //TODO: test at EPA
-    public static final double ALIGNMENT_RIGHT_OFFSET = -13.1; //TODO: test at EPA
+    public static final double ALIGNMENT_LEFT_OFFSET = 1.1; //9.76; //TODO: test at EPA
+    public static final double ALIGNMENT_RIGHT_OFFSET = -1.1; //-13.1; //in LL degrees //TODO: test at EPA
     public static final double ALIGNMENT_FORWARD_OFFSET = 0.0; //TODO: test at EPA //-5.16 center for left branch aligned
 
     public static final double ALIGNMENT_X_KP = -0.17;  //0.708 // Used for aligning Robot X (forward), which is "ty" in Limelight terms
-    public static final double ALIGNMENT_Y_KP = -0.17;  // Used for aligning Robot Y (side-side), which is "tx" in Limelight terms
+    public static final double ALIGNMENT_Y_KP = -0.05;  // Used for aligning Robot Y (side-side), which is "tx" in Limelight terms
   }
 
   public static class Auto {
@@ -256,7 +256,7 @@ public final class Constants {
     public static final double PROCESSOR_HEIGHT = 0.3;
     public static final double CORAL_L2_HEIGHT = 5.5; //5.25 //17 // 6.0
     public static final double CORAL_L3_HEIGHT = 13.75; //21.75; //31.75 // 14.25
-    public static final double CORAL_L4_HEIGHT = 26.75; //26.5
+    public static final double CORAL_L4_HEIGHT = 26.7; //26.5
     public static final double MAX_HEIGHT = 27;
 
     public static final double ALGAE_L2_HEIGHT = 14.5; //16.5

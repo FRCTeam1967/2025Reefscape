@@ -45,8 +45,10 @@ public class Vision extends SubsystemBase {
     limelightOdometryTable = NetworkTableInstance.getDefault().getTable("limelight-santos");
 
     targetPose = limelightTargetFiducial.getTargetPose_RobotSpace();
+    alignSpeed = new ChassisSpeeds();
     updateAlignmentValues();
     updateOdometryValues();
+
   }
 
   /** Update x offset value */
@@ -110,11 +112,11 @@ public class Vision extends SubsystemBase {
     .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
     .withPosition(7, 2).withSize(1, 1);
 
-    tab.addDouble("LL alignmentSpeedY", () -> alignSpeed.vyMetersPerSecond)
-    .withPosition(7, 3).withSize(1, 1);
+    // tab.addDouble("LL alignmentSpeedY", () -> alignSpeed.vyMetersPerSecond)
+    // .withPosition(7, 3).withSize(1, 1);
 
-    tab.addDouble("LL alignmentSpeedX", () -> alignSpeed.vxMetersPerSecond)
-    .withPosition(7, 4).withSize(1, 1);
+    // tab.addDouble("LL alignmentSpeedX", () -> alignSpeed.vxMetersPerSecond)
+    // .withPosition(7, 4).withSize(1, 1);
 
     tab.addDouble("alignment z fiducial", () -> Constants.Vision.LIMELIGHT_ALIGN_Z_OFFSET).withWidget(BuiltInWidgets.kTextView);
   }

@@ -17,7 +17,7 @@ public class AlignBranch extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
-  private static ChassisSpeeds alignmentSpeed;
+  private static ChassisSpeeds alignmentSpeed = new ChassisSpeeds();
   private boolean isLeft;
   private boolean useForward;
 
