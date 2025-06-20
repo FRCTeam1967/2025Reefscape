@@ -13,7 +13,71 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+  public static class Xbox { 
+    public static final int DRIVER_CONTROLLER_PORT = 0, OPERATOR_CONTROLLER_PORT = 1;
   }
+
+  public class Climb {
+    public static final int CLIMB_MOTOR_ID = 0;
+    public static final double VELOCITY = 0;
+    
+    public static final double kP = 0; // A position error of 2.5 rotations results in 12 V output
+    public static final double kI = 0; // no output for integrated error
+    public static final double kD = 0; // A velocity error of 1 rps results in 0.1 V output
+    public static final double kG = 0; 
+    public static final double kS = 0; 
+    public static final double kV = 0; 
+    public static final double kA = 0;
+
+    public static final double CLIMB_ENCODER_STOP_VAL = 0;
+
+    public static final double CRUISE_VELOCITY = 0;
+    public static final double ACCELERATION = 0;
+    public static final double JERK = 0;
+   }
+
+  public class Intake {
+    public static final int INTAKE_MOTOR_ID = 0;
+
+    public static final double VELOCITY = 0;
+    public static final double REVERSE_VELOCITY = 0;
+
+    public static final double INTAKE_ENCODER_STOP_VAL = 0;
+   }
+
+  public class Pivot {
+    public static final int PIVOT1_ID = 0;
+    public static final int PIVOT2_ID = 0;
+    
+    public static final double GEAR_RATIO = 0/0;
+
+    public static final double CRUISE_VELOCITY = 0.0;
+    public static final double ACCELERATION = 0.0;
+    public static final double JERK = 0.0;
+    
+    public static final double CONVERSION_FACTOR = 0.0;
+
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kS = 0.0;
+    public static final double kV = 0.0;
+    public static final double kA = 0.0;
+
+    public static final double ERROR_THRESHOLD = 0.0;
+    public static final double FEED_FORWARD = 0.0;
+
+    public static final double CORAL_GROUND_INTAKE = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double CORAL_L1 = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    
+    public static final double ALGAE_INTAKE = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double ALGAE_PROCESSOR = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+
+    public static final double PRE_CLIMB = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double CLIMB = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+
+    public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
+    public static final double CURRENT_LIMIT = 40;
+  }
+   
 }

@@ -4,13 +4,28 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import static edu.wpi.first.units.Units.*;
+
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.Xbox;
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,45 +34,98 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+    private final CommandPS4Controller operatorController = new CommandPS4Controller(Xbox.OPERATOR_CONTROLLER_PORT);
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    //private final CommandXboxController operatorController = new CommandXboxController(Xbox.OPERATOR_CONTROLLER_PORT);
+    private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController operatorXbox = new CommandXboxController(2);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-  }
+    public final Intake intake = new Intake();
+    public final Climb climb = new Climb();
+    public final Pivot pivot = new Pivot();
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    public static ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
+    public ShuffleboardTab fieldTab = Shuffleboard.getTab("Field");
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  }
+    public RobotContainer() {
+        NamedCommands.registerCommand("Coral Ground Intake", new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE),
+            new RunIntake(intake, Constants.Intake.VELOCITY))
+        );
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
-  }
+        NamedCommands.registerCommand("Coral L1", new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
+            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+        );
+
+        NamedCommands.registerCommand("Algae Intake", new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
+            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+        );
+
+        NamedCommands.registerCommand("Algae Processor", new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR),
+            new RunIntake(intake, Constants.Intake.VELOCITY))
+        );
+
+        NamedCommands.registerCommand("Algae Descore", new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
+            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+        );
+
+        NamedCommands.registerCommand("Climb", new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.PRE_CLIMB),
+            new RunClimb(climb, Constants.Climb.VELOCITY),
+            new MovePivot(pivot, Constants.Pivot.CLIMB)
+        ));
+
+        configureBindings();
+        intake.configDashboard(matchTab);
+        climb.configDashboard(matchTab);
+        pivot.configDashboard(matchTab);
+
+    }
+    
+    private void configureBindings() {
+        //DEFAULT COMMANDS
+        pivot.setDefaultCommand(new MovePivot(pivot, Constants.Pivot.PRE_CLIMB));
+        intake.setDefaultCommand(new RunIntake(intake, 0.0));
+        
+        //GROUND INTAKE
+        operatorController.R2().or(operatorXbox.rightTrigger()).whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE),
+            new RunIntake(intake, Constants.Intake.VELOCITY))
+        );
+
+        //CORAL L1 
+        operatorController.cross().or(operatorXbox.a()).whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
+            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+        );
+
+        //ALGAE INTAKE
+        operatorController.L2().or(operatorXbox.leftTrigger()).whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
+            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+        );
+
+        //ALGAE PROCESSOR
+        operatorController.R1().or(operatorXbox.rightBumper()).whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR),
+            new RunIntake(intake, Constants.Intake.VELOCITY))
+        );
+
+        //ALGAE DESCORE
+        operatorController.povDown().or(operatorXbox.povDown()).whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
+            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+        );
+
+        //CLIMB
+        operatorController.square().or(operatorXbox.x()).whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.PRE_CLIMB),
+            new RunClimb(climb, Constants.Climb.VELOCITY),
+            new MovePivot(pivot, Constants.Pivot.CLIMB)
+        ));
+    } 
 }
