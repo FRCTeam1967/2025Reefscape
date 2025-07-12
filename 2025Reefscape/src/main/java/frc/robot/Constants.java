@@ -352,5 +352,15 @@ public final class Constants {
   }
 
   public static final double ROBOT_PERIOD = 0;
+
+  public static final class Logging {
+    public static final boolean enabled = true;         // Setting to disabled with make most log calls do nothing.
+
+    public static final boolean captureDS = true;       // Include DriverStation logging such as joystick inputs?
+    public static final boolean captureNT = false;      // Include NetworkTable entries?
+    public static final boolean captureConsole = false; // Include console messages (println statements)
+    public static final boolean capturePDH = false;     // Include current information from the PDP/PDH? Capture extras must be true.
+    public static final boolean captureExtras = false;  // Capture "extras" like CAN utilization
+  }
   
 }

@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -50,14 +51,23 @@ public class AlignBranch extends Command {
      */
     @Override
     public void execute() {
+      // It's poor practice to check the same value more than once because it could change between checks. But I'm trying to
+      // minimize code changes.
+      boolean canSeeTag = vision.getAlignmentCheck() != 0.0; // Also poor that this is a double, but that's what Limelight does...
+      DogLog.log("AlignBranch/seesTag", canSeeTag);
+
+      // This should be refactored. Have the branches set chassis speeds, and then set the control at the end.
       if (vision.getAlignmentCheck() == 0) {
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0.0, 0.0);   
+        DogLog.log("AlignBranch/appliedChassisSpeeds", chassisSpeeds);
         drivetrain.setControl(request.withSpeeds(chassisSpeeds));
       } else {
         alignmentOffset = vision.getAlignmentOffset();
+        DogLog.log("AlignBranch/offset", alignmentOffset);
         if (alignmentOffset >= 1.0){ //3.0
           xSpeed = -Constants.Vision.ALIGNMENT_SPEED;
           chassisSpeeds = new ChassisSpeeds(0, xSpeed, 0.0);
+          DogLog.log("AlignBranch/appliedChassisSpeeds", chassisSpeeds);
           drivetrain.setControl(request.withSpeeds(chassisSpeeds));
           vision.setInRangeFalse();
         } else if (alignmentOffset < 1.0 && alignmentOffset >= -1.0) { //0.0 //3.0 and -1.0
@@ -65,6 +75,7 @@ public class AlignBranch extends Command {
         } else {
           xSpeed = Constants.Vision.ALIGNMENT_SPEED;
           chassisSpeeds = new ChassisSpeeds(0.0, xSpeed, 0.0);
+          DogLog.log("AlignBranch/appliedChassisSpeeds", chassisSpeeds);
           drivetrain.setControl(request.withSpeeds(chassisSpeeds));
           vision.setInRangeFalse();
         }
