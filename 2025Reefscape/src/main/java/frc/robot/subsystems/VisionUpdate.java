@@ -9,7 +9,6 @@ import frc.robot.LimelightHelpers;
 
 import com.ctre.phoenix6.Utils;
 
-import dev.doglog.DogLog;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -48,12 +47,6 @@ public class VisionUpdate extends SubsystemBase {
     LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
     boolean doRejectUpdate = false;
 
-    DogLog.log("VisionUpdate/drivetrainRotation", drivetrainRotation);
-    DogLog.log("VisionUpdate/pigeonYaw", pigeonYaw);
-    DogLog.log("VisionUpdate/tagCount", mt2 != null ? mt2.tagCount : 0);
-    DogLog.log("VisionUpdate/drivetrainRawHeading", rawHeading);
-    DogLog.log("VisionUpdate/drivetrainPose", robotPose);
-
     // If we don't see any tags, the pose can't be good
     if(mt2.tagCount == 0) {
       doRejectUpdate = true;
@@ -61,14 +54,11 @@ public class VisionUpdate extends SubsystemBase {
     if(!doRejectUpdate) {
       drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
       drivetrain.addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
-      DogLog.log("VisionUpdate/mt2Pose", mt2.pose);
       limelightPublisher.set(mt2.pose);
       updatePublisher.set(++odometryUpdates);
     } else {
       discardPublisher.set(++odometryDiscards);
     }
-
-    DogLog.log("VisionUpdate/acceptedUpdate", !doRejectUpdate);
   }
 
     // //This method will be called once per scheduler run

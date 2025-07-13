@@ -14,7 +14,6 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
-import dev.doglog.DogLog;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -281,12 +280,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
     
     public void updateOdometryPoseEstimator(){
-        var drivetrainState = getState();
-        Rotation2d drivetrainRotation = getRotation2d();
-        Rotation2d pigeonYaw = getPigeon2().getRotation2d();
-        Rotation2d rawHeading = drivetrainState.RawHeading;
-        Pose2d robotPose = drivetrainState.Pose;
-
         // Tell Limelight what our current orientation is
         var driveState = getState();
         Rotation2d heading = driveState.Pose.getRotation();
@@ -294,25 +287,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
         boolean doRejectUpdate = false;
 
-        DogLog.log("DrivetrainUpdate/drivetrainRotation", drivetrainRotation);
-        DogLog.log("DrivetrainUpdate/pigeonYaw", pigeonYaw);
-        DogLog.log("DrivetrainUpdate/tagCount", mt2 != null ? mt2.tagCount : 0);
-        DogLog.log("DrivetrainUpdate/drivetrainRawHeading", rawHeading);
-        DogLog.log("DrivetrainUpdate/drivetrainPose", robotPose);
-
         // If we don't see any tags, the pose can't be good
         if(mt2.tagCount == 0) {
             doRejectUpdate = true;
         }
 
         if(!doRejectUpdate) {
-            DogLog.log("DrivetrainUpdate/mt2Pose", mt2.pose);
             setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
             addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
             limelightPublisher.set(mt2.pose);
         }
-
-        DogLog.log("DrivetrainUpdate/acceptedUpdate", !doRejectUpdate);
     }
 
     //************************ new limelight method for drive */
@@ -360,9 +344,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             });
         }
 
-        Pose2d pose = getState().Pose;
-        m_field.setRobotPose(pose);
-        DogLog.log("Drivetrain/Pose", pose);
+        m_field.setRobotPose(getState().Pose);
     }
 
     private void startSimThread() {

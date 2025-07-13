@@ -6,15 +6,11 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import dev.doglog.DogLog;
-import dev.doglog.DogLogOptions;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -91,8 +87,6 @@ public class RobotContainer {
     public ShuffleboardTab limelightTab = Shuffleboard.getTab("Limelight");
 
     public RobotContainer() {
-        configureLogging();
-
         NamedCommands.registerCommand("Remove Algae L2", new SequentialCommandGroup(
             new MoveElevator(elevator, Constants.Elevator.ALGAE_L2_HEIGHT, algaeMechanism),
             new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
@@ -223,21 +217,6 @@ public class RobotContainer {
         coralIntake.configDashboard(matchTab);
         
         //algaeMechanism.setReltoAbs();
-    }
-
-    private void configureLogging() {
-        var logOptions = new DogLogOptions()
-            .withCaptureDs(Constants.Logging.captureDS)
-            .withCaptureNt(Constants.Logging.captureNT)
-            .withLogExtras(Constants.Logging.captureExtras)
-            .withCaptureConsole(Constants.Logging.captureConsole);
-
-        if (Constants.Logging.capturePDH) {
-            DogLog.setPdh(new PowerDistribution());
-        }
-        
-        DogLog.setOptions(logOptions);
-        DogLog.setEnabled(Constants.Logging.enabled);
     }
     
     private void configureBindings() {
