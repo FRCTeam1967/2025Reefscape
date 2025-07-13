@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -86,6 +87,15 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    // Log a bunch of stuff so we can try to figure out what's happening in the auto -> teleop transition
+    var drivetrain = m_robotContainer.drivetrain;
+    var drivetrainState = drivetrain.getState();
+    DogLog.log("TeleopInit/drivetrainPose", drivetrainState.Pose);
+    DogLog.log("TeleopInit/drivetrainRawHeading", drivetrainState.RawHeading);
+    DogLog.log("TeleopInit/pigeonYas", drivetrain.getPigeon2().getRotation2d());
+    DogLog.log("TeleopInit/operatorForwardDirection", drivetrain.getOperatorForwardDirection());
+
     
    //var rotationFlipped = m_robotContainer.drivetrain.getState().Pose.getRotation().plus(Rotation2d.k180deg);
    // m_robotContainer.drivetrain.resetRotation(rotationFlipped);
