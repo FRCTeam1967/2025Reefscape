@@ -138,9 +138,9 @@ public class RobotContainer {
         
         NamedCommands.registerCommand("Align and Score Coral Right L3",new SequentialCommandGroup(
             new SequentialCommandGroup( // horizontal align
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
-                new AlignBranch(drivetrain, vision)),
+                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+                //new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
+                //new AlignBranch(drivetrain, vision)),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(1),
@@ -150,7 +150,7 @@ public class RobotContainer {
                 new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
                 new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
             ).withTimeout(2),
-            new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism)));
+            new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism))));
 
         NamedCommands.registerCommand("Align and Score Coral Right L4", new SequentialCommandGroup(
             new SequentialCommandGroup(
@@ -226,6 +226,7 @@ public class RobotContainer {
 
         //limelightTab.addString("limelight stream", () -> "http://10.19.67.12:5801/")
 
+        bargeTrigger = new Trigger(() -> elevator.getHeight() >= Constants.Elevator.BARGE_SCORING_ALMOST_HEIGHT);
 
         configureBindings();
         drivetrain.configDashboard(matchTab);
@@ -234,7 +235,6 @@ public class RobotContainer {
         coralPivot.configDashboard(matchTab);
         coralIntake.configDashboard(matchTab);
 
-        bargeTrigger = new Trigger(() -> elevator.getHeight() >= Constants.Elevator.BARGE_SCORING_ALMOST_HEIGHT);
         
         //algaeMechanism.setReltoAbs();
     }
