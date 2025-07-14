@@ -281,7 +281,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     
     public void updateOdometryPoseEstimator(){
         // Tell Limelight what our current orientation is
-        LimelightHelpers.SetRobotOrientation("limelight-santos", getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
+        var driveState = getState();
+        Rotation2d heading = driveState.Pose.getRotation();
+        LimelightHelpers.SetRobotOrientation("limelight-santos", heading.getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
         boolean doRejectUpdate = false;
 
@@ -292,7 +294,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         if(!doRejectUpdate) {
             setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-            addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+            addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
             limelightPublisher.set(mt2.pose);
         }
     }
@@ -304,9 +306,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         var chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rot);
         
         if (fieldRelative) {
-        chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getRotation2d());
+            Rotation2d fieldHeading = getState().Pose.getRotation();
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, fieldHeading);
         } else {
-        chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rot);
+            chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rot);
         }
 
         //discretize -- smooths movement, prevents sudden acceleration        
@@ -357,10 +360,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
-    }
-
-    public Rotation2d getRotation2d() {
-        return gyro.getRotation2d();
     }
 
     public void configDashboard(ShuffleboardTab tab) {

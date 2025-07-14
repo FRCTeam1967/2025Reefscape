@@ -7,8 +7,11 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 
+import com.ctre.phoenix6.Utils;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.IntegerPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -38,7 +41,9 @@ public class VisionUpdate extends SubsystemBase {
   @Override
   public void periodic() {
     // Tell Limelight what our current orientation is
-    LimelightHelpers.SetRobotOrientation("limelight-santos", drivetrain.getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
+    var driveState = drivetrain.getState();
+    Rotation2d heading = driveState.Pose.getRotation();
+    LimelightHelpers.SetRobotOrientation("limelight-santos", heading.getDegrees(), 0, 0, 0, 0, 0);
     LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
     boolean doRejectUpdate = false;
 
@@ -48,7 +53,7 @@ public class VisionUpdate extends SubsystemBase {
     }
     if(!doRejectUpdate) {
       drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-      drivetrain.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+      drivetrain.addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
       limelightPublisher.set(mt2.pose);
       updatePublisher.set(++odometryUpdates);
     } else {
