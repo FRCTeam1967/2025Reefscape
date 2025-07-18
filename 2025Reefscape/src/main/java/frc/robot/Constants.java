@@ -343,7 +343,7 @@ public final class Constants {
     public static final double BARGE_SCORING_ANGLE = 25 * Constants.Algae.DEGREES_TO_REVOLUTIONS; //30 //TODO test/change value
 
     public static final double L2L3_CORAL_SCORING_ANGLE = 11 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
-    public static final double L4_CORAL_SCORING_ANGLE = 10 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double L4_CORAL_SCORING_ANGLE = 16 * Constants.Algae.DEGREES_TO_REVOLUTIONS; // 10
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 
