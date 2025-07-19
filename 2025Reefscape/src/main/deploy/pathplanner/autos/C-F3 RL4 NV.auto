@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Odo testing"
+            "pathName": "C-RF3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Align and Score Coral Right L3"
+            "name": "Score Coral Right L3"
           }
         }
       ]
