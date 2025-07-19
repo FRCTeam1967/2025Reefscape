@@ -281,20 +281,18 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
     
     public void updateOdometryPoseEstimator(){
-        var drivetrainState = getState();
-        Rotation2d drivetrainRotation = getRotation2d();
+        var driveState = getState();
         Rotation2d pigeonYaw = getPigeon2().getRotation2d();
-        Rotation2d rawHeading = drivetrainState.RawHeading;
-        Pose2d robotPose = drivetrainState.Pose;
+        Rotation2d rawHeading = driveState.RawHeading;
+        Pose2d robotPose = driveState.Pose;
 
         // Tell Limelight what our current orientation is
-        var driveState = getState();
         Rotation2d heading = driveState.Pose.getRotation();
         LimelightHelpers.SetRobotOrientation("limelight-santos",  heading.getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
         boolean doRejectUpdate = false;
 
-        DogLog.log("DrivetrainUpdate/drivetrainRotation", drivetrainRotation);
+        DogLog.log("DrivetrainUpdate/heading", heading);
         DogLog.log("DrivetrainUpdate/pigeonYaw", pigeonYaw);
         DogLog.log("DrivetrainUpdate/tagCount", mt2 != null ? mt2.tagCount : 0);
         DogLog.log("DrivetrainUpdate/drivetrainRawHeading", rawHeading);
@@ -310,6 +308,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
             addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
             limelightPublisher.set(mt2.pose);
+            m_field.setRobotPose(mt2.pose);
         }
 
         DogLog.log("DrivetrainUpdate/acceptedUpdate", !doRejectUpdate);
@@ -359,10 +358,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
-
-        Pose2d pose = getState().Pose;
-        m_field.setRobotPose(pose);
-        DogLog.log("Drivetrain/Pose", pose);
     }
 
     private void startSimThread() {

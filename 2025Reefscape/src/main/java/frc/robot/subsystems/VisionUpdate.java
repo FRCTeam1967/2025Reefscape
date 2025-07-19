@@ -41,20 +41,19 @@ public class VisionUpdate extends SubsystemBase {
   @Override
   public void periodic() {
     // Tell Limelight what our current orientation is
-    var drivetrainState = drivetrain.getState();
-    Pose2d robotPose = drivetrainState.Pose;
+    var driveState = drivetrain.getState();
+    Pose2d robotPose = driveState.Pose;
     Rotation2d heading = robotPose.getRotation();
 
     LimelightHelpers.SetRobotOrientation("limelight-santos", heading.getDegrees(), 0, 0, 0, 0, 0);
 
-    Rotation2d drivetrainRotation2d = drivetrain.getRotation2d();
     Rotation2d pigeonYaw = drivetrain.getPigeon2().getRotation2d();
-    Rotation2d rawHeading = drivetrainState.RawHeading;
+    Rotation2d rawHeading = driveState.RawHeading;
 
     LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
     boolean doRejectUpdate = false;
 
-    DogLog.log("VisionUpdate/drivetrainRotation2d", drivetrainRotation);
+    DogLog.log("VisionUpdate/drivetrainHeading", heading);
     DogLog.log("VisionUpdate/pigeonYaw", pigeonYaw);
     DogLog.log("VisionUpdate/tagCount", mt2 != null ? mt2.tagCount : 0);
     DogLog.log("VisionUpdate/drivetrainRawHeading", rawHeading);

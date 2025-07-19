@@ -65,7 +65,7 @@ public class ZAlign extends Command {
       DogLog.log("ZAlign/appliedChassisSpeeds", chassisSpeeds);
       drivetrain.setControl(request.withSpeeds(chassisSpeeds));
     } else {
-      alignmentOffset = vision.getZOffsets();
+      alignmentOffset = vision.getZOffset();
       DogLog.log("ZAlign/offset", alignmentOffset);
       if (alignmentOffset >= 3.0){
         zSpeed = Constants.Vision.ALIGNMENT_SPEED;
