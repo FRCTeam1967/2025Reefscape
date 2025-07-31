@@ -4,13 +4,35 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import static edu.wpi.first.units.Units.*;
+
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.Xbox;
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,17 +41,20 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Claw254 claw = new Claw254();
+  private final Intake254 intake = new Intake254();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController joystick = new CommandXboxController(0);
+  private final CommandXboxController operatorXbox = new CommandXboxController(1);
+
+  public static ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  public RobotContainer() {            
     // Configure the trigger bindings
     configureBindings();
+
+    claw.configDashboard(matchTab);
   }
 
   /**
@@ -42,22 +67,29 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    claw.setDefaultCommand(new MoveClaw(claw, Constants.Intake.CLAW_OPEN));
+    // top roller does not spin currently for the cargo because it is not fully intaking & spinning causes the ball to launch out + bend the claw
+    // intake cargo ball
+    operatorXbox.rightTrigger().whileTrue(new SequentialCommandGroup(
+      new MoveClaw(claw, Constants.Intake.CLAW_OPEN),
+      new ParallelCommandGroup(new RunRollers(intake, Constants.Intake.SIDE_INTAKE_SPEED, Constants.Intake.TOP_STOP_SPINNING)), new MoveClaw(claw, Constants.Intake.CLAW_OPEN)));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  }
+    // outtake cargo ball
+    operatorXbox.y().whileTrue(new SequentialCommandGroup(
+      new MoveClaw(claw, Constants.Intake.CLAW_OPEN),
+      new ParallelCommandGroup(new RunRollers(intake, Constants.Intake.SIDE_OUTTAKE_SPEED, Constants.Intake.TOP_OUTTAKE_SPEED)), new MoveClaw(claw, Constants.Intake.CLAW_OPEN)));
+    
+    // intake hatch panel
+    operatorXbox.leftTrigger().whileTrue(new SequentialCommandGroup(
+      new MoveClaw(claw, Constants.Intake.CLAW_CLOSE),
+      new RunRollers(intake, Constants.Intake.SIDE_OUTTAKE_SPEED, Constants.Intake.SIDE_STOP_SPINNING), new MoveClaw(claw, Constants.Intake.CLAW_CLOSE)));
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    // outtake hatch panel
+    operatorXbox.x().whileTrue(new SequentialCommandGroup(
+      new MoveClaw(claw, Constants.Intake.CLAW_CLOSE),
+      new RunRollers(intake, Constants.Intake.SIDE_INTAKE_SPEED, Constants.Intake.TOP_STOP_SPINNING), new MoveClaw(claw, Constants.Intake.CLAW_CLOSE)));
+
+    operatorXbox.a().onTrue(new MoveClaw(claw, Constants.Intake.CLAW_OPEN));
+    operatorXbox.b().onTrue(new MoveClaw(claw, Constants.Intake.CLAW_CLOSE));
   }
 }
