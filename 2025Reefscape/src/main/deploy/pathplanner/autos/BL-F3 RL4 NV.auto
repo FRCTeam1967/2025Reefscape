@@ -7,25 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C-F3"
+            "pathName": "BL-RF3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Center and Z Align"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Align and Score Coral Right L3"
+            "name": "Score Coral Right L3"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "C 1PC RL4",
+  "folder": "BL 1PC RL4",
   "choreoAuto": true
 }

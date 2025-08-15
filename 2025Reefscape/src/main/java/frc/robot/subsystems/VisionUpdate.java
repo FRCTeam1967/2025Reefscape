@@ -6,9 +6,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
+import dev.doglog.DogLog;
+import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.IntegerPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -38,9 +41,23 @@ public class VisionUpdate extends SubsystemBase {
   @Override
   public void periodic() {
     // Tell Limelight what our current orientation is
-    LimelightHelpers.SetRobotOrientation("limelight-santos", drivetrain.getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
+    var driveState = drivetrain.getState();
+    Pose2d robotPose = driveState.Pose;
+    Rotation2d heading = robotPose.getRotation();
+
+    LimelightHelpers.SetRobotOrientation("limelight-santos", heading.getDegrees(), 0, 0, 0, 0, 0);
+
+    Rotation2d pigeonYaw = drivetrain.getPigeon2().getRotation2d();
+    Rotation2d rawHeading = driveState.RawHeading;
+
     LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
     boolean doRejectUpdate = false;
+
+    DogLog.log("VisionUpdate/drivetrainHeading", heading);
+    DogLog.log("VisionUpdate/pigeonYaw", pigeonYaw);
+    DogLog.log("VisionUpdate/tagCount", mt2 != null ? mt2.tagCount : 0);
+    DogLog.log("VisionUpdate/drivetrainRawHeading", rawHeading);
+    DogLog.log("VisionUpdate/drivetrainPose", robotPose);
 
     // If we don't see any tags, the pose can't be good
     if(mt2.tagCount == 0) {
@@ -48,12 +65,15 @@ public class VisionUpdate extends SubsystemBase {
     }
     if(!doRejectUpdate) {
       drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-      drivetrain.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+      drivetrain.addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
+      DogLog.log("VisionUpdate/mt2Pose", mt2.pose);
       limelightPublisher.set(mt2.pose);
       updatePublisher.set(++odometryUpdates);
     } else {
       discardPublisher.set(++odometryDiscards);
     }
+
+    DogLog.log("VisionUpdate/acceptedUpdate", !doRejectUpdate);
   }
 
     // //This method will be called once per scheduler run

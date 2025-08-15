@@ -14,6 +14,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -280,10 +281,22 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
     
     public void updateOdometryPoseEstimator(){
+        var driveState = getState();
+        Rotation2d pigeonYaw = getPigeon2().getRotation2d();
+        Rotation2d rawHeading = driveState.RawHeading;
+        Pose2d robotPose = driveState.Pose;
+
         // Tell Limelight what our current orientation is
-        LimelightHelpers.SetRobotOrientation("limelight-santos", getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
+        Rotation2d heading = driveState.Pose.getRotation();
+        LimelightHelpers.SetRobotOrientation("limelight-santos",  heading.getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
         boolean doRejectUpdate = false;
+
+        DogLog.log("DrivetrainUpdate/heading", heading);
+        DogLog.log("DrivetrainUpdate/pigeonYaw", pigeonYaw);
+        DogLog.log("DrivetrainUpdate/tagCount", mt2 != null ? mt2.tagCount : 0);
+        DogLog.log("DrivetrainUpdate/drivetrainRawHeading", rawHeading);
+        DogLog.log("DrivetrainUpdate/drivetrainPose", robotPose);
 
         // If we don't see any tags, the pose can't be good
         if(mt2.tagCount == 0) {
@@ -291,10 +304,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         if(!doRejectUpdate) {
+            DogLog.log("DrivetrainUpdate/mt2Pose", mt2.pose);
             setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-            addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+            addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
             limelightPublisher.set(mt2.pose);
+            m_field.setRobotPose(mt2.pose);
         }
+
+        DogLog.log("DrivetrainUpdate/acceptedUpdate", !doRejectUpdate);
     }
 
     //************************ new limelight method for drive */
@@ -304,9 +321,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         var chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rot);
         
         if (fieldRelative) {
-        chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getRotation2d());
+            Rotation2d fieldHeading = getState().Pose.getRotation();
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, fieldHeading);
         } else {
-        chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rot);
+            chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rot);
         }
 
         //discretize -- smooths movement, prevents sudden acceleration        
@@ -340,8 +358,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
-
-        m_field.setRobotPose(getState().Pose);
     }
 
     private void startSimThread() {
@@ -357,10 +373,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
-    }
-
-    public Rotation2d getRotation2d() {
-        return gyro.getRotation2d();
     }
 
     public void configDashboard(ShuffleboardTab tab) {

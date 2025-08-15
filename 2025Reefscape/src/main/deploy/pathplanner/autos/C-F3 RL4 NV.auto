@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C-F3"
+            "pathName": "C-RF3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Center and Z Align"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Align and Score Coral Right L3"
+            "name": "Score Coral Right L3"
           }
         }
       ]
