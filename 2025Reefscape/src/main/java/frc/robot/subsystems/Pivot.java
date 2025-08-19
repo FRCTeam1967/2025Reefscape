@@ -19,9 +19,7 @@ public class Pivot extends SubsystemBase {
    public double revsToMove;
    private TalonFXConfiguration config;
    
-   //* Creates a new pivot */
    public Pivot() {
-      //absEncoder = new CANcoder(Constants.Pivot.ENCODER_ID); 
       pivotMotor1 = new TalonFX(Constants.Pivot.PIVOT1_ID);
       pivotMotor2 = new TalonFX(Constants.Pivot.PIVOT2_ID);
       
@@ -29,7 +27,6 @@ public class Pivot extends SubsystemBase {
 
       var talonFXConfigs = new TalonFXConfiguration();
 
-      //* sets  slot configs */
       var slot0Configs = talonFXConfigs.Slot0;
       slot0Configs.kS = Constants.Pivot.kS; 
       slot0Configs.kV = Constants.Pivot.kV;
@@ -38,26 +35,21 @@ public class Pivot extends SubsystemBase {
       slot0Configs.kI = Constants.Pivot.kI;
       slot0Configs.kD = Constants.Pivot.kD;
 
-
-      //sets motion magic configurations
       var motionMagicConfigs = talonFXConfigs.MotionMagic;
       motionMagicConfigs.MotionMagicCruiseVelocity = Constants.Pivot.CRUISE_VELOCITY;
       motionMagicConfigs.MotionMagicAcceleration = Constants.Pivot.ACCELERATION;
       motionMagicConfigs.MotionMagicJerk = Constants.Pivot.JERK;
 
       talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      //applies motion magic configs
       pivotMotor1.getConfigurator().apply(talonFXConfigs);
       pivotMotor2.getConfigurator().apply(talonFXConfigs);
 
-      //resetEncoders(); 
       pivotMotor1.setNeutralMode(NeutralModeValue.Brake);
       pivotMotor2.setNeutralMode(NeutralModeValue.Brake);
 
       config.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Constants.Pivot.CURRENT_LIMIT));
    }
 
-   /** Stops the pivot motors */
    public void stop() {
       pivotMotor1.stopMotor();
       pivotMotor2.stopMotor();
@@ -73,13 +65,11 @@ public class Pivot extends SubsystemBase {
       pivotMotor2.setControl(request);
    }
    
-   /** zeroes the motor (sets its position to 0) */
    public void resetEncoders() { 
       pivotMotor1.setPosition(0);
       pivotMotor2.setPosition(0);
    }
 
-   /** checks if the position the motor is at is within error threshold of the end goal */
    public boolean isReached() {
       return Math.abs(((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360) - (revsToMove*360)) < 5.0;
    }

@@ -13,9 +13,7 @@ import frc.robot.Constants;
 public class Climb extends SubsystemBase {
    private TalonFX climbMotor;
 
-   /** Initializes left motor, right motor, and beam break sensor IDs  */
    public Climb() {
-      //kraken motors
       climbMotor = new TalonFX(Constants.Climb.CLIMB_MOTOR_ID);
 
       var talonFXConfigs = new TalonFXConfiguration();
@@ -35,7 +33,6 @@ public class Climb extends SubsystemBase {
       climbMotor.setControl(request);
    }
 
-   /** Stops both the left motor and right motor */
    public void stopMotor() {
       climbMotor.stopMotor();
    }

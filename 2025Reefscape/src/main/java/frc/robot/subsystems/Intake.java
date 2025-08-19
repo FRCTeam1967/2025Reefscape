@@ -12,9 +12,7 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
    private TalonFX intakeMotor;
 
-   /** Initializes left motor, right motor, and beam break sensor IDs  */
    public Intake() {
-      //kraken motors
       intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
 
       var talonFXConfigs = new TalonFXConfiguration();
@@ -30,7 +28,6 @@ public class Intake extends SubsystemBase {
       intakeMotor.setControl(request);
    }
 
-   /** Stops both the left motor and right motor */
    public void stopMotor() {
       intakeMotor.stopMotor();
    }
