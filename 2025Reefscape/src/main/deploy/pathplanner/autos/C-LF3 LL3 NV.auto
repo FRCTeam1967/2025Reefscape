@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C-LF3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score Coral L3"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "C 1PC LL4",
+  "choreoAuto": true
+}
