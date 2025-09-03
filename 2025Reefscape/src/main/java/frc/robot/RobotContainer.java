@@ -125,7 +125,7 @@ public class RobotContainer {
             //new ParallelRaceGroup(
                 //new RunFunnel(funnel, Constants.Funnel.FUNNEL_SPEED_FAST),
                 //new MoveElevator(elevator, Constants.Elevator.CORAL_STATION),
-                new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY),//)
+                new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY).withTimeout(1.5),//)
                 new WaitCommand(0.1),
             new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
         ));

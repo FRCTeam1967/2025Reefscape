@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BL-F5 "
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score Coral L4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F5-CS"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "1 PC + CS",
+  "choreoAuto": true
+}
