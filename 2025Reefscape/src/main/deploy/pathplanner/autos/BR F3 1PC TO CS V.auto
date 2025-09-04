@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BM-F4 (1)"
+            "pathName": "BR-F3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Score Coral L4"
+            "name": "Align and Score Coral Left L4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "F4-CS"
+            "pathName": "F3-CS"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "1 PC + CS",
+  "folder": "1 PC + CS V",
   "choreoAuto": true
 }
