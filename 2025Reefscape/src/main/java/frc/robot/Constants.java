@@ -204,7 +204,7 @@ public final class Constants {
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
     public static final double LIMELIGHT_AUTO_LEFT_OFFSET = -0.1175;
     public static final double LIMELIGHT_L4_LEFT_OFFSET = -0.1;
-    public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.43, 3))> 0 ? Math.pow(0.43, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.425
+    public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.5, 3))> 0 ? Math.pow(0.5, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.43 //0.425
     public static final double ALIGNMENT_THRESHOLD = 1.0;
     public static final double FORWARD_ALIGNMENT_THRESHOLD = 0.0;
     public static final double ALIGNMENT_LEFT_OFFSET = 1.1; //9.76; //TODO: test at EPA
@@ -212,7 +212,7 @@ public final class Constants {
     public static final double ALIGNMENT_FORWARD_OFFSET = 0.0; //TODO: test at EPA //-5.16 center for left branch aligned
 
     public static final double ALIGNMENT_X_KP = -0.17;  //0.708 // Used for aligning Robot X (forward), which is "ty" in Limelight terms
-    public static final double ALIGNMENT_Y_KP = -0.05;  // Used for aligning Robot Y (side-side), which is "tx" in Limelight terms
+    public static final double ALIGNMENT_Y_KP = -0.03;  //-0.05 // Used for aligning Robot Y (side-side), which is "tx" in Limelight terms
   }
 
   public static class Auto {
