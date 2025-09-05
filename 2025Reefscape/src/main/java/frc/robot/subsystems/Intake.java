@@ -10,13 +10,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-   private TalonFX intakeMotor;
+   private TalonFX topMotor;
+   private TalonFX bottomMotor;
 
    public Intake() {
-      intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
+      topMotor = new TalonFX(Constants.Intake.TOP_INTAKE_MOTOR_ID);
+      bottomMotor = new TalonFX(Constants.Intake.BOTTOM_INTAKE_MOTOR_ID);
 
       var talonFXConfigs = new TalonFXConfiguration();
-      intakeMotor.getConfigurator().apply(talonFXConfigs);
+      topMotor.getConfigurator().apply(talonFXConfigs);
+      bottomMotor.getConfigurator().apply(talonFXConfigs);
    }
 
    /**  Sets speed for right and left motors, left motor is reversed for intake to run in opposite direction
@@ -25,25 +28,31 @@ public class Intake extends SubsystemBase {
 
    public void runIntake(double speed) {
       VelocityVoltage request = new VelocityVoltage(speed);
-      intakeMotor.setControl(request);
+      topMotor.setControl(request);
+      bottomMotor.setControl(request);
    }
 
    public void stopMotor() {
-      intakeMotor.stopMotor();
+      topMotor.stopMotor();
+      bottomMotor.stopMotor();
    }
 
    /**Adds value to shuffleboard
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.addDouble("Intake Rel Pos",()->(intakeMotor.getRotorPosition().getValueAsDouble()))
+      tab.addDouble("Top Intake Rel Pos",()->(topMotor.getRotorPosition().getValueAsDouble()))
       .withWidget(BuiltInWidgets.kTextView).withPosition(6, 0)
       .withSize(1, 1);
 
-      tab.addBoolean("isReached",()->(intakeMotor.getRotorPosition().getValueAsDouble() >= Constants.Intake.INTAKE_ENCODER_STOP_VAL))
-      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 2)
+      tab.addDouble("Bottom Intake Rel Pos",()->(bottomMotor.getRotorPosition().getValueAsDouble()))
+      .withWidget(BuiltInWidgets.kTextView).withPosition(7, 0)
       .withSize(1, 1);
 
+      tab.addBoolean("isReached",()->((topMotor.getRotorPosition().getValueAsDouble() >= Constants.Intake.INTAKE_ENCODER_STOP_VAL) 
+                                       && (bottomMotor.getRotorPosition().getValueAsDouble() >= Constants.Intake.INTAKE_ENCODER_STOP_VAL)))
+      .withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 2)
+      .withSize(1, 1);
    }
 
    @Override

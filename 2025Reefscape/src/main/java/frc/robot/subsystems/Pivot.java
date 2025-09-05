@@ -75,7 +75,7 @@ public class Pivot extends SubsystemBase {
    }
 
    public void maintainPosition() {
-      moveTo(Constants.Pivot.PRE_CLIMB);
+      moveTo(Constants.Pivot.CORAL_L1);
    }
 
    /**Adds values to shuffleboard 

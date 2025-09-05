@@ -21,9 +21,9 @@ public final class Constants {
     public static final int CLIMB_MOTOR_ID = 0;
     public static final double VELOCITY = 0;
     
-    public static final double kP = 0; // A position error of 2.5 rotations results in 12 V output
-    public static final double kI = 0; // no output for integrated error
-    public static final double kD = 0; // A velocity error of 1 rps results in 0.1 V output
+    public static final double kP = 0; 
+    public static final double kI = 0;
+    public static final double kD = 0;
     public static final double kG = 0; 
     public static final double kS = 0; 
     public static final double kV = 0; 
@@ -31,16 +31,17 @@ public final class Constants {
 
     public static final double CLIMB_ENCODER_STOP_VAL = 0;
 
-    public static final double CRUISE_VELOCITY = 0;
-    public static final double ACCELERATION = 0;
-    public static final double JERK = 0;
+    public static final double CRUISE_VELOCITY = 50.0;
+    public static final double ACCELERATION = 70.0;
+    public static final double JERK = 0.0;
    }
 
   public class Intake {
-    public static final int INTAKE_MOTOR_ID = 0;
+    public static final int TOP_INTAKE_MOTOR_ID = 0;
+    public static final int BOTTOM_INTAKE_MOTOR_ID = 1;
 
-    public static final double VELOCITY = 0;
-    public static final double REVERSE_VELOCITY = 0;
+    public static final double INTAKE_SPEED = 0.5;
+    public static final double EJECT_VELOCITY = -0.5;
 
     public static final double INTAKE_ENCODER_STOP_VAL = 0;
    }
@@ -51,8 +52,8 @@ public final class Constants {
     
     public static final double GEAR_RATIO = 0/0;
 
-    public static final double CRUISE_VELOCITY = 0.0;
-    public static final double ACCELERATION = 0.0;
+    public static final double CRUISE_VELOCITY = 50.0;
+    public static final double ACCELERATION = 70.0;
     public static final double JERK = 0.0;
     
     public static final double CONVERSION_FACTOR = 0.0;
@@ -67,14 +68,16 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 0.0;
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double CORAL_GROUND_INTAKE = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double CORAL_L1 = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    
-    public static final double ALGAE_INTAKE = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double ALGAE_PROCESSOR = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
 
-    public static final double PRE_CLIMB = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
-    public static final double CLIMB = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
+    public static final double CORAL_GROUND_INTAKE = 10 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for coral ground intake
+    public static final double CORAL_L1 = 55 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for L1 scoring
+    
+    public static final double ALGAE_INTAKE = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for algae ground intake
+    public static final double ALGAE_PROCESSOR = 0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for processor scoring
+
+    //TODO: ask mech about hardstop
+    public static final double PRE_CLIMB = 80 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~vertical, before climb
+    public static final double CLIMB = 10 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~horizontal, finished climb position
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
     public static final double CURRENT_LIMIT = 40;

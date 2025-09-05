@@ -50,27 +50,27 @@ public class RobotContainer {
     public RobotContainer() {
         NamedCommands.registerCommand("Coral Ground Intake", new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE),
-            new RunIntake(intake, Constants.Intake.VELOCITY))
+            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
         );
 
         NamedCommands.registerCommand("Coral L1", new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.CORAL_L1),
-            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
         NamedCommands.registerCommand("Algae Intake", new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
-            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
         );
 
         NamedCommands.registerCommand("Algae Processor", new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR),
-            new RunIntake(intake, Constants.Intake.VELOCITY))
+            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
         );
 
         NamedCommands.registerCommand("Algae Descore", new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.CORAL_L1),
-            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
         NamedCommands.registerCommand("Climb", new SequentialCommandGroup(
@@ -94,31 +94,31 @@ public class RobotContainer {
         //GROUND INTAKE
         operatorController.R2().or(operatorXbox.rightTrigger()).whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE),
-            new RunIntake(intake, Constants.Intake.VELOCITY))
+            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
         );
 
         //CORAL L1 
         operatorController.cross().or(operatorXbox.a()).whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.CORAL_L1),
-            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
         //ALGAE INTAKE
         operatorController.L2().or(operatorXbox.leftTrigger()).whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
-            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
         //ALGAE PROCESSOR
         operatorController.R1().or(operatorXbox.rightBumper()).whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR),
-            new RunIntake(intake, Constants.Intake.VELOCITY))
+            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
         );
 
         //ALGAE DESCORE
         operatorController.povDown().or(operatorXbox.povDown()).whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.CORAL_L1),
-            new RunIntake(intake, Constants.Intake.REVERSE_VELOCITY))
+            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
         //CLIMB
