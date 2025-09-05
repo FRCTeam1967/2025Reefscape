@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BR-F3 (1)"
+            "pathName": "BR-F3 NV"
           }
         },
         {
@@ -20,12 +20,6 @@
           "type": "path",
           "data": {
             "pathName": "F3-CS"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake Coral"
           }
         }
       ]
