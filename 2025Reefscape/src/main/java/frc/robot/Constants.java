@@ -20,5 +20,7 @@ public final class Constants {
   public static class Shooter{
     public static final int TOP_SHOOTER_ID = ________; // Set this value to 1
     public static final int BOTTOM_SHOOTER_ID = 2;
+
+    public static final double SHOOTER_SPEED = 0.5;
   }
 }
