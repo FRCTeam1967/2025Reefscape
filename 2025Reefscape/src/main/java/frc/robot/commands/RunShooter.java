@@ -16,6 +16,7 @@ public class RunShooter extends Command {
   public RunShooter(Shooter ________, double ________) {
     this.shooter = ________;
     this.speed = ________;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.

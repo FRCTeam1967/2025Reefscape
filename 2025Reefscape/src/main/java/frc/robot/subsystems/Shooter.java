@@ -4,21 +4,30 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.*;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Shooter extends SubsystemBase {
-  private TalonFX _________; // Declare the top motor
-  private TalonFX _________; // Declare the bottom motor
+  private SparkMax _________; // Declare the top motor
+  private SparkMax _________; // Declare the bottom motor
 
   /** Creates a new Shooter. */
   public Shooter() {
-    topMotor = new TalonFX(Constants.Shooter.TOP_SHOOTER_ID); // Set the top shooter ID to 1
+    topMotor = new SparkMax(Constants.Shooter.TOP_SHOOTER_ID, MotorType.kBrushless); // Set the top shooter ID to 1
 
     // Initialize the bottom motor in the same way:
-    _________ = new _________(Constants.Shooter._________); // Use the BOTTOM_SHOOTER_ID value here
+    _________ = new _________(Constants.Shooter._________, MotorType.kBrushless); // Use the BOTTOM_SHOOTER_ID value here
+
+    //Configurations
+    SparkMaxConfig config = new SparkMaxConfig();
+    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void runShooter(double _________){ // Write the parameter the command needs to input
