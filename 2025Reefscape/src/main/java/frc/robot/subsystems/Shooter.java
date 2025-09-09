@@ -10,25 +10,25 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  private TalonFX _________; // Declare the top motor
-  private TalonFX _________; // Declare the bottom motor
+  private TalonFX topMotor; // Declare the top motor
+  private TalonFX bottomMotor; // Declare the bottom motor
 
   /** Creates a new Shooter. */
   public Shooter() {
     topMotor = new TalonFX(Constants.Shooter.TOP_SHOOTER_ID); // Set the top shooter ID to 1
 
     // Initialize the bottom motor in the same way:
-    _________ = new _________(Constants.Shooter._________); // Use the BOTTOM_SHOOTER_ID value here
+    bottomMotor = new TalonFX(Constants.Shooter.BOTTOM_SHOOTER_ID); // Use the BOTTOM_SHOOTER_ID value here
   }
 
-  public void runShooter(double _________){ // Write the parameter the command needs to input
-    topMotor.set(_________); // Write the same parameter here
-    bottomMotor.set(_________); // Do it for the bottom motor too
+  public void runShooter(double speed){ // Write the parameter the command needs to input
+    topMotor.set(speed); // Write the same parameter here
+    bottomMotor.set(speed); // Do it for the bottom motor too
   }
 
   public void stopShooter(){
-    _________._________(); // Call the method which stops the motor from running
-    _________._________(); // Call the same method for the bottom motor here
+    topMotor.stopMotor(); // Call the method which stops the motor from running
+    bottomMotor.stopMotor(); // Call the same method for the bottom motor here
   }
 
   @Override

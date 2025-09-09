@@ -9,13 +9,13 @@ import frc.robot.subsystems.Shooter;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class RunShooter extends Command {
-  private Shooter ________;
-  private double ________;
+  private Shooter shooter;
+  private double speed;
 
   /** Creates a new RunShooter. */
-  public RunShooter(Shooter ________, double ________) {
-    this.shooter = ________;
-    this.speed = ________;
+  public RunShooter(Shooter shooter, double speed) {
+    this.shooter = shooter;
+    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -26,14 +26,14 @@ public class RunShooter extends Command {
   @Override
   public void execute() {
     // Call the "runShooter()" method from the subsystem
-    ________._____________(________);
+    shooter.runShooter(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // Call the "stopShooter()" method from the subsystem
-    ________._____________();
+    shooter.stopShooter();
   }
 
   // Returns true when the command should end.
