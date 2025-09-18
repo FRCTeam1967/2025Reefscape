@@ -141,7 +141,7 @@ public final class Constants {
     public static final double FEED_FORWARD = 0.0;
 
 
-    public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
+    public static final double L1 = 0.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
     public static final double L4 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //55  //65 //50 //26.0 //35 works //33 works too
     public static final double LEFT_L4 = 65.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
@@ -207,8 +207,8 @@ public final class Constants {
     public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.5, 3))> 0 ? Math.pow(0.5, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.43 //0.425
     public static final double ALIGNMENT_THRESHOLD = 1.0;
     public static final double FORWARD_ALIGNMENT_THRESHOLD = 0.0;
-    public static final double ALIGNMENT_LEFT_OFFSET = 1.1; //9.76; //TODO: test at EPA
-    public static final double ALIGNMENT_RIGHT_OFFSET = -1.1; //-13.1; //in LL degrees //TODO: test at EPA
+    public static final double ALIGNMENT_LEFT_OFFSET = 1.0; //1.1; //9.76; //TODO: test at EPA
+    public static final double ALIGNMENT_RIGHT_OFFSET = -0.8; //-1.0; //-1.1; //-13.1; //in LL degrees //TODO: test at EPA
     public static final double ALIGNMENT_FORWARD_OFFSET = 0.0; //TODO: test at EPA //-5.16 center for left branch aligned
 
     public static final double ALIGNMENT_X_KP = -0.17;  //0.708 // Used for aligning Robot X (forward), which is "ty" in Limelight terms

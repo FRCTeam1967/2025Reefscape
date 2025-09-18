@@ -74,16 +74,16 @@ public class AlignBranch extends Command {
   public void execute() {
     // Calculate forward speed (X), if we're being asked to
     PIDResult resultX;
-    if (useForward) {
-      resultX = calculateAlignSpeed(vision.getZOffset(), Constants.Vision.ALIGNMENT_FORWARD_OFFSET,
-          Constants.Vision.ALIGNMENT_X_KP, Constants.Vision.FORWARD_ALIGNMENT_THRESHOLD);
-    } else {
-      // If we're not moving forward, consider ourselves in range with 0 speed
+    // if (useForward) {
+    //   resultX = calculateAlignSpeed(vision.getZOffset(), Constants.Vision.ALIGNMENT_FORWARD_OFFSET,
+    //       Constants.Vision.ALIGNMENT_X_KP, Constants.Vision.FORWARD_ALIGNMENT_THRESHOLD);
+    // } else {
+    //   // If we're not moving forward, consider ourselves in range with 0 speed
       resultX = new PIDResult(0.0, true);
-    }
+    //}
 
     // Calculate side-side speed
-    var resultY = calculateAlignSpeed(vision.getAlignmentOffset(),
+    var resultY = calculateAlignSpeed(vision.getTXAlignmentOffset(),
         isLeft ? Constants.Vision.ALIGNMENT_LEFT_OFFSET : Constants.Vision.ALIGNMENT_RIGHT_OFFSET,
         Constants.Vision.ALIGNMENT_Y_KP, Constants.Vision.ALIGNMENT_THRESHOLD);
 

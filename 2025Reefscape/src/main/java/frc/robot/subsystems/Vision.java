@@ -131,7 +131,7 @@ public class Vision extends SubsystemBase {
   }
 
   /** @return value of xOffset */
-  public double getAlignmentOffset() {
+  public double getTXAlignmentOffset() {
     return xAlignmentOffset;
   }
 

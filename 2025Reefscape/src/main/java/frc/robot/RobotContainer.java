@@ -488,7 +488,7 @@ public class RobotContainer {
         //L1 SCORING 
         buttonBoxR.button(1).or(operatorController.circle()).or(operatorXbox.b()).whileTrue(new SequentialCommandGroup(
             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1).withTimeout(1),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.SLOW).withTimeout(1)));
+            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
         //BARGE SCORING
         //operatorController.circle().whileTrue(new BargeScoring(algaeMechanism, elevator, intake));
