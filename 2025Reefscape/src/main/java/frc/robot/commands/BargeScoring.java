@@ -32,7 +32,7 @@ public class BargeScoring extends Command {
     algaePivot.moveTo(Constants.Algae.BARGE_SCORING_ANGLE);
     elevator.moveTo(Constants.Elevator.MAX_HEIGHT);
     if ( elevator.getHeight() > Constants.Elevator.BARGE_SCORING_HEIGHT) {
-      algaeIntake.setVelocity(Constants.Algae.ALGAE_BARGE_OUTTAKE);
+      new RunAlgaeIntake(algaeIntake, Constants.Algae.ALGAE_BARGE_OUTTAKE);
     }
 
   }
