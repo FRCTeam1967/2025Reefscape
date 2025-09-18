@@ -7,19 +7,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BL-F3 NV"
+            "pathName": "BL-F2 NV"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Score Coral L4"
+            "name": "Score Coral L3"
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "F3-CS"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "F2-CS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral"
+                }
+              }
+            ]
           }
         }
       ]

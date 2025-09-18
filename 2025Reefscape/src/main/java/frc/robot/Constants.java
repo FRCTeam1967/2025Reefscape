@@ -143,8 +143,8 @@ public final class Constants {
 
     public static final double L1 = 1.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
-    public static final double L4 = 40.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //65 //50 //26.0 //35 works //33 works too
-    public static final double LEFT_L4 = 45.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //65 //50 //26.0 //35 works //33 works too
+    public static final double L4 = 50.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //65 //50 //26.0 //35 works //33 works too
+    public static final double LEFT_L4 = 50.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //65 //50 //26.0 //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
