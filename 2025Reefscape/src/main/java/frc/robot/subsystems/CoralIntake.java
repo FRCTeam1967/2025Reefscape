@@ -78,10 +78,6 @@ public class CoralIntake extends SubsystemBase {
       intakeMotor.setControl(request);
 
    }
-   public void moveMotor(double speed) {
-      VelocityVoltage request = new VelocityVoltage(speed);
-      intakeMotor.setControl(request);
-   }
 
    /** Stops both the left motor and right motor */
    public void stopMotor() {

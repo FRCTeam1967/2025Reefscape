@@ -225,6 +225,7 @@ public final class Constants {
     public static final double APRIL_TAG_HEIGHT_INCHES = 48.125; //need to verify
     public static final double LIMELIGHT_ANGLE_DEGREES = 45.0; //need to measure
     public static final double LIMELIGHT_LENS_HEIGHT_INCHES = 37.0; //need to measure
+    public static final double OUTTAKE_TIMEOUT = 0.5; // 2
 
     public static final double kPXController = 25, kPYController = 30, kPThetaController = 6.5; //7.5
 
