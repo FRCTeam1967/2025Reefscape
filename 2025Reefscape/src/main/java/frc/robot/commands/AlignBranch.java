@@ -20,6 +20,7 @@ public class AlignBranch extends Command {
   private final Vision vision;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
   private static ChassisSpeeds alignmentSpeed = new ChassisSpeeds();
+  private double alignmentOffset = 0.0;
   private boolean isLeft;
   private boolean useForward;
 
