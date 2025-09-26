@@ -14,6 +14,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,6 +48,8 @@ public class RobotContainer {
     public static ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
     public ShuffleboardTab fieldTab = Shuffleboard.getTab("Field");
 
+    public static SendableChooser<Command> autoChooser;
+
     public RobotContainer() {
         NamedCommands.registerCommand("Coral Ground Intake", new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE),
@@ -78,6 +81,8 @@ public class RobotContainer {
             new RunClimb(climb, Constants.Climb.VELOCITY),
             new MovePivot(pivot, Constants.Pivot.CLIMB)
         ));
+
+        autoChooser = AutoBuilder.buildAutoChooser();
 
         configureBindings();
         intake.configDashboard(matchTab);
