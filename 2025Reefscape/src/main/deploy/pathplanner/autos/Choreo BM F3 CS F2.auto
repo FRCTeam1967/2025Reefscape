@@ -32,7 +32,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "F3 PCS.0"
+            "pathName": "F3 TP.0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BM TP PCS.0"
           }
         },
         {
