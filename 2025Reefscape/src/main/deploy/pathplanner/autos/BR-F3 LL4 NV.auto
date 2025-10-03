@@ -7,25 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RM-F3"
+            "pathName": "BR-F3 NV"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Center and Z Align"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Align and Score Coral Left L4"
+            "name": "Score Coral L4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "RM 1PC LL4",
+  "folder": "NVs",
   "choreoAuto": true
 }

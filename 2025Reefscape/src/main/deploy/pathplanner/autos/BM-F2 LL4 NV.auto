@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C-RF3"
+            "pathName": "BM-F2NV"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Score Coral L3"
+            "name": "Score Coral L4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "C 1PC RL4",
+  "folder": "NVs",
   "choreoAuto": true
 }

@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BR-F1 NV"
+            "pathName": "BR-F2 NV.0"
           }
         },
         {
@@ -15,17 +15,11 @@
           "data": {
             "name": "Score Coral L4"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "F1-CS"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "1 PC + CS",
+  "folder": "NVs",
   "choreoAuto": true
 }
