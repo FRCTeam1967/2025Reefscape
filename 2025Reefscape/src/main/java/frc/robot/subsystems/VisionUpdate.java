@@ -64,7 +64,7 @@ public class VisionUpdate extends SubsystemBase {
       doRejectUpdate = true;
     }
     if(!doRejectUpdate) {
-      drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+      drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.7,0.7,0)); //.7, .7, 9999999
       drivetrain.addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
       DogLog.log("VisionUpdate/mt2Pose", mt2.pose);
       limelightPublisher.set(mt2.pose);
