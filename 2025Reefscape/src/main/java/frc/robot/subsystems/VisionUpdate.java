@@ -10,8 +10,10 @@ import dev.doglog.DogLog;
 import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.IntegerPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -19,6 +21,7 @@ import edu.wpi.first.networktables.StructPublisher;
 
 public class VisionUpdate extends SubsystemBase {
   private final CommandSwerveDrivetrain drivetrain;
+  private final SwerveDrivePoseEstimator m_poseEstimator;
   private final StructPublisher<Pose2d> limelightPublisher;
 
   private long odometryUpdates = 0;
@@ -27,8 +30,10 @@ public class VisionUpdate extends SubsystemBase {
   IntegerPublisher discardPublisher;
 
   /** Creates a new VisionUpdate. */
-  public VisionUpdate(CommandSwerveDrivetrain drivetrain) {
+  public VisionUpdate(CommandSwerveDrivetrain drivetrain, SwerveDrivePoseEstimator m_poseEstimator) {
     this.drivetrain = drivetrain;
+    this.m_poseEstimator = m_poseEstimator;
+
     limelightPublisher = NetworkTableInstance.getDefault().getTable("limelight-santos").getStructTopic("Limelight Pose", Pose2d.struct).publish();
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -46,12 +51,24 @@ public class VisionUpdate extends SubsystemBase {
     Rotation2d heading = robotPose.getRotation();
 
     LimelightHelpers.SetRobotOrientation("limelight-santos", heading.getDegrees(), 0, 0, 0, 0, 0);
+    //LimelightHelpers.SetRobotOrientation("limelight-santos", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
 
     Rotation2d pigeonYaw = drivetrain.getPigeon2().getRotation2d();
     Rotation2d rawHeading = driveState.RawHeading;
 
     LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
     boolean doRejectUpdate = false;
+
+    // m_poseEstimator.update(
+    //   drivetrain.getPigeon2().getRotation2d(),
+    //   new SwerveModulePosition[] {
+    //     drivetrain.getModules(m_frontLeft).getPosition(),
+        
+    //     m_frontLeft.getPosition(),
+    //     m_frontRight.getPosition(),
+    //     m_backLeft.getPosition(),
+    //     m_backRight.getPosition()
+    //   });
 
     DogLog.log("VisionUpdate/drivetrainHeading", heading);
     DogLog.log("VisionUpdate/pigeonYaw", pigeonYaw);

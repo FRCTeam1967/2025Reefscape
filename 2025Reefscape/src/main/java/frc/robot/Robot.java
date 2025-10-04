@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.LimelightHelpers.PoseEstimate;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -54,6 +55,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    m_robotContainer.drivetrain.updateOdometryPoseEstimator();
+
     m_robotContainer.elevator.setSafe();
     m_robotContainer.coralPivot.maintainPosition();
     m_robotContainer.algaeMechanism.maintainPosition();

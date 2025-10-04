@@ -17,6 +17,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
@@ -38,6 +39,7 @@ import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
@@ -279,8 +281,31 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.dynamic(direction);
     }
-    
-    public void updateOdometryPoseEstimator(){
+
+
+
+    //get the accurate pose WITH YAW (mt2 relies heavily on gyro alues)
+    SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
+        getKinematics(), 
+        getPigeon2().getRotation2d(), 
+        new SwerveModulePosition[] {
+            getModule(0).getPosition(true),
+            getModule(1).getPosition(true),
+            getModule(2).getPosition(true),
+            getModule(3).getPosition(true),
+        },
+        new Pose2d(0.0, 0.0, new Rotation2d())
+    );
+    public void updateOdometryPoseEstimator(){  
+        //m_field.setRobotPose(get_pose());
+
+        m_poseEstimator.update(gyro.getRotation2d(), new SwerveModulePosition[] {
+            getModule(0).getPosition(true),
+            getModule(1).getPosition(true),
+            getModule(2).getPosition(true),
+            getModule(3).getPosition(true)
+        });
+
         var driveState = getState();
         Rotation2d pigeonYaw = getPigeon2().getRotation2d();
         Rotation2d rawHeading = driveState.RawHeading;
@@ -288,8 +313,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         // Tell Limelight what our current orientation is
         Rotation2d heading = driveState.Pose.getRotation();
-        LimelightHelpers.SetRobotOrientation("limelight-santos",  heading.getDegrees(), 0, 0, 0, 0, 0);
+        //LimelightHelpers.SetRobotOrientation("limelight-santos",  heading.getDegrees(), 0, 0, 0, 0, 0);
+        
+        //update robot orientation with pose estimator, not the drivestate
+        LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
+        
         boolean doRejectUpdate = false;
 
         DogLog.log("DrivetrainUpdate/heading", heading);
@@ -305,8 +334,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         if(!doRejectUpdate) {
             DogLog.log("DrivetrainUpdate/mt2Pose", mt2.pose);
-            setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-            addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
+            m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+            m_poseEstimator.addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
             limelightPublisher.set(mt2.pose);
             m_field.setRobotPose(mt2.pose);
         }
