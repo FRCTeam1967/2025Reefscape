@@ -72,9 +72,9 @@ public class Vision extends SubsystemBase {
    * @param tab - ShuffleboardTab to add values to
    */
   public void configDashboard(ShuffleboardTab tab){
-    tab.addDouble("odo LL xOffset", () -> limelightOdometryTable.getEntry("tx")
-    .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
-    .withPosition(0, 2).withSize(1, 1);
+    //tab.addDouble("odo LL xOffset", () -> limelightOdometryTable.getEntry("tx")
+   // .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)
+   // .withPosition(0, 2).withSize(1, 1);
 
     tab.addDouble("odo LL yOffset", () -> limelightOdometryTable.getEntry("ty")
     .getDouble(0.0)).withWidget(BuiltInWidgets.kTextView)

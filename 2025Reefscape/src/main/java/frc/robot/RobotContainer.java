@@ -161,7 +161,7 @@ public class RobotContainer {
         // VISION ALIGN
         NamedCommands.registerCommand("Center and Z Align", new SequentialCommandGroup(
             new SequentialCommandGroup( // center align
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, Constants.Vision.LIMELIGHT_ALIGN_CENTER_OFFSET)),
+                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, Constants.Vision.LIMELIGHT_ALIGN_CENTER_OFFSET)),
                 new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                 new AlignBranch(drivetrain, vision, false, true)),
             new SequentialCommandGroup(
@@ -435,7 +435,7 @@ public class RobotContainer {
         //RIGHT BRANCH L2
         buttonBoxR.button(7).or(operatorController.cross()).or(operatorXbox.a()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
                 new ConditionalCommand(new AlignBranch(drivetrain, vision, false, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
@@ -447,7 +447,7 @@ public class RobotContainer {
         //RIGHT BRANCH L3
         buttonBoxR.button(8).or(operatorController.square()).or(operatorXbox.x()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
                 new ConditionalCommand(new AlignBranch(drivetrain, vision, false, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
@@ -459,7 +459,7 @@ public class RobotContainer {
         //RIGHT BRANCH L4
         buttonBoxR.button(9).or(operatorController.triangle()).or(operatorXbox.y()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
                 new ConditionalCommand(new AlignBranch(drivetrain, vision, false, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),//.asProxy()),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
@@ -475,7 +475,7 @@ public class RobotContainer {
         //LEFT BRANCH L2
         (operatorController.cross().or(operatorXbox.a())).and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
+                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
                 new ConditionalCommand(new AlignBranch(drivetrain, vision, true, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
@@ -489,7 +489,6 @@ public class RobotContainer {
         //LEFT BRANCH L3
         (operatorController.square().or(operatorXbox.x())).and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
                 new ConditionalCommand(new AlignBranch(drivetrain, vision, true, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
@@ -501,7 +500,7 @@ public class RobotContainer {
         //LEFT BRANCH L4
         (operatorController.triangle().or(operatorXbox.y())).and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
             new SequentialCommandGroup(
-                new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET, 0.0)),
+                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET, 0.0)),
                 new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
                 new ConditionalCommand(new AlignBranch(drivetrain, vision, true, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
             new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
