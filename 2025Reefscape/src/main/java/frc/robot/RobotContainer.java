@@ -170,7 +170,7 @@ public class RobotContainer {
             // RIGHT SCORING
             NamedCommands.registerCommand("Align and Score Coral Right L2", new SequentialCommandGroup(
                 new SequentialCommandGroup(
-                    new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+                    //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                     new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                     new AlignBranch(drivetrain, vision, false, false)),
                 new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
@@ -181,7 +181,7 @@ public class RobotContainer {
             
             NamedCommands.registerCommand("Align and Score Coral Right L3",new SequentialCommandGroup(
                 new SequentialCommandGroup( // horizontal align
-                    new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+                    //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                     new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                     new AlignBranch(drivetrain, vision, false, false)),
                 new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
@@ -197,7 +197,7 @@ public class RobotContainer {
     
             NamedCommands.registerCommand("Align and Score Coral Right L4", new SequentialCommandGroup(
                 new SequentialCommandGroup(
-                    new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+                    //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
                     new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                     // new ZAlign(drivetrain, vision).withTimeout(3),
                     new AlignBranch(drivetrain, vision, false, false)),
@@ -215,7 +215,7 @@ public class RobotContainer {
                 // LEFT
             NamedCommands.registerCommand("Align and Score Coral Left L3", new SequentialCommandGroup(
                 new SequentialCommandGroup(
-                    new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
+                    //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
                     new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                     new AlignBranch(drivetrain, vision, true, false)),
                 new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
@@ -231,7 +231,7 @@ public class RobotContainer {
             
             NamedCommands.registerCommand("Align and Score Coral Left L4", new SequentialCommandGroup(
                 new SequentialCommandGroup(
-                    new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_AUTO_LEFT_OFFSET, 0.0)),
+                    //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_AUTO_LEFT_OFFSET, 0.0)),
                     new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
                     // new ZAlign(drivetrain, vision).withTimeout(3),
                     new AlignBranch(drivetrain, vision, true, false)),
@@ -427,7 +427,7 @@ public class RobotContainer {
 
         //ALGAE GROUND INTAKE
         buttonBoxL.button(4).or(operatorController.L2()).or(operatorXbox.leftTrigger()).whileTrue(new SequentialCommandGroup(
-            new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism),
+            new MoveElevator(elevator, Constants.Elevator.ALGAE_GROUND_HEIGHT, algaeMechanism), // elevator safe -> algae ground height
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.GROUND_INTAKE_HEIGHT),
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
         ));
@@ -518,14 +518,15 @@ public class RobotContainer {
         buttonBoxL.button(8).or(operatorController.povLeft()).or(operatorXbox.povLeft()).whileTrue(
             new ParallelCommandGroup(  
                 new MoveElevator(elevator, Constants.Elevator.BARGE_SCORING_HEIGHT, algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.BARGE_POSITION).withTimeout(2)
+                new MoveCoralPivot(coralPivot, Constants.CoralPivot.BARGE_POSITION).withTimeout(5)
             )
         );
 
         //buttonBoxL.button(8).or(operatorController.povLeft()).or(operatorXbox.povLeft()).and(bargeTrigger).whileTrue
-        bargeTrigger.whileTrue(
+        bargeTrigger.and(operatorController.povLeft()).whileTrue(
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE).withTimeout(5)
         );
+
 
         joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
         

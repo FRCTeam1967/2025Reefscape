@@ -67,13 +67,13 @@ public class ZAlign extends Command {
     } else {
       alignmentOffset = vision.getZOffset();
       DogLog.log("ZAlign/offset", alignmentOffset);
-      if (alignmentOffset >= 3.0){
+      if (alignmentOffset >= 1.5){
         zSpeed = Constants.Vision.ALIGNMENT_SPEED;
         chassisSpeeds = new ChassisSpeeds(zSpeed, 0.0, 0.0);
         DogLog.log("ZAlign/appliedChassisSpeeds", chassisSpeeds);
         drivetrain.setControl(request.withSpeeds(chassisSpeeds));
         vision.setInRangeFalse();
-      } else if (alignmentOffset < 3.0 && alignmentOffset >= 0.0) {
+      } else if (alignmentOffset < 1.5 && alignmentOffset >= 0.0) {
         vision.setInRangeTrue();
       } else {
         zSpeed = -Constants.Vision.ALIGNMENT_SPEED;

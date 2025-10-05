@@ -143,8 +143,8 @@ public final class Constants {
 
     public static final double L1 = 0.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double L2L3 = 37.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //40
-    public static final double L4 = 55.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //55  //65 //50 //26.0 //35 works //33 works too
-    public static final double LEFT_L4 = 55.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
+    public static final double L4 = 60.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //55  //65 //50 //26.0 //35 works //33 works too
+    public static final double LEFT_L4 = 60.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //50 //26.0 //35 works //33 works too
     public static final double CORAL_STATION_INTAKE_ANGLE = 120.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
     public static final double EJECT_CORAL_POSITION = 124.0 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS; //check this value before testing!!!!!!!!!!!!!!!!!!!!!!!
     public static final double SAFE = 0.01 * Constants.CoralPivot.DEGREES_TO_REVOLUTIONS;
@@ -198,17 +198,17 @@ public final class Constants {
     public static final double LIMELIGHT_ANGLE_DEGREES = 0; //need to verify
     public static final double LIMELIGHT_HEIGHT_INCHES = 25.125; //need to verify
     public static final double TARGET_HEIGHT_INCHES = 54; //need to verify
-    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.256;//-0.125;//11.0812301635 //10.6631250381 //10.234612469perhaps in //-0.1175; // -0.125 //-0.1175; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
-    public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.278;//0.18; //-11.5789194107 //-11.9671554656/0.15875; //0.17145 //0.1524 //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
+    public static final double LIMELIGHT_ALIGN_LEFT_OFFSET = -0.156;//-0.125;//11.0812301635 //10.6631250381 //10.234612469perhaps in //-0.1175; // -0.125 //-0.1175; //-0.1256; //-0.1556 /-0.181 //-0.18129 //-0.10509 //-0.0889-0.0762 // -0.1200 //-0.14605
+    public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.2;//0.18; //-11.5789194107 //-11.9671554656/0.15875; //0.17145 //0.1524 //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
     public static final double LIMELIGHT_ALIGN_Z_OFFSET = 0.0; //LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
-    public static final double LIMELIGHT_AUTO_LEFT_OFFSET = -0.1175;
+    public static final double LIMELIGHT_AUTO_LEFT_OFFSET = -0.11;
     public static final double LIMELIGHT_L4_LEFT_OFFSET = -0.1;
     public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.5, 3))> 0 ? Math.pow(0.5, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.43 //0.425
     public static final double ALIGNMENT_THRESHOLD = 1.0;
     public static final double FORWARD_ALIGNMENT_THRESHOLD = 0.0;
-    public static final double ALIGNMENT_LEFT_OFFSET = -11.24;//10.74;//1.0; //1.1; //9.76; //TODO: test at EPA
-    public static final double ALIGNMENT_RIGHT_OFFSET = 12.46;//-0.8; //-1.0; //-1.1; //-13.1; //in LL degrees //TODO: test at EPA
+    public static final double ALIGNMENT_LEFT_OFFSET = 9.2; //10.54;//10.74;//1.0; //1.1; //9.76; //TODO: test at EPA
+    public static final double ALIGNMENT_RIGHT_OFFSET = -9.2;//-11.86;//-0.8; //-1.0; //-1.1; //-13.1; //in LL degrees //TODO: test at EPA
     public static final double ALIGNMENT_FORWARD_OFFSET = 0.0; //TODO: test at EPA //-5.16 center for left branch aligned
 
     public static final double ALIGNMENT_X_KP = -0.17;  //0.708 // Used for aligning Robot X (forward), which is "ty" in Limelight terms
@@ -217,7 +217,7 @@ public final class Constants {
 
   public static class Auto {
     public static final double PIVOT_INTAKE_TIMEOUT = 1.0, PIVOT_UP_TIMEOUT = 2.0, SHOOT_SPEAKER_TIMEOUT = 3.0; //pivot timeout: 2
-    public static final double kMaxSpeedMetersPerSecond = 0.5;
+    public static final double rkMaxSpeedMetersPerSecond = 0.5;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.25;
     public static final double kMaxAngularSpeedDegreesPerSecond = 180;
     public static final double kMaxAngularSpeedDegreesPerSecondSquared = 180;
@@ -261,7 +261,8 @@ public final class Constants {
     public static final double MAX_HEIGHT = 27;
 
     public static final double ALGAE_L2_HEIGHT = 14.5; //16.5
-    public static final double ALGAE_L3_HEIGHT = 22; //24
+    public static final double ALGAE_L3_HEIGHT = 23; //22; //24
+    public static final double ALGAE_GROUND_HEIGHT = 2;
     public static final double VISION_HEIGHT = 20.0;
     public static final double BARGE_SCORING_ALMOST_HEIGHT = 24.0;
     public static final double BARGE_SCORING_HEIGHT = 26.75; //TODO test/change value
@@ -332,7 +333,7 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 5.0; //in degrees not revolutions
     public static final double FEED_FORWARD = 0.0;
 
-    public static final double GROUND_INTAKE_HEIGHT = 80 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
+    public static final double GROUND_INTAKE_HEIGHT = 90 * Constants.Algae.DEGREES_TO_REVOLUTIONS; //80
     public static final double ALGAE_DOWN = 80 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double PROCESSOR_HEIGHT = 70 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double SAFE = 6 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
@@ -341,10 +342,10 @@ public final class Constants {
     public static final double CORAL_SCORING_ANGLE = 165* Constants.Algae.DEGREES_TO_REVOLUTIONS;
     public static final double EXTRA_CORAL_SCORING_ANGLE = 168 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
 
-    public static final double BARGE_SCORING_ANGLE = 25 * Constants.Algae.DEGREES_TO_REVOLUTIONS; //30 //TODO test/change value
+    public static final double BARGE_SCORING_ANGLE = 20 * Constants.Algae.DEGREES_TO_REVOLUTIONS; //30 //TODO test/change value
 
     public static final double L2L3_CORAL_SCORING_ANGLE = 11 * Constants.Algae.DEGREES_TO_REVOLUTIONS;
-    public static final double L4_CORAL_SCORING_ANGLE = 16 * Constants.Algae.DEGREES_TO_REVOLUTIONS; // 10
+    public static final double L4_CORAL_SCORING_ANGLE = 18 * Constants.Algae.DEGREES_TO_REVOLUTIONS; // 10
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
 
@@ -355,7 +356,7 @@ public final class Constants {
     public static final double ALGAE_INTAKE_SPEED = -0.7; //TODO: maybe up the speed
     public static final double ALGAE_OUTTAKE_SPEED = 0.3; //0.425
     public static final double ALGAE_DEFAULT_SPEED = -0.15;
-    public static final double ALGAE_BARGE_OUTTAKE = 200.0; //100.0 //40.0; //20
+    public static final double ALGAE_BARGE_OUTTAKE = 350.0; //200.0 //100.0 //40.0; //20
     public static final double ALGAE_STOP_SPINNING = 0.0;
 
     //public static final double INTAKE_SAFE = 0.31666666666666665;
