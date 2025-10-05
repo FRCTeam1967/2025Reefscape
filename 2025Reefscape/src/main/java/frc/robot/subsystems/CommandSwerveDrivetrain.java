@@ -284,7 +284,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
 
 
-    //get the accurate pose WITH YAW (mt2 relies heavily on gyro alues)
+    //initialize pose estimator (all zero values, including gyro because auto init sets to zero)
     SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
         getKinematics(), 
         getPigeon2().getRotation2d(), 
@@ -296,9 +296,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         },
         new Pose2d(0.0, 0.0, new Rotation2d())
     );
-    public void updateOdometryPoseEstimator(){  
-        //m_field.setRobotPose(get_pose());
 
+    public void updateOdometryPoseEstimator(){  
+
+        //update pose estimator periodically before adding vision measurements
         m_poseEstimator.update(gyro.getRotation2d(), new SwerveModulePosition[] {
             getModule(0).getPosition(true),
             getModule(1).getPosition(true),
@@ -307,25 +308,25 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         });
 
         var driveState = getState();
-        Rotation2d pigeonYaw = getPigeon2().getRotation2d();
+        Rotation2d visionHeading = getPigeon2().getRotation2d();
         Rotation2d rawHeading = driveState.RawHeading;
         Pose2d robotPose = driveState.Pose;
 
-        // Tell Limelight what our current orientation is
-        Rotation2d heading = driveState.Pose.getRotation();
-        //LimelightHelpers.SetRobotOrientation("limelight-santos",  heading.getDegrees(), 0, 0, 0, 0, 0);
-        
-        //update robot orientation with pose estimator, not the drivestate
+        // Tell vision pose what our current orientation is MUST HAPPEN PERIODICALLY
         LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-santos");
-        
         boolean doRejectUpdate = false;
 
-        DogLog.log("DrivetrainUpdate/heading", heading);
-        DogLog.log("DrivetrainUpdate/pigeonYaw", pigeonYaw);
-        DogLog.log("DrivetrainUpdate/tagCount", mt2 != null ? mt2.tagCount : 0);
+        //compare headings
+        DogLog.log("DrivetrainUpdate/visionPoseHeading", visionHeading);
         DogLog.log("DrivetrainUpdate/drivetrainRawHeading", rawHeading);
+
+        //compare pose
+        DogLog.log("DrivetrainUpdate/visionPose", mt2.pose);
         DogLog.log("DrivetrainUpdate/drivetrainPose", robotPose);
+
+        //tag count for ambiguity
+        DogLog.log("DrivetrainUpdate/tagCount", mt2 != null ? mt2.tagCount : 0);
 
         // If we don't see any tags, the pose can't be good
         if(mt2.tagCount == 0) {
@@ -334,9 +335,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         if(!doRejectUpdate) {
             DogLog.log("DrivetrainUpdate/mt2Pose", mt2.pose);
+
+            //add vision measurements to pose estimator -> pathplanner takes vision pose -> corrects drivetrain odometry
             m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
             m_poseEstimator.addVisionMeasurement(mt2.pose, Utils.fpgaToCurrentTime(mt2.timestampSeconds));
             limelightPublisher.set(mt2.pose);
+            
+            //update shuffleboard field
             m_field.setRobotPose(mt2.pose);
         }
 
