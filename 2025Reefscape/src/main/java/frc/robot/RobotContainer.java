@@ -76,12 +76,6 @@ public class RobotContainer {
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
-        NamedCommands.registerCommand("Climb", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.PRE_CLIMB),
-            new RunClimb(climb, Constants.Climb.VELOCITY),
-            new MovePivot(pivot, Constants.Pivot.CLIMB)
-        ));
-
         autoChooser = AutoBuilder.buildAutoChooser();
 
         configureBindings();
@@ -129,7 +123,7 @@ public class RobotContainer {
         //CLIMB
         operatorController.square().or(operatorXbox.x()).whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.PRE_CLIMB),
-            new RunClimb(climb, Constants.Climb.VELOCITY),
+            new RunClimb(climb, Constants.Climb.CLIMB_TARGET_POSITION, Constants.Climb.VELOCITY),
             new MovePivot(pivot, Constants.Pivot.CLIMB)
         ));
     } 

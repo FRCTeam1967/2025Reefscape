@@ -37,6 +37,8 @@ public final class Constants {
     public static final double kV = 0; 
     public static final double kA = 0;
 
+    public static final double CLIMB_TARGET_POSITION = 0.0;
+
     public static final double CLIMB_ENCODER_STOP_VAL = 0;
 
     public static final double ERROR_THRESHOLD = 0.0;
