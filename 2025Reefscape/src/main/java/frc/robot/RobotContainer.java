@@ -61,24 +61,6 @@ public class RobotContainer {
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
-<<<<<<< HEAD
-        NamedCommands.registerCommand("Algae Intake", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
-            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        );
-
-        NamedCommands.registerCommand("Algae Processor", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR),
-            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        );
-
-        NamedCommands.registerCommand("Algae Descore", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
-            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
-        );
-
-=======
->>>>>>> 5c6ecaf5df2cf5200d8e777b7eeb84d56bccc7dc
         autoChooser = AutoBuilder.buildAutoChooser();
 
         configureBindings();
@@ -126,7 +108,7 @@ public class RobotContainer {
         //CLIMB
         operatorController.square().or(operatorXbox.x()).whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.PRE_CLIMB),
-            new RunClimb(climb, Constants.Climb.CLIMB_TARGET_POSITION, Constants.Climb.VELOCITY),
+            new RunClimb(climb, Constants.Climb.VELOCITY),
             new MovePivot(pivot, Constants.Pivot.CLIMB)
         ));
     } 

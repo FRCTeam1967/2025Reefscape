@@ -9,13 +9,11 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj.DigitalInput;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
 public class Pivot extends SubsystemBase {
    private TalonFX pivotMotor1;
    private TalonFX pivotMotor2;
-   private DigitalInput limitSwitch;
    public double revsToMove;
    private TalonFXConfiguration config;
    
@@ -40,7 +38,9 @@ public class Pivot extends SubsystemBase {
       motionMagicConfigs.MotionMagicAcceleration = Constants.Pivot.ACCELERATION;
       motionMagicConfigs.MotionMagicJerk = Constants.Pivot.JERK;
 
+      // inverted value?
       talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      
       pivotMotor1.getConfigurator().apply(talonFXConfigs);
       pivotMotor2.getConfigurator().apply(talonFXConfigs);
 
@@ -88,8 +88,6 @@ public class Pivot extends SubsystemBase {
       .withPosition(7, 0).withSize(1, 1);
       tab.addBoolean("Pivot At Target", () -> isReached()).withWidget(BuiltInWidgets.kBooleanBox)
       .withPosition(0, 1).withSize(1, 1);
-      tab.addBoolean("Pivot Sensor?", () -> !limitSwitch.get()).withWidget(BuiltInWidgets.kBooleanBox)
-      .withPosition(1, 1).withSize(1, 1);
    }
 
    @Override

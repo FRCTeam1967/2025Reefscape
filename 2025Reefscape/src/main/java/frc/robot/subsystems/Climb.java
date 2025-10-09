@@ -16,6 +16,8 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
 public class Climb extends SubsystemBase {
    private TalonFX climbMotor;
+   private TalonFXConfiguration config;
+   public double revsToMove;
 
    public Climb() {
       climbMotor = new TalonFX(Constants.Climb.CLIMB_MOTOR_ID);
@@ -27,7 +29,7 @@ public class Climb extends SubsystemBase {
       climbMotor.getConfigurator().apply(talonFXConfigs);
       climbMotor.getPosition().setUpdateFrequency(150);
       
-      var config = new TalonFXConfiguration();
+      config = new TalonFXConfiguration();
 
       var slot0Configs = talonFXConfigs.Slot0;
       slot0Configs.kS = Constants.Climb.kS; 
@@ -55,7 +57,7 @@ public class Climb extends SubsystemBase {
     */
 
    public void moveTo(double revolutions) {
-      var revsToMove = revolutions*(Constants.Climb.GEAR_RATIO); 
+      revsToMove = revolutions*(Constants.Climb.GEAR_RATIO); 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(0.0);
       climbMotor.setControl(request);
    }
