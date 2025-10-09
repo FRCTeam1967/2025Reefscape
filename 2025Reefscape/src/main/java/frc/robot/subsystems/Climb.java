@@ -12,7 +12,6 @@ import frc.robot.Constants;
 
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.signals.InvertedValue;
-import edu.wpi.first.wpilibj.DigitalInput;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
 public class Climb extends SubsystemBase {

@@ -61,6 +61,7 @@ public class RobotContainer {
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
+<<<<<<< HEAD
         NamedCommands.registerCommand("Algae Intake", new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
             new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
@@ -76,6 +77,8 @@ public class RobotContainer {
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
+=======
+>>>>>>> 5c6ecaf5df2cf5200d8e777b7eeb84d56bccc7dc
         autoChooser = AutoBuilder.buildAutoChooser();
 
         configureBindings();
