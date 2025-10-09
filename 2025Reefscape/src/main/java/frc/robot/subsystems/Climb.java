@@ -12,7 +12,6 @@ import frc.robot.Constants;
 
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.signals.InvertedValue;
-import edu.wpi.first.wpilibj.DigitalInput;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
 public class Climb extends SubsystemBase {
@@ -28,7 +27,7 @@ public class Climb extends SubsystemBase {
       climbMotor.getConfigurator().apply(talonFXConfigs);
       climbMotor.getPosition().setUpdateFrequency(150);
       
-      config = new TalonFXConfiguration();
+      var config = new TalonFXConfiguration();
 
       var slot0Configs = talonFXConfigs.Slot0;
       slot0Configs.kS = Constants.Climb.kS; 
@@ -56,7 +55,7 @@ public class Climb extends SubsystemBase {
     */
 
    public void moveTo(double revolutions) {
-      revsToMove = revolutions*(Constants.Climb.GEAR_RATIO); 
+      var revsToMove = revolutions*(Constants.Climb.GEAR_RATIO); 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(0.0);
       climbMotor.setControl(request);
    }

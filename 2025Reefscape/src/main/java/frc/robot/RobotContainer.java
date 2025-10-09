@@ -61,27 +61,6 @@ public class RobotContainer {
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
-        NamedCommands.registerCommand("Algae Intake", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
-            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        );
-
-        NamedCommands.registerCommand("Algae Processor", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR),
-            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        );
-
-        NamedCommands.registerCommand("Algae Descore", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
-            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
-        );
-
-        NamedCommands.registerCommand("Climb", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.PRE_CLIMB),
-            new RunClimb(climb, Constants.Climb.VELOCITY),
-            new MovePivot(pivot, Constants.Pivot.CLIMB)
-        ));
-
         autoChooser = AutoBuilder.buildAutoChooser();
 
         configureBindings();
