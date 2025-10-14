@@ -18,14 +18,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Xbox;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.generated.TunerConstants;
 
 
 /**
@@ -44,6 +43,8 @@ public class RobotContainer {
     public final Intake intake = new Intake();
     public final Climb climb = new Climb();
     public final Pivot pivot = new Pivot();
+    public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
 
     public static ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
     public ShuffleboardTab fieldTab = Shuffleboard.getTab("Field");
@@ -74,6 +75,10 @@ public class RobotContainer {
         //DEFAULT COMMANDS
         pivot.setDefaultCommand(new MovePivot(pivot, Constants.Pivot.PRE_CLIMB));
         intake.setDefaultCommand(new RunIntake(intake, 0.0));
+
+        joystick.start().onTrue(
+            drivetrain.runOnce(() -> drivetrain.seedFieldCentric())
+        );
         
         //GROUND INTAKE
         operatorController.R2().or(operatorXbox.rightTrigger()).whileTrue(new SequentialCommandGroup(
@@ -108,7 +113,7 @@ public class RobotContainer {
         //CLIMB
         operatorController.square().or(operatorXbox.x()).whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.PRE_CLIMB),
-            new RunClimb(climb, Constants.Climb.VELOCITY),
+            new RunClimb(climb, Constants.Climb.VELOCITY).withTimeout(3),
             new MovePivot(pivot, Constants.Pivot.CLIMB)
         ));
     } 

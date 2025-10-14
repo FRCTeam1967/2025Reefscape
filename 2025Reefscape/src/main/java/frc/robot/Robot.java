@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_robotContainer.pivot.moveTo(Constants.Pivot.PRE_CLIMB);
+    m_robotContainer.pivot.maintainPosition();
   }
 
   /** This function is called periodically during autonomous. */
@@ -69,13 +69,14 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    m_robotContainer.pivot.maintainPosition();
+
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    m_robotContainer.pivot.maintainPosition();
-  }
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {

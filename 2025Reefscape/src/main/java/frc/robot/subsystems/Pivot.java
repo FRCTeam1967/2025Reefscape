@@ -71,7 +71,7 @@ public class Pivot extends SubsystemBase {
    }
 
    public boolean isReached() {
-      return Math.abs(((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360) - (revsToMove*360)) < 5.0;
+      return Math.abs(((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360) - ((revsToMove/Constants.Pivot.GEAR_RATIO)*360)) < 5.0;
    }
 
    public void maintainPosition() {
