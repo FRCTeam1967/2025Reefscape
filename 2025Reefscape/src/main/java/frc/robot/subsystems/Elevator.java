@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -133,6 +134,12 @@ public class Elevator extends SubsystemBase {
       tab.addBoolean("Elev Sensor Val", () -> !sensor.get())
       .withWidget(BuiltInWidgets.kBooleanBox).withPosition(6, 1)
       .withSize(1, 1);
+   }
+
+   public void logElevator() {
+      DogLog.log("Elevator/Height in.", getHeight());
+      DogLog.log("Elevator/Height revs",  (rightMotor.getRotorPosition()
+      .getValueAsDouble() + leftMotor.getRotorPosition().getValueAsDouble())/2);
    }
   
   @Override

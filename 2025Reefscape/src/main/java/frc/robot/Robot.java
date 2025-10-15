@@ -92,7 +92,7 @@ public class Robot extends TimedRobot {
     }
 
     // Log a bunch of stuff so we can try to figure out what's happening in the auto -> teleop transition
-    var drivetrain = m_robotContainer.drivetrain;
+    var drivetrain = RobotContainer.drivetrain;
     var drivetrainState = drivetrain.getState();
     DogLog.log("TeleopInit/drivetrainPose", drivetrainState.Pose);
     DogLog.log("TeleopInit/drivetrainRawHeading", drivetrainState.RawHeading);
@@ -108,7 +108,18 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    var drivetrain = RobotContainer.drivetrain;
+    var drivetrainState = drivetrain.getState();
+    DogLog.log("TeleopPeriodic/drivetrainPose", drivetrainState.Pose);
+    DogLog.log("TeleopPeriodic/drivetrainRawHeading", drivetrainState.RawHeading);
+    DogLog.log("TeleopPeriodic/pigeonYas", drivetrain.getPigeon2().getRotation2d());
+    DogLog.log("TeleopPeriodic/operatorForwardDirection", drivetrain.getOperatorForwardDirection());
+
+    m_robotContainer.algaeMechanism.logAlgaePivot();
+    m_robotContainer.coralPivot.logCoralPivot();
+    m_robotContainer.elevator.logElevator();
+  }
 
   @Override
   public void teleopExit() {}

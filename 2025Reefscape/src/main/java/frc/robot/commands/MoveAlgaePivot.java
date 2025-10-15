@@ -1,5 +1,6 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package frc.robot.commands;
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaePivot;
 

@@ -5,6 +5,8 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -91,6 +93,11 @@ public class CoralPivot extends SubsystemBase {
 
    public void maintainPosition() {
       moveTo(Constants.CoralPivot.CORAL_INTAKE);
+   }
+
+   public void logCoralPivot() {
+      DogLog.log("CoralPivot/Rel Pos Degrees", ((pivotMotor.getRotorPosition()
+      .getValueAsDouble())/Constants.CoralPivot.GEAR_RATIO)*360);
    }
 
    public void periodic() {

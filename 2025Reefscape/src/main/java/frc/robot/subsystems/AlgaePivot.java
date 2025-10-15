@@ -11,6 +11,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+
+import dev.doglog.DogLog;
+
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -107,7 +110,7 @@ public class AlgaePivot extends SubsystemBase {
    }
    
    public void configDashboard(ShuffleboardTab tab) {
-      tab.addNumber("APivotRelPosDeg",() -> ((algaePivot.getRotorPosition()
+      tab.addNumber("APivotRelPosDeg", () -> ((algaePivot.getRotorPosition()
       .getValueAsDouble()/Constants.Algae.GEAR_RATIO)*360))
       .withWidget(BuiltInWidgets.kTextView).withPosition(3, 0)
       .withSize(1, 1);
@@ -119,7 +122,12 @@ public class AlgaePivot extends SubsystemBase {
       .withSize(1, 1);
    }
 
-   //intake methods
-   public void periodic() {
+   public void logAlgaePivot() {
+      DogLog.log("AlgaePivot/Rel Pos Degrees", ((algaePivot.getRotorPosition()
+      .getValueAsDouble()/Constants.Algae.GEAR_RATIO)*360));
+      DogLog.log("AlgaePivot/Abs Pos", absEncoder.getAbsolutePosition().getValueAsDouble());
    }
+
+   //intake methods
+   public void periodic() {}
 }
