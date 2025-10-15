@@ -18,10 +18,10 @@ public final class Constants {
   }
 
   public class Climb {
-    public static final int CLIMB_MOTOR_ID = 0;
+    public static final int CLIMB_MOTOR_ID = 13;
     public static final double VELOCITY = 0;
 
-    public static final double GEAR_RATIO = 0/0;
+    public static final double GEAR_RATIO = 75/1;
 
     public static final double CRUISE_VELOCITY = 50.0;
     public static final double ACCELERATION = 70.0;
@@ -29,7 +29,7 @@ public final class Constants {
 
     public static final double CONVERSION_FACTOR = 0.0;
     
-    public static final double kP = 0; 
+    public static final double kP = 3; 
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0; 
@@ -46,26 +46,26 @@ public final class Constants {
    }
 
   public class Intake {
-    public static final int INTAKE_MOTOR_ID = 0;
+    public static final int INTAKE_MOTOR_ID = 10;
 
-    public static final double kP = 0; 
+    public static final double kP = 0.5; 
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0; 
     public static final double kV = 0; 
     public static final double kA = 0;
 
-    public static final double INTAKE_SPEED = 0.5;
-    public static final double EJECT_VELOCITY = -0.5;
+    public static final double INTAKE_SPEED = 2.0;
+    public static final double EJECT_VELOCITY = -2;
 
     public static final double INTAKE_ENCODER_STOP_VAL = 0;
    }
 
   public class Pivot {
-    public static final int PIVOT1_ID = 0;
-    public static final int PIVOT2_ID = 0;
+    public static final int PIVOT1_ID = 11;
+    public static final int PIVOT2_ID = 12;
     
-    public static final double GEAR_RATIO = 0/0;
+    public static final double GEAR_RATIO = 144/1;
 
     public static final double CRUISE_VELOCITY = 50.0;
     public static final double ACCELERATION = 70.0;
