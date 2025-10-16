@@ -73,7 +73,7 @@ public final class Constants {
     
     public static final double CONVERSION_FACTOR = 0.0;
 
-    public static final double kP = 0.0;
+    public static final double kP = 0.5;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
     public static final double kS = 0.0;
@@ -84,14 +84,14 @@ public final class Constants {
     public static final double FEED_FORWARD = 0.0;
 
 
-    public static final double CORAL_GROUND_INTAKE = 10 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for coral ground intake
-    public static final double CORAL_L1 = 38 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for L1 scoring
+    public static final double CORAL_GROUND_INTAKE = -97.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for coral ground intake
+    public static final double CORAL_L1 = -46.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for L1 scoring
     
-    public static final double ALGAE_INTAKE = 28.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for algae ground intake
-    public static final double ALGAE_PROCESSOR = 28.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for processor scoring
+    public static final double ALGAE_INTAKE = -55.2 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for algae ground intake
+    public static final double ALGAE_PROCESSOR = -55.2 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for processor scoring
 
-    public static final double PRE_CLIMB = 85 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~vertical, before climb
-    public static final double CLIMB = 10 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~horizontal, finished climb position
+    public static final double PRE_CLIMB = 8.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~vertical, before climb
+    public static final double CLIMB = -46.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~horizontal, finished climb position
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
     public static final double CURRENT_LIMIT = 40;

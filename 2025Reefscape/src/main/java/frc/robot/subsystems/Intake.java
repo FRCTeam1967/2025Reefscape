@@ -43,7 +43,10 @@ public class Intake extends SubsystemBase {
    }
 
    public void stopMotor() {
-      intakeMotor.stopMotor();
+      //intakeMotor.stopMotor();
+
+      VelocityVoltage request = new VelocityVoltage(0);
+      intakeMotor.setControl(request);
    }
 
    /**Adds value to shuffleboard

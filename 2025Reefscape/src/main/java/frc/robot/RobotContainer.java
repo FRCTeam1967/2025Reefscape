@@ -34,13 +34,12 @@ import frc.robot.generated.TunerConstants;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    private final CommandPS4Controller operatorController = new CommandPS4Controller(Xbox.OPERATOR_CONTROLLER_PORT);
+    //private final CommandPS4Controller operatorController = new CommandPS4Controller(Xbox.OPERATOR_CONTROLLER_PORT);
+    private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController operatorController = new CommandXboxController(1);
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-
-    //private final CommandXboxController operatorController = new CommandXboxController(Xbox.OPERATOR_CONTROLLER_PORT);
-    private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final Intake intake = new Intake();
     public final Climb climb = new Climb();
@@ -71,10 +70,10 @@ public class RobotContainer {
 
         autoChooser = AutoBuilder.buildAutoChooser();
 
-        configureBindings();/*
+        configureBindings();
         intake.configDashboard(matchTab);
-        climb.configDashboard(matchTab);
-        pivot.configDashboard(matchTab);*/
+        //climb.configDashboard(matchTab);
+        pivot.configDashboard(matchTab);
 
     }
     
@@ -89,7 +88,7 @@ public class RobotContainer {
         );
         
         //DEFAULT COMMANDS
-        pivot.setDefaultCommand(new MovePivot(pivot, Constants.Pivot.PRE_CLIMB));
+        pivot.setDefaultCommand(new MovePivot(pivot, Constants.Pivot.CORAL_L1));
         intake.setDefaultCommand(new RunIntake(intake, 0.0));
 
         joystick.start().onTrue(
@@ -97,41 +96,44 @@ public class RobotContainer {
         );
         
         //GROUND INTAKE
-        operatorController.R2().whileTrue(new SequentialCommandGroup(
-            //new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE),
-            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        );
+        operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE)//,
+            //new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
+        ));
 
         //CORAL L1 
-        operatorController.cross().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
-            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
-        );
+        operatorController.x().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_L1)//,
+            //new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
+        ));
 
         //ALGAE INTAKE
-        operatorController.L2().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
-            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
-        );
+        operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE)//,
+            //new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
+        ));
 
         //ALGAE PROCESSOR
-        operatorController.R1().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR),
-            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        );
+        operatorController.rightBumper().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR)//,
+            //new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
+        ));
 
         //ALGAE DESCORE
         operatorController.povDown().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
+            //new MovePivot(pivot, Constants.Pivot.CORAL_L1),
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
         //CLIMB
-        operatorController.square().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.PRE_CLIMB),
-            new RunClimb(climb, Constants.Climb.VELOCITY).withTimeout(3),
-            new MovePivot(pivot, Constants.Pivot.CLIMB)
+        operatorController.a().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.PRE_CLIMB)//,
+            //new RunClimb(climb, Constants.Climb.VELOCITY).withTimeout(3)//,
+            //new MovePivot(pivot, Constants.Pivot.CLIMB)
         ));
+
+        //ZERO
+
 
     } 
 }

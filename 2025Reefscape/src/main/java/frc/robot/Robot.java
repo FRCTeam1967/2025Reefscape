@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.pivot.resetEncoders();
     m_robotContainer.pivot.maintainPosition();
   }
 
@@ -70,8 +71,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_robotContainer.pivot.maintainPosition();
-
+    m_robotContainer.pivot.resetEncoders();
   }
 
   /** This function is called periodically during operator control. */
