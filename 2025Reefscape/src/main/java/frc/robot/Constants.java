@@ -19,7 +19,7 @@ public final class Constants {
 
   public class Climb {
     public static final int CLIMB_MOTOR_ID = 13;
-    public static final double VELOCITY = 0;
+    public static final double VELOCITY = 2.0;
 
     public static final double GEAR_RATIO = 75/1;
 
@@ -29,7 +29,7 @@ public final class Constants {
 
     public static final double CONVERSION_FACTOR = 0.0;
     
-    public static final double kP = 3; 
+    public static final double kP = 8; 
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0; 
@@ -48,15 +48,15 @@ public final class Constants {
   public class Intake {
     public static final int INTAKE_MOTOR_ID = 10;
 
-    public static final double kP = 0.5; 
+    public static final double kP = 8; 
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0; 
     public static final double kV = 0; 
     public static final double kA = 0;
 
-    public static final double INTAKE_SPEED = 2.0;
-    public static final double EJECT_VELOCITY = -2;
+    public static final double INTAKE_SPEED = 15.0;
+    public static final double EJECT_VELOCITY = -15.0;
 
     public static final double INTAKE_ENCODER_STOP_VAL = 0;
    }
@@ -84,7 +84,7 @@ public final class Constants {
     public static final double FEED_FORWARD = 0.0;
 
 
-    public static final double CORAL_GROUND_INTAKE = -97.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for coral ground intake
+    public static final double CORAL_GROUND_INTAKE = -91.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for coral ground intake
     public static final double CORAL_L1 = -46.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for L1 scoring
     
     public static final double ALGAE_INTAKE = -55.2 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for algae ground intake

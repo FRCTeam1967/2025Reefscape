@@ -24,13 +24,6 @@ public class Climb extends SubsystemBase {
 
       var talonFXConfigs = new TalonFXConfiguration();
 
-      climbMotor.setNeutralMode(NeutralModeValue.Brake);
-
-      climbMotor.getConfigurator().apply(talonFXConfigs);
-      climbMotor.getPosition().setUpdateFrequency(150);
-      
-      config = new TalonFXConfiguration();
-
       var slot0Configs = talonFXConfigs.Slot0;
       slot0Configs.kS = Constants.Climb.kS; 
       slot0Configs.kV = Constants.Climb.kV;
@@ -44,12 +37,14 @@ public class Climb extends SubsystemBase {
       motionMagicConfigs.MotionMagicAcceleration = Constants.Climb.ACCELERATION;
       motionMagicConfigs.MotionMagicJerk = Constants.Climb.JERK;
 
-      talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      // inverted value?
+      talonFXConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      
       climbMotor.getConfigurator().apply(talonFXConfigs);
 
       climbMotor.setNeutralMode(NeutralModeValue.Brake);
 
-      config.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Constants.Climb.CURRENT_LIMIT));
+      talonFXConfigs.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Constants.Climb.CURRENT_LIMIT));
    }
 
    /**  Sets speed for right and left motors, left motor is reversed for intake to run in opposite direction

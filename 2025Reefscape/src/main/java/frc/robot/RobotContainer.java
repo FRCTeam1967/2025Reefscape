@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -89,51 +90,56 @@ public class RobotContainer {
         
         //DEFAULT COMMANDS
         pivot.setDefaultCommand(new MovePivot(pivot, Constants.Pivot.CORAL_L1));
-        intake.setDefaultCommand(new RunIntake(intake, 0.0));
+        //intake.setDefaultCommand(new RunIntake(intake, 0.0));
 
         joystick.start().onTrue(
             drivetrain.runOnce(() -> drivetrain.seedFieldCentric())
         );
         
         //GROUND INTAKE
-        operatorController.rightTrigger().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE)//,
-            //new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        ));
+        operatorController.rightTrigger().whileTrue(new ParallelCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE),
+            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
+        );
 
         //CORAL L1 
         operatorController.x().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_L1)//,
-            //new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
-        ));
-
-        //ALGAE INTAKE
-        operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE)//,
-            //new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
-        ));
-
-        //ALGAE PROCESSOR
-        operatorController.rightBumper().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR)//,
-            //new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        ));
-
-        //ALGAE DESCORE
-        operatorController.povDown().whileTrue(new SequentialCommandGroup(
-            //new MovePivot(pivot, Constants.Pivot.CORAL_L1),
+            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
-        //CLIMB
+        //ALGAE INTAKE
+        operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
+            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
+        );
+
+        //ALGAE PROCESSOR
+        operatorController.rightBumper().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR),
+            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
+        );
+
+        //ALGAE DESCORE
+        operatorController.povDown().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
+            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
+        );
+
+        //PRE CLIMB
         operatorController.a().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.PRE_CLIMB)//,
-            //new RunClimb(climb, Constants.Climb.VELOCITY).withTimeout(3)//,
-            //new MovePivot(pivot, Constants.Pivot.CLIMB)
+            new MovePivot(pivot, Constants.Pivot.PRE_CLIMB)
+        ));
+
+        // CLIMB
+        operatorController.b().whileTrue(new SequentialCommandGroup(
+            //new RunClimb(climb, Constants.Climb.VELOCITY)//,
+            new MovePivot(pivot, Constants.Pivot.CLIMB)
         ));
 
         //ZERO
-
-
+        joystick.a().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, 0.0)
+        ));
     } 
 }

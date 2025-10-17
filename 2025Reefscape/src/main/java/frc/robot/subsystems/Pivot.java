@@ -13,12 +13,12 @@ import frc.robot.Constants;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
 public class Pivot extends SubsystemBase {
-   //private TalonFX pivotMotor1;
+   private TalonFX pivotMotor1;
    private TalonFX pivotMotor2;
    public double revsToMove;
    
    public Pivot() {
-      //pivotMotor1 = new TalonFX(Constants.Pivot.PIVOT1_ID);
+      pivotMotor1 = new TalonFX(Constants.Pivot.PIVOT1_ID);
       pivotMotor2 = new TalonFX(Constants.Pivot.PIVOT2_ID);
 
       var talonFXConfigs = new TalonFXConfiguration();
@@ -37,19 +37,20 @@ public class Pivot extends SubsystemBase {
       motionMagicConfigs.MotionMagicJerk = Constants.Pivot.JERK;
 
       // inverted value?
+      talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      pivotMotor1.getConfigurator().apply(talonFXConfigs);
+
       talonFXConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-      
-      //pivotMotor1.getConfigurator().apply(talonFXConfigs);
       pivotMotor2.getConfigurator().apply(talonFXConfigs);
 
-      //pivotMotor1.setNeutralMode(NeutralModeValue.Brake);
+      pivotMotor1.setNeutralMode(NeutralModeValue.Brake);
       pivotMotor2.setNeutralMode(NeutralModeValue.Brake);
 
       talonFXConfigs.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Constants.Pivot.CURRENT_LIMIT));
    }
 
    public void stop() {
-      //pivotMotor1.stopMotor();
+      pivotMotor1.stopMotor();
       pivotMotor2.stopMotor();
    }
 
@@ -59,17 +60,17 @@ public class Pivot extends SubsystemBase {
    public void moveTo(double revolutions) {
       revsToMove = revolutions*(Constants.Pivot.GEAR_RATIO); 
       MotionMagicVoltage request = (new MotionMagicVoltage(revsToMove)).withFeedForward(1.0);
-      //pivotMotor1.setControl(request);
+      pivotMotor1.setControl(request);
       pivotMotor2.setControl(request);
    }
    
    public void resetEncoders() { 
-      //pivotMotor1.setPosition(0);
+      pivotMotor1.setPosition(0);
       pivotMotor2.setPosition(0);
    }
 
    public boolean isReached() {
-      return Math.abs(((pivotMotor2.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360) - ((revsToMove/Constants.Pivot.GEAR_RATIO)*360)) < 5.0;
+      return Math.abs(((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360) - ((revsToMove/Constants.Pivot.GEAR_RATIO)*360)) < 3.0;
    }
 
    public void maintainPosition() {
@@ -80,7 +81,7 @@ public class Pivot extends SubsystemBase {
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.addNumber("PivotRelPosDeg",() -> ((pivotMotor2.getRotorPosition()
+      tab.addNumber("PivotRelPosDeg",() -> ((pivotMotor1.getRotorPosition()
       .getValueAsDouble())/Constants.Pivot.GEAR_RATIO)*360)
       .withWidget(BuiltInWidgets.kTextView)
       .withPosition(7, 0).withSize(1, 1);
