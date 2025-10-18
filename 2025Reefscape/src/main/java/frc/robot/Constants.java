@@ -19,7 +19,8 @@ public final class Constants {
 
   public class Climb {
     public static final int CLIMB_MOTOR_ID = 13;
-    public static final double VELOCITY = 2.0;
+    public static final double VELOCITY = 15.0;
+    public static final double CLOSING_VELOCITY = -15.0;
 
     public static final double GEAR_RATIO = 75/1;
 
@@ -29,7 +30,7 @@ public final class Constants {
 
     public static final double CONVERSION_FACTOR = 0.0;
     
-    public static final double kP = 8; 
+    public static final double kP = 25; 
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0; 
@@ -48,7 +49,7 @@ public final class Constants {
   public class Intake {
     public static final int INTAKE_MOTOR_ID = 10;
 
-    public static final double kP = 8; 
+    public static final double kP = 10; 
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0; 
@@ -57,6 +58,7 @@ public final class Constants {
 
     public static final double INTAKE_SPEED = 15.0;
     public static final double EJECT_VELOCITY = -15.0;
+    public static final double DESCORE_VELOCITY = -55.0;
 
     public static final double INTAKE_ENCODER_STOP_VAL = 0;
    }
@@ -84,14 +86,15 @@ public final class Constants {
     public static final double FEED_FORWARD = 0.0;
 
 
-    public static final double CORAL_GROUND_INTAKE = -91.0 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for coral ground intake
-    public static final double CORAL_L1 = -46.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for L1 scoring
+    public static final double CORAL_GROUND_INTAKE = -93.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for coral ground intake
+    public static final double CORAL_L1 = -45.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for L1 scoring
     
-    public static final double ALGAE_INTAKE = -55.2 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for algae ground intake
-    public static final double ALGAE_PROCESSOR = -55.2 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for processor scoring
+    public static final double ALGAE_INTAKE = -60.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for algae ground intake
+    public static final double ALGAE_PROCESSOR = -60.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for processor scoring
+    public static final double ALGAE_DESCORE = -43.8 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for L1 scoring
 
-    public static final double PRE_CLIMB = 8.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~vertical, before climb
-    public static final double CLIMB = -46.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~horizontal, finished climb position
+    public static final double PRE_CLIMB = 9.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~vertical, before climb
+    public static final double CLIMB = -45.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~horizontal, finished climb position
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
     public static final double CURRENT_LIMIT = 40;

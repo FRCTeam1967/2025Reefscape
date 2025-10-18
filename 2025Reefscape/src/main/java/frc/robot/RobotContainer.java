@@ -89,7 +89,7 @@ public class RobotContainer {
         );
         
         //DEFAULT COMMANDS
-        pivot.setDefaultCommand(new MovePivot(pivot, Constants.Pivot.CORAL_L1));
+        pivot.setDefaultCommand(new MovePivot(pivot, 0.0));
         //intake.setDefaultCommand(new RunIntake(intake, 0.0));
 
         joystick.start().onTrue(
@@ -104,13 +104,13 @@ public class RobotContainer {
 
         //CORAL L1 
         operatorController.x().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
+            new MovePivot(pivot, Constants.Pivot.CORAL_L1).withTimeout(1.23),
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
         //ALGAE INTAKE
-        operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE),
+        operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE).withTimeout(1.5),
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
         );
 
@@ -122,24 +122,29 @@ public class RobotContainer {
 
         //ALGAE DESCORE
         operatorController.povDown().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
-            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
+            new MovePivot(pivot, Constants.Pivot.ALGAE_DESCORE).withTimeout(1.5),
+            new RunIntake(intake, Constants.Intake.DESCORE_VELOCITY))
         );
 
         //PRE CLIMB
-        operatorController.a().whileTrue(new SequentialCommandGroup(
+        operatorController.a().onTrue(
             new MovePivot(pivot, Constants.Pivot.PRE_CLIMB)
-        ));
+        );
 
         // CLIMB
-        operatorController.b().whileTrue(new SequentialCommandGroup(
-            //new RunClimb(climb, Constants.Climb.VELOCITY)//,
+        operatorController.b().onTrue(new SequentialCommandGroup(
+            new RunClimb(climb, Constants.Climb.VELOCITY).withTimeout(2),
             new MovePivot(pivot, Constants.Pivot.CLIMB)
         ));
 
         //ZERO
-        joystick.a().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, 0.0)
+        joystick.a().onTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, 0.0).withTimeout(1.5)
         ));
+
+        joystick.b().onTrue(new SequentialCommandGroup(
+            new RunClimb(climb, Constants.Climb.CLOSING_VELOCITY).withTimeout(1.5)
+        ));
+        
     } 
 }
