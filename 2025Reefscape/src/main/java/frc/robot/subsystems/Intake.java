@@ -38,6 +38,7 @@ public class Intake extends SubsystemBase {
     */
 
    public void runIntake(double speed) {
+      //intakeMotor.set(0.5);
       VelocityVoltage request = new VelocityVoltage(speed);
       intakeMotor.setControl(request);
    }

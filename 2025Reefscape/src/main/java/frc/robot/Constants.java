@@ -49,18 +49,19 @@ public final class Constants {
   public class Intake {
     public static final int INTAKE_MOTOR_ID = 10;
 
-    public static final double kP = 10; 
+    public static final double kP = 0.1; //10
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0; 
     public static final double kV = 0; 
     public static final double kA = 0;
 
-    public static final double INTAKE_SPEED = 15.0;
+    public static final double INTAKE_SPEED = 100.0; //15.0
     public static final double EJECT_VELOCITY = -15.0;
     public static final double DESCORE_VELOCITY = -55.0;
 
     public static final double INTAKE_ENCODER_STOP_VAL = 0;
+    public static final double CURRENT_LIMIT = 30;
    }
 
   public class Pivot {
