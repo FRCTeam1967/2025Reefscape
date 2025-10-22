@@ -57,7 +57,7 @@ public final class Constants {
     public static final double kA = 0;
 
     public static final double INTAKE_SPEED = 100.0; //15.0
-    public static final double ALGAE_INTAKE_SPEED = -150.0; //15.0
+    public static final double ALGAE_INTAKE_SPEED = -250.0; //150.0
     public static final double EJECT_VELOCITY = -15.0;
     public static final double DESCORE_VELOCITY = -55.0;
 
@@ -73,7 +73,7 @@ public final class Constants {
 
     public static final double CRUISE_VELOCITY = 50.0;
     public static final double ACCELERATION = 70.0;
-    public static final double JERK = 10.0;
+    public static final double JERK = 0.0;
     
     public static final double CONVERSION_FACTOR = 0.0;
 
@@ -96,7 +96,7 @@ public final class Constants {
     public static final double ALGAE_DESCORE = -32.8 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -43.8
 
     public static final double PRE_CLIMB = 6.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // 9.1
-    public static final double CLIMB = -62.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3
+    public static final double CLIMB = -80.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
     public static final double CURRENT_LIMIT = 40;
