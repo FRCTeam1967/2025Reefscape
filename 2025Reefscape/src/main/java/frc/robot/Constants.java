@@ -57,7 +57,7 @@ public final class Constants {
     public static final double kA = 0;
 
     public static final double INTAKE_SPEED = 100.0; //15.0
-    public static final double ALGAE_INTAKE_SPEED = -250.0; //150.0
+    public static final double ALGAE_INTAKE_SPEED = -450.0; //150.0
     public static final double EJECT_VELOCITY = -15.0;
     public static final double DESCORE_VELOCITY = -55.0;
 
@@ -91,9 +91,9 @@ public final class Constants {
     public static final double CORAL_GROUND_INTAKE = -90.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -93.5
     public static final double CORAL_L1 = -42.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3
     
-    public static final double ALGAE_INTAKE = -48.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
+    public static final double ALGAE_INTAKE = -53.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
     public static final double ALGAE_PROCESSOR = -48.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
-    public static final double ALGAE_DESCORE = -32.8 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -43.8
+    public static final double ALGAE_DESCORE = -30.8 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -43.8
 
     public static final double PRE_CLIMB = 6.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // 9.1
     public static final double CLIMB = -80.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3

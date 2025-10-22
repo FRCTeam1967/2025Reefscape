@@ -113,7 +113,7 @@ public class RobotContainer {
         //ALGAE INTAKE
         operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(
             new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE).withTimeout(1.5),
-            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
+            new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED))
         );
 
         //ALGAE PROCESSOR
