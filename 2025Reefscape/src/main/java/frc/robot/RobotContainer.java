@@ -104,10 +104,6 @@ public class RobotContainer {
             new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
         );
 
-        operatorController.y().whileTrue(new ParallelCommandGroup(
-            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        );
-
         //CORAL L1 
         operatorController.x().whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.CORAL_L1).withTimeout(1.23),
