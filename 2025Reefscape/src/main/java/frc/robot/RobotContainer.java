@@ -92,7 +92,7 @@ public class RobotContainer {
         
         //DEFAULT COMMANDS
         pivot.setDefaultCommand(new MovePivot(pivot, 0.0));
-        //intake.setDefaultCommand(new RunIntake(intake, 0.0));
+        intake.setDefaultCommand(new RunIntake(intake, Constants.Intake.IDLE_SPEED));
 
         joystick.start().onTrue(
             drivetrain.runOnce(() -> drivetrain.seedFieldCentric())

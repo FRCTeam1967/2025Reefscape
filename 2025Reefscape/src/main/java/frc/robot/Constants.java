@@ -56,6 +56,7 @@ public final class Constants {
     public static final double kV = 0; 
     public static final double kA = 0;
 
+    public static final double IDLE_SPEED = 15.0; //15.0
     public static final double INTAKE_SPEED = 100.0; //15.0
     public static final double ALGAE_INTAKE_SPEED = -450.0; //150.0
     public static final double EJECT_VELOCITY = -15.0;
