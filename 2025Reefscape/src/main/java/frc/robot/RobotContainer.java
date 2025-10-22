@@ -71,11 +71,13 @@ public class RobotContainer {
 
         autoChooser = AutoBuilder.buildAutoChooser();
 
+        matchTab.add("Auto Chooser", autoChooser)
+            .withWidget(BuiltInWidgets.kComboBoxChooser);
+
         configureBindings();
         intake.configDashboard(matchTab);
         //climb.configDashboard(matchTab);
         pivot.configDashboard(matchTab);
-
     }
     
     private void configureBindings() {
@@ -132,8 +134,12 @@ public class RobotContainer {
         );
 
         // CLIMB
-        operatorController.b().onTrue(new SequentialCommandGroup(
-            new RunClimb(climb, Constants.Climb.VELOCITY).withTimeout(2),
+        operatorController.b().whileTrue(new SequentialCommandGroup(
+            new RunClimb(climb, Constants.Climb.VELOCITY)
+        ));
+
+        operatorController.povUp().onTrue(new ParallelCommandGroup(
+            new RunClimb(climb, Constants.Climb.VELOCITY),
             new MovePivot(pivot, Constants.Pivot.CLIMB)
         ));
 
@@ -147,4 +153,8 @@ public class RobotContainer {
         ));
         
     } 
+
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+    }
 }

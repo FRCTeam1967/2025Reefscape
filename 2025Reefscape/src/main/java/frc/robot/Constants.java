@@ -86,15 +86,15 @@ public final class Constants {
     public static final double FEED_FORWARD = 0.0;
 
 
-    public static final double CORAL_GROUND_INTAKE = -93.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for coral ground intake
-    public static final double CORAL_L1 = -45.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for L1 scoring
+    public static final double CORAL_GROUND_INTAKE = -90.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -93.5
+    public static final double CORAL_L1 = -42.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3
     
-    public static final double ALGAE_INTAKE = -60.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for algae ground intake
-    public static final double ALGAE_PROCESSOR = -60.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for processor scoring
-    public static final double ALGAE_DESCORE = -43.8 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // angle for L1 scoring
+    public static final double ALGAE_INTAKE = -57.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
+    public static final double ALGAE_PROCESSOR = -57.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
+    public static final double ALGAE_DESCORE = -40.8 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -43.8
 
-    public static final double PRE_CLIMB = 9.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~vertical, before climb
-    public static final double CLIMB = -45.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // ~horizontal, finished climb position
+    public static final double PRE_CLIMB = 6.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // 9.1
+    public static final double CLIMB = -42.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
     public static final double CURRENT_LIMIT = 40;
