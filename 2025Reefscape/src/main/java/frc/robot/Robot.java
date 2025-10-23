@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     //m_robotContainer.pivot.maintainPosition();
+    m_robotContainer.pivot.resetEncoders();
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
