@@ -54,14 +54,13 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    //m_robotContainer.pivot.maintainPosition();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-
-    m_robotContainer.pivot.resetEncoders();
-    m_robotContainer.pivot.maintainPosition();
   }
 
   /** This function is called periodically during autonomous. */

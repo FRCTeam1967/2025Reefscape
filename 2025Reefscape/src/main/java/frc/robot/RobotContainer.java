@@ -59,14 +59,10 @@ public class RobotContainer {
     public static SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        NamedCommands.registerCommand("Coral Ground Intake", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_GROUND_INTAKE),
-            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        );
-
         NamedCommands.registerCommand("Coral L1", new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.CORAL_L1),
-            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY))
+            new MovePivot(pivot, Constants.Pivot.CORAL_L1).withTimeout(1.5),
+            new RunIntake(intake, Constants.Intake.EJECT_VELOCITY).withTimeout(2),
+            new MovePivot(pivot, 0.0))
         );
 
         autoChooser = AutoBuilder.buildAutoChooser();
