@@ -59,6 +59,10 @@ public class RobotContainer {
     public static SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        NamedCommands.registerCommand("Drive Forward",
+            new DriveForward(drivetrain).withTimeout(1)
+        );
+        
         NamedCommands.registerCommand("Coral L1", new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.CORAL_L1).withTimeout(1.5),
             new RunIntake(intake, Constants.Intake.EJECT_VELOCITY).withTimeout(2),

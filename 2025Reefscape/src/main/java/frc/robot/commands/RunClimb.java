@@ -5,7 +5,7 @@ import frc.robot.subsystems.Climb;
 
 public class RunClimb extends Command {
   private Climb climb;
-   private double speed;
+  private double speed;
 
    /** Creates a new RunFastIntake.
    * @param - intake
