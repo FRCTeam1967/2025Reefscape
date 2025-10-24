@@ -43,6 +43,7 @@ public class Climb extends SubsystemBase {
       climbMotor.getConfigurator().apply(talonFXConfigs);
 
       climbMotor.setNeutralMode(NeutralModeValue.Brake);
+      
 
       talonFXConfigs.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Constants.Climb.CURRENT_LIMIT));
    }

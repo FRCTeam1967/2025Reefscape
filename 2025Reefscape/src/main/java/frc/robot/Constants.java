@@ -19,8 +19,8 @@ public final class Constants {
 
   public class Climb {
     public static final int CLIMB_MOTOR_ID = 13;
-    public static final double VELOCITY = 15.0;
-    public static final double CLOSING_VELOCITY = -15.0;
+    public static final double VELOCITY = 50.0;
+    public static final double CLOSING_VELOCITY = -50.0;
 
     public static final double GEAR_RATIO = 75/1;
 
@@ -30,7 +30,7 @@ public final class Constants {
 
     public static final double CONVERSION_FACTOR = 0.0;
     
-    public static final double kP = 25; 
+    public static final double kP = 0.1; 
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0; 
@@ -43,7 +43,7 @@ public final class Constants {
     public static final double FEED_FORWARD = 0.0;
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;
-    public static final double CURRENT_LIMIT = 40;
+    public static final double CURRENT_LIMIT = 15;
    }
 
   public class Intake {
@@ -59,6 +59,7 @@ public final class Constants {
     public static final double IDLE_SPEED = 15.0; //15.0
     public static final double INTAKE_SPEED = 100.0; //15.0
     public static final double ALGAE_INTAKE_SPEED = -450.0; //150.0
+    public static final double ALGAE_EJECT_SPEED = 450.0; //150.0
     public static final double EJECT_VELOCITY = -100.0;
     public static final double DESCORE_VELOCITY = -55.0;
 
@@ -93,7 +94,11 @@ public final class Constants {
     public static final double CORAL_L1 = -42.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3
     
     public static final double ALGAE_INTAKE = -51.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
-    public static final double ALGAE_PROCESSOR = -51.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
+    public static final double ALGAE_STEP_2 = -49.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
+    public static final double ALGAE_STEP_3 = -47.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
+    public static final double ALGAE_STEP_4 = -45.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
+
+    public static final double ALGAE_PROCESSOR = -44.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
     public static final double ALGAE_DESCORE = -30.8 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -43.8
 
     public static final double PRE_CLIMB = 6.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // 9.1

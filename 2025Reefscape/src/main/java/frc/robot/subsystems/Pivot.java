@@ -69,9 +69,24 @@ public class Pivot extends SubsystemBase {
       pivotMotor2.setPosition(0);
    }
 
-   public boolean isReached() {
-      return Math.abs(((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360) - ((revsToMove/Constants.Pivot.GEAR_RATIO)*360)) < 0.2;
+   public boolean isReached() {      
+      double pivot1 = Math.abs((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
+      double pivot2 = Math.abs((pivotMotor2.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
+      double average = (pivot1 + pivot2) / 2;
+
+      return (Math.abs(average - ((revsToMove/Constants.Pivot.GEAR_RATIO)*360)) < 0.2);
+
    }
+
+   /*
+   public double getPosition() {      
+      double pivot1 = Math.abs((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
+      double pivot2 = Math.abs((pivotMotor2.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
+      double average = (pivot1 + pivot2) / 2;
+
+      return (Math.abs(average - ((revsToMove/Constants.Pivot.GEAR_RATIO)*360)) < 0.2);
+
+   }*/
 
    public void maintainPosition() {
       moveTo(Constants.Pivot.CORAL_L1);

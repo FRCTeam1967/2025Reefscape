@@ -20,8 +20,10 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Xbox;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
@@ -58,6 +60,8 @@ public class RobotContainer {
 
     public static SendableChooser<Command> autoChooser;
 
+    //public final Trigger algaeTrigger;
+
     public RobotContainer() {
         NamedCommands.registerCommand("Drive Forward",
             new DriveForward(drivetrain).withTimeout(1)
@@ -73,6 +77,8 @@ public class RobotContainer {
 
         matchTab.add("Auto Chooser", autoChooser)
             .withWidget(BuiltInWidgets.kComboBoxChooser);
+
+        //algaeTrigger = new Trigger(() -> pivot.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360 >= Constants.Pivot.ALGAE_INTAKE);
 
         configureBindings();
         intake.configDashboard(matchTab);
@@ -111,10 +117,21 @@ public class RobotContainer {
         );
 
         //ALGAE INTAKE
-        operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(
+        /*operatorController.leftTrigger().whileTrue(new ParallelCommandGroup(
             new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE).withTimeout(1.5),
             new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED))
-        );
+        );*/
+
+        // PROCESSOR SCORING SEQUENCE
+        operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE).withTimeout(1.5),
+            new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED).withTimeout(3),
+            new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_2).withTimeout(0.5),
+            new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_3).withTimeout(0.5),
+            new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_4).withTimeout(10.0),
+            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR).withTimeout(0.5),
+            new RunIntake(intake, Constants.Intake.ALGAE_EJECT_SPEED)
+        ));
 
         //ALGAE PROCESSOR
         operatorController.rightBumper().whileTrue(new SequentialCommandGroup(
