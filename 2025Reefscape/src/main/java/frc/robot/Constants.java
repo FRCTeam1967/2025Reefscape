@@ -58,9 +58,12 @@ public final class Constants {
 
     public static final double IDLE_SPEED = 15.0; //15.0
     public static final double INTAKE_SPEED = 100.0; //15.0
-    public static final double ALGAE_INTAKE_SPEED = -450.0; //150.0
-    public static final double ALGAE_EJECT_SPEED = 450.0; //150.0
     public static final double EJECT_VELOCITY = -100.0;
+
+    public static final double ALGAE_IDLE_SPEED = -15.0; //15.0
+    public static final double ALGAE_SLOW_INTAKE = -125.0;
+    public static final double ALGAE_INTAKE_SPEED = 450.0; //150.0
+    public static final double ALGAE_EJECT_SPEED = -450.0; //150.0
     public static final double DESCORE_VELOCITY = -55.0;
 
     public static final double INTAKE_ENCODER_STOP_VAL = 0;
@@ -79,7 +82,7 @@ public final class Constants {
     
     public static final double CONVERSION_FACTOR = 0.0;
 
-    public static final double kP = 0.5;
+    public static final double kP = 0.9;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
     public static final double kS = 0.0;
@@ -89,19 +92,23 @@ public final class Constants {
     public static final double ERROR_THRESHOLD = 0.0;
     public static final double FEED_FORWARD = 0.0;
 
-
     public static final double CORAL_GROUND_INTAKE = -90.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -93.5
-    public static final double CORAL_L1 = -42.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3
-    
-    public static final double ALGAE_INTAKE = -51.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
-    public static final double ALGAE_STEP_2 = -49.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
-    public static final double ALGAE_STEP_3 = -47.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
-    public static final double ALGAE_STEP_4 = -45.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
+    public static final double CORAL_L1 = -41.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3
+    public static final double CORAL_AUTO_POSITION = -41.3 * Constants.Pivot.DEGREES_TO_REVOLUTIONS;
 
-    public static final double ALGAE_PROCESSOR = -44.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -60.7
-    public static final double ALGAE_DESCORE = -30.8 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -43.8
+    public static final double ALGAE_INTAKE = -49.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -49.7
+    public static final double ALGAE_STEP_2 = -48.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -48.7
+    public static final double ALGAE_STEP_3 = -47.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -47.7
+    public static final double ALGAE_STEP_4 = -46.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.7
+    public static final double ALGAE_STEP_5 = -45.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -48.7
+    public static final double ALGAE_STEP_6 = -44.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -48.7
+    public static final double ALGAE_STEP_7 = -43.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -48.7
+    public static final double ALGAE_STEP_8 = -42.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -48.7
 
-    public static final double PRE_CLIMB = 6.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // 9.1
+    public static final double ALGAE_PROCESSOR = -39.7 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -41.7
+    public static final double ALGAE_DESCORE = -28.8 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -43.8
+
+    public static final double PRE_CLIMB = 8.1 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // 9.1
     public static final double CLIMB = -80.5 * Constants.Pivot.DEGREES_TO_REVOLUTIONS; // -45.3
 
     public static final double DEGREES_TO_REVOLUTIONS = 1.0/360.0;

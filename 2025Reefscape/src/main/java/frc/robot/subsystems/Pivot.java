@@ -78,15 +78,15 @@ public class Pivot extends SubsystemBase {
 
    }
 
-   /*
+   
    public double getPosition() {      
       double pivot1 = Math.abs((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       double pivot2 = Math.abs((pivotMotor2.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       double average = (pivot1 + pivot2) / 2;
 
-      return (Math.abs(average - ((revsToMove/Constants.Pivot.GEAR_RATIO)*360)) < 0.2);
+      return average;
 
-   }*/
+   }
 
    public void maintainPosition() {
       moveTo(Constants.Pivot.CORAL_L1);
@@ -100,8 +100,12 @@ public class Pivot extends SubsystemBase {
       .getValueAsDouble())/Constants.Pivot.GEAR_RATIO)*360)
       .withWidget(BuiltInWidgets.kTextView)
       .withPosition(7, 0).withSize(1, 1);
+
       tab.addBoolean("Pivot At Target", () -> isReached()).withWidget(BuiltInWidgets.kBooleanBox)
       .withPosition(0, 1).withSize(1, 1);
+
+      //tab.addNumber("PivotRelPosDeg", () -> getPosition()).withWidget(BuiltInWidgets.kTextView)
+      //.withPosition(5, 4).withSize(1, 1);
    }
 
    @Override

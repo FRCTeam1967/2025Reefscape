@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Scoring Position"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "RM F5.0"
@@ -19,7 +25,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Coral L1"
+            "name": "Coral L1 Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Backward"
           }
         }
       ]
