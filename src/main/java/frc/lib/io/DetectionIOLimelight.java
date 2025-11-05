@@ -202,7 +202,7 @@ public class DetectionIOLimelight extends DetectionIO {
 
 	private void updateGyro() {
 		Rotation2d theta = Drive.mInstance.getPose().getRotation();
-		LimelightHelpers.SetRobotOrientation(config.name, theta.getDegrees(), 0, 0, 0, 0, 0);
+		LimelightHelpers.SetRobotOrientation(config.name, theta.getDegrees(), 0, 0, 0, 0, 0); // we use drivetrain.getRotation2d().getDegrees()
 	}
 
 	public void updateAprilTagDetection() {

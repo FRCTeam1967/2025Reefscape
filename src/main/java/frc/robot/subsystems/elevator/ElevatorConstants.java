@@ -23,6 +23,7 @@ public class ElevatorConstants {
 
 	public static final double kGearing = (3.0 / 1.0);
 
+	//making an object for a conversion factor/equation?
 	public static final Util.DistanceAngleConverter converter = new Util.DistanceAngleConverter(
 			Units.Inches.of(2.0).plus(Units.Inches.of(0.125)).div(2.0));
 
@@ -69,6 +70,7 @@ public class ElevatorConstants {
 
 	public static final Distance kElevatorHighThreshold = kCoralHoldPosition.plus(kEpsilonThreshold);
 
+	//get talon fx configuration/PID
 	public static final TalonFXConfiguration getFXConfig() {
 		TalonFXConfiguration FXConfig = new TalonFXConfiguration();
 		FXConfig.Slot0.kP = 16.3;
@@ -120,7 +122,7 @@ public class ElevatorConstants {
 		IOConfig.followerIDs = new int[] {Ports.ELEVATOR_FOLLOWER.id};
 		return IOConfig;
 	}
-
+	
 	public static LinearSimConstants getSimConstants() {
 		LinearSimConstants simConstants = new LinearSimConstants();
 		simConstants.motor = DCMotor.getKrakenX60Foc(1);

@@ -25,6 +25,7 @@ public class VisionIOLimelight extends VisionIO {
 			.publish();
 
 	@Override
+	// updates tag count, timestamp, pose estimate on shuffleboard & 
 	public void setLatestEstimate(PoseEstimate poseEstimate, int minTagNum) {
 		SmartDashboard.putNumber(config.name + "/Tag Count", poseEstimate.tagCount);
 		SmartDashboard.putNumber(config.name + "/FGPA Timestamp", Timer.getFPGATimestamp());
@@ -38,7 +39,7 @@ public class VisionIOLimelight extends VisionIO {
 			Drive.mInstance.addVisionUpdate(
 					poseEstimate.pose,
 					Units.Seconds.of(poseEstimate.timestampSeconds),
-					LimelightConstants.enabledVisionStdDevs.times(poseEstimate.avgTagDist));
+					LimelightConstants.enabledVisionStdDevs.times(poseEstimate.avgTagDist)); // 0.3, 0.3, 99999.0 * poseEstimate.avgTagDist
 		}
 	}
 
@@ -52,7 +53,7 @@ public class VisionIOLimelight extends VisionIO {
 
 	@Override
 	public void update() {
-		updateGyro();
+		updateGyro(); // sets drivetrain heading in robot pose
 		setLatestEstimate(LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(config.name), 1);
 
 		SmartDashboard.putBoolean(config.name + "/Disabled", disabled);
@@ -70,9 +71,8 @@ public class VisionIOLimelight extends VisionIO {
 	}
 
 	private void updateGyro() {
-
 		Rotation2d theta = Drive.mInstance.getPose().getRotation();
-		LimelightHelpers.SetRobotOrientation(config.name, theta.getDegrees(), 0, 0, 0, 0, 0);
+		LimelightHelpers.SetRobotOrientation(config.name, theta.getDegrees(), 0, 0, 0, 0, 0); // we use drivetrain.getRotation2d().getDegrees()
 	}
 
 	public void updateConfig(LimelightConfig config) {

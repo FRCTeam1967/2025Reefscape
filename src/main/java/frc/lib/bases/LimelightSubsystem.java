@@ -36,7 +36,7 @@ public class LimelightSubsystem<IO extends VisionIOLimelight> extends SubsystemB
 
 	@Override
 	public void periodic() {
-		io.update();
+		io.update(); // gyro update in drivtrain pose
 		outputTelemetry();
 	}
 
@@ -55,6 +55,6 @@ public class LimelightSubsystem<IO extends VisionIOLimelight> extends SubsystemB
 	public static class LimelightConfig {
 		public String name = "no-name-assigned";
 		public Pose3d robotToCameraOffset = new Pose3d();
-		public Vector<N3> aprilTagVisionStdDevs = VecBuilder.fill(0.3, 0.3, 99999.0);
+		public Vector<N3> aprilTagVisionStdDevs = VecBuilder.fill(0.3, 0.3, 99999.0); //standard deviation
 	}
 }

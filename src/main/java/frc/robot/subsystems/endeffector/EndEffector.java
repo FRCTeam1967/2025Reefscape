@@ -5,6 +5,9 @@ import frc.lib.io.MotorIO.Setpoint;
 import frc.lib.io.MotorIOTalonFX;
 import frc.lib.util.FieldLayout.Level;
 
+//An endeffector is a tool attached at the end of a robot arm that allows for things like holding and grasping
+//Here, they also set target values like they do in many subsystems
+//Voltage Setpoint -> setting amount of power that the mechanism recieves for that certain action
 public class EndEffector extends MotorSubsystem<MotorIOTalonFX> {
 	public static final Setpoint IDLE = Setpoint.withCoastSetpoint();
 	public static final Setpoint ALGAE_INTAKE =
@@ -44,6 +47,7 @@ public class EndEffector extends MotorSubsystem<MotorIOTalonFX> {
 		super(EndEffectorConstants.getMotorIO(), "End Effector");
 	}
 
+	//switching cases/states based on what is level is put in
 	public static Setpoint getCoralScoreSetpoint(Level level) {
 		return switch (level) {
 			case L4 -> CORAL_SCORE_L4;

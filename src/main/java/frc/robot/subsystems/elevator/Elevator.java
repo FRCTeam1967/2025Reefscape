@@ -24,7 +24,9 @@ public class Elevator extends ServoMotorSubsystem<MotorIOTalonFX> {
 	public static final Setpoint JOG_UP = Setpoint.withVoltageSetpoint(Voltage.ofBaseUnits(0.5, Units.Volts));
 	public static final Setpoint JOG_DOWN = Setpoint.withVoltageSetpoint(Voltage.ofBaseUnits(-0.5, Units.Volts));
 	public static final Setpoint HOLD_UP = Setpoint.withVoltageSetpoint(Voltage.ofBaseUnits(0, Units.Volts));
-
+	
+	//setting waypoints(constants) for certain heights
+	//"converter" seems to be an object that lets them convert in order to set the setpoint
 	public static final Setpoint L4_SCORE =
 			Setpoint.withMotionMagicSetpoint(ElevatorConstants.converter.toAngle(ElevatorConstants.kL4ScoringHeight));
 	public static final Setpoint L3_SCORE =
