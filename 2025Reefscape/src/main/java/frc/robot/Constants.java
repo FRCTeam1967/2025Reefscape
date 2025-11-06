@@ -26,4 +26,21 @@ public final class Constants {
     public static final int BOTTOM_MOTOR_ID = 5;
   }
 
+  public static class Elevator {
+    public static final int MOTOR_ID_ONE = 17;
+    public static final int MOTOR_ID_TWO = 1;
+
+    public static final double kP = 6.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kG = 0.0; 
+    public static final double kS = 0.0; 
+    public static final double kV = 0.0; 
+    public static final double kA = 0.0;
+
+    public static final double CRUISE_VELOCITY = 160.0; //4.0
+    public static final double ACCELERATION = 240.0; //30.0
+    public static final double JERK = 350.0; //0.1
+  }
+
 }
