@@ -86,11 +86,13 @@ public class Superstructure extends SubsystemBase {
 
 	public boolean readyToRaiseElevator = false;
 
+	//i'm assuming gulp means taking in a coral or algae
 	public void setForceGulp(boolean gulp) {
 		forceGulp = gulp;
 	}
 
 	@Override
+	//updating the target branch, face and the reef intake
 	public void periodic() {
 		if (!isPathFollowing) {
 			updateTargetedBranch();
@@ -98,7 +100,7 @@ public class Superstructure extends SubsystemBase {
 			updateTargetedReefIntake();
 		}
 	}
-
+	//updating which branch they are targeting 
 	public void updateTargetedBranch() {
 		SwerveDriveState currentState = Drive.mInstance.getState();
 		Transform2d speedsPose = new Transform2d(
@@ -109,11 +111,11 @@ public class Superstructure extends SubsystemBase {
 		Pose2d lookeaheadPose = currentState.Pose.transformBy(speedsPose);
 		targetingBranch = FieldLayout.Branch.getClosestBranch(lookeaheadPose, RobotConstants.isRedAlliance);
 	}
-
+	//updating which face they are targeting 
 	public void updateTargetedFace() {
 		targetingFace = targetingBranch.getKey().face();
 	}
-
+	//updating the side of the reef they are intaking/outaking from?
 	public void updateTargetedReefIntake() {
 		targetingL3ReefIntake = switch (targetingFace) {
 			case NEAR_CENTER, FAR_LEFT, FAR_RIGHT -> true;
@@ -121,6 +123,7 @@ public class Superstructure extends SubsystemBase {
 	}
 
 	@Override
+	//send information to their dashboard
 	public void initSendable(SendableBuilder builder) {
 		super.initSendable(builder);
 		coralRollersCurrentSpike.initSendable(builder);
@@ -159,7 +162,8 @@ public class Superstructure extends SubsystemBase {
 
 		builder.addDoubleProperty("Battery Voltage", () -> RobotController.getBatteryVoltage(), null);
 	}
-
+	//CONTEXT: either is a method that can run two things depending on a boolean value
+	//decides whether or not to tuck in or hold their coral intake based on the beambreak on the end effector
 	public Command tuckOrHold() {
 		return Commands.either(stowCoralHold(), tuck(), () -> endEffectorCoralBreak.getDebounced());
 	}
@@ -174,7 +178,7 @@ public class Superstructure extends SubsystemBase {
 						CoralIndexer.mInstance.setpointCommand(CoralIndexer.IDLE))
 				.withName("Idle Intakes");
 	}
-
+	//stow their algae and coral intakes in robot
 	public Command stowIntakes() {
 		return Commands.parallel(
 						AlgaeDeploy.mInstance.setpointCommandWithWait(AlgaeDeploy.STOW),
@@ -209,6 +213,7 @@ public class Superstructure extends SubsystemBase {
 				.withName("Liberate Coral Deploy");
 	}
 
+	//command to spit out coral and stop wheels after
 	public Command spit() {
 		return Commands.parallel(
 						CoralDeploy.mInstance.setpointCommand(CoralDeploy.EXHAUST),
@@ -249,15 +254,18 @@ public class Superstructure extends SubsystemBase {
 								> SuperstructureConstants.lookingAwayFromReefAfterL1Threshold.in(Units.Degrees));
 	}
 
+	//
 	public Command waitUntilSafeToProcessorUnjam() {
 		return Commands.waitUntil(() -> getClearFromProcessor());
 	}
 
+	//
 	public Command waitToStopEjectingEndEffector() {
 		return Commands.waitUntil(
 				() -> Pivot.mInstance.getPosition().lte(PivotConstants.kEndEffectorIdleAfterScoringAngle));
 	}
 
+	//a method to wait unti the robots slowed down enough to make it into the net
 	public Command waitUnitlSlowEnoughToRaiseNet() {
 		return Commands.waitUntil(() -> Math.hypot(
 								Drive.mInstance.getState().Speeds.vxMetersPerSecond,
@@ -266,6 +274,7 @@ public class Superstructure extends SubsystemBase {
 				.alongWith(Commands.waitUntil(() -> closeToNetLine()));
 	}
 
+	//same thing as the last one but for auto instead
 	public Command waitUnitlSlowEnoughToRaiseNetInAuto() {
 		return Commands.waitUntil(() -> Math.hypot(
 								Drive.mInstance.getState().Speeds.vxMetersPerSecond,
@@ -292,6 +301,7 @@ public class Superstructure extends SubsystemBase {
 				.withName("Tuck");
 	}
 
+	//tuck everything in after scoring
 	public Command tuckAfterScoring() {
 		return Commands.parallel(
 						idleIntakes(),
@@ -432,7 +442,8 @@ public class Superstructure extends SubsystemBase {
 								CoralRollers.mInstance.setpointCommand(CoralRollers.IDLE)))
 				.withName("Coral Intake with Algae");
 	}
-
+	
+	//run their coral intake to outtake(not scoring)
 	public Command exhaustCoralIntake() {
 		return Commands.sequence(
 						Commands.parallel(
@@ -469,6 +480,7 @@ public class Superstructure extends SubsystemBase {
 				.withName("Coral Score");
 	}
 
+	//score coral softly and slowly
 	public Command softCoralScore() {
 		return Commands.sequence(
 						EndEffector.mInstance.setpointCommand(EndEffector.SOFT_CORAL_SCORE),
@@ -486,6 +498,7 @@ public class Superstructure extends SubsystemBase {
 				.withName("Soft Coral Score");
 	}
 
+	//7 methods below score coral on varying levels, both in teleop and auto
 	public Command L1Score() {
 		return Commands.sequence(L1Prep(), scoreCoralWhenReady(Level.L1)).withName("L1 Score When Ready");
 	}
@@ -587,6 +600,7 @@ public class Superstructure extends SubsystemBase {
 				.withName("L4 Prep");
 	}
 
+	//move the pivot near their "hold" position
 	public boolean getPivotNearOrAboveHoldPosition() {
 		return Pivot.mInstance.nearPosition(PivotConstants.kCoralHold)
 				|| Pivot.mInstance.getPosition().gte(PivotConstants.kCoralHold);
@@ -607,6 +621,7 @@ public class Superstructure extends SubsystemBase {
 				.withName("Net Prep");
 	}
 
+	//score algae in the net and setHasAlgae to false
 	public Command netScore() {
 		return Commands.sequence(
 						EndEffector.mInstance.setpointCommand(EndEffector.NET_ALGAE_SCORE),
@@ -615,7 +630,7 @@ public class Superstructure extends SubsystemBase {
 						EndEffector.mInstance.setpointCommand(EndEffector.IDLE))
 				.handleInterrupt(() -> setHasAlgae(false));
 	}
-
+	//same as last method but for auto
 	public Command netScoreInAuto() {
 		return Commands.sequence(
 						EndEffector.mInstance.setpointCommand(Setpoint.withVoltageSetpoint(Units.Volts.of(-9.0))),
@@ -624,7 +639,7 @@ public class Superstructure extends SubsystemBase {
 						EndEffector.mInstance.setpointCommand(EndEffector.IDLE))
 				.handleInterrupt(() -> setHasAlgae(false));
 	}
-
+	//moving elevator and intaking algae from the lolipops
 	public Command lolipopIntake() {
 		return Commands.sequence(
 				MotionPlanner.safePivotAndElevatorToPosition(Pivot.ALGAE_INTAKE, Elevator.LOLIPOP),
@@ -673,6 +688,7 @@ public class Superstructure extends SubsystemBase {
 				endEffectorAlgaeBreak.stateWaitWithDebounceIfReal(true, 1.5));
 	}
 
+	//stow the algae mechanism in robot
 	public Command algaeStow() {
 		return Commands.sequence(
 				EndEffector.mInstance.setpointCommand(EndEffector.ALGAE_HOLD),
@@ -714,6 +730,7 @@ public class Superstructure extends SubsystemBase {
 				});
 	}
 
+	//processor score when everything is in place
 	public Command processorScoreWhenReady() {
 		return Commands.waitUntil(() -> getDriveReady()).andThen(processorScore());
 	}
@@ -781,6 +798,7 @@ public class Superstructure extends SubsystemBase {
 				Set.of(Drive.mInstance)));
 	}
 
+	//move the algae to stow when eveything is in position
 	public Command stowAlgaeWhenReady() {
 		return Commands.sequence(waitUntilFarFromReef(), algaeStow());
 	}

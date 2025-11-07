@@ -21,6 +21,7 @@ public class Limelight extends LimelightSubsystem<VisionIOLimelight> {
 
 	@Override
 	public void periodic() {
+		//try is a key word used in Java to run a piece of code that may have an error in it. If it does, a different piece of code runs
 		try {
 			super.periodic();
 			Pose2d ioPose = io.getLatestEstimate(); // gets latest vision pose
@@ -48,11 +49,13 @@ public class Limelight extends LimelightSubsystem<VisionIOLimelight> {
 		return io.getLatestEstimateTime();
 	}
 
+	//get the latest pose from the limelight
 	public Pose2d getLatestUpdate() {
 		return lastPose;
 	}
 
-	public boolean getPoseStable() { // return if pose is stable (more than 100 updates)
+	//
+	public boolean getPoseStable() { // return if the pose is stable (more than 100 updates)
 		return numPoseStableUpdates > LimelightConstants.agreedTranslationUpdatesThreshold;
 	}
 }

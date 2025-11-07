@@ -190,7 +190,7 @@ public class GeneratedDrivetrain extends TunerSwerveDrivetrain implements Subsys
 	 * @return Command to run
 	 */
 	public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-		return m_sysIdRoutineToApply.quasistatic(direction);
+		return m_sysIdRoutineToApply.quasistatic(direction); //test routine where the mechanism is gradually and slowly sped up
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class GeneratedDrivetrain extends TunerSwerveDrivetrain implements Subsys
 	 * @return Command to run
 	 */
 	public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-		return m_sysIdRoutineToApply.dynamic(direction);
+		return m_sysIdRoutineToApply.dynamic(direction); //accelerates the mechanism through Ka and Kv
 	}
 
 	@Override

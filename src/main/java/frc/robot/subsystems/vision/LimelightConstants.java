@@ -42,7 +42,7 @@ public class LimelightConstants {
 		config.robotToCameraOffset = kRobotToCameraOffset;
 		return config;
 	}
-
+	//Get vision input if robot exists 
 	public static final VisionIOLimelight getVisionIO() {
 		if (Robot.isReal()) {
 			return new VisionIOLimelight();
@@ -51,7 +51,7 @@ public class LimelightConstants {
 		}
 	}
 
-	public static final int agreedHeadingUpdatesThreshold = 100;
+	public static final int agreedHeadingUpdatesThreshold = 100; //
 	public static final Angle agreedHeadingUpdateEpsilon = Units.Degrees.of(2.0);
 	public static final int agreedTranslationUpdatesThreshold = 100;
 	public static final Distance agreedTranslationUpdateEpsilon = Units.Centimeters.of(10.0);

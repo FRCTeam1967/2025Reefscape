@@ -83,7 +83,7 @@ public class AutoModeBase {
 	}
 
 	public static Command cmdWithRotationAccuracy(AutoTrajectory trajectory) {
-		return cmdWithRotationAccuracy(trajectory, AutoConstants.kDefaultTrajectoryTimeout);
+		return cmdWithRotationAccuracy(trajectory, AutoConstants.kDefaultTrajectoryTimeout); //
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class AutoModeBase {
 	 * @param trajectory
 	 */
 	public static Command cmdWithAccuracy(AutoTrajectory trajectory, Distance epsilonDist) {
-		return cmdWithAccuracy(trajectory, AutoConstants.kDefaultTrajectoryTimeout, epsilonDist);
+		return cmdWithAccuracy(trajectory, AutoConstants.kDefaultTrajectoryTimeout, epsilonDist); //threshold value that defines margin of error instead of seeing if the currentPos = targetPos
 	}
 
 	public static Command cmdWithAccuracy(AutoTrajectory trajectory) {
@@ -142,24 +142,24 @@ public class AutoModeBase {
 				"Choreo/Distance Away Inches",
 				currentPose.getTranslation().getDistance(finalPose.getTranslation()) * 39.37);
 
-		return currentPose.getTranslation().getDistance(finalPose.getTranslation()) < epsilonDist.in(Units.Meters);
+		return currentPose.getTranslation().getDistance(finalPose.getTranslation()) < epsilonDist.in(Units.Meters); //threshold value in comparison to target position
 	}
 
 	private static boolean isFinished(AutoTrajectory trajectory, Distance epsilonDist) {
 		boolean translationCompleted = translationIsFinished(trajectory, epsilonDist);
 		boolean rotationCompleted = rotationIsFinished(trajectory);
 
-		SmartDashboard.putBoolean("Choreo/Translation Completed", translationCompleted);
+		SmartDashboard.putBoolean("Choreo/Translation Completed", translationCompleted); //helpful boolean values to check if the translation/rotation has happened on choreo
 		SmartDashboard.putBoolean("Choreo/Rotation Completed", rotationCompleted);
 
-		if (translationCompleted && rotationCompleted) {
+		if (translationCompleted && rotationCompleted) { //starts the stopwatch when the robot is at the target position
 			stopwatch.startIfNotRunning();
 			if (stopwatch.getTime().gte(AutoConstants.kDelayTime)) {
 				stopwatch.reset();
 				return true;
 			}
 		} else if (!translationCompleted || !rotationCompleted) {
-			stopwatch.reset();
+			stopwatch.reset(); //resets the stopwatch if the target position has not been reached yet
 		}
 
 		SmartDashboard.putNumber("Choreo/Stopwatch Time", stopwatch.getTimeAsDouble());
@@ -183,7 +183,7 @@ public class AutoModeBase {
 	public static Command autoScoreGivenPrep(Branch wantedBranch, Level wantedLevel) {
 		return Commands.parallel(
 						Commands.sequence(
-								Superstructure.mInstance.waitUntilDriveReadyToScoreAndStable(),
+								Superstructure.mInstance.waitUntilDriveReadyToScoreAndStable(), //checks if the robot is ready to score based on pivot's velocity and degrees
 								Superstructure.mInstance.coralScore(Level.L4).asProxy()),
 						AutoHelpers.getAutoScorePathFromDrivePose(wantedBranch, wantedLevel))
 				.withDeadline(Commands.waitUntil(() -> Superstructure.mInstance.getSuperstructureDone()))
@@ -278,7 +278,7 @@ public class AutoModeBase {
 
 	public static Command intakeAndScoreGroundCoral(
 			String trajName, Branch wantedBranch, Level wantedLevel, boolean useTraj) {
-		Superstructure s = Superstructure.mInstance;
+		Superstructure s = Superstructure.mInstance; 
 
 		AutoTrajectory start = routine.trajectory(trajName, 0);
 		AutoTrajectory intake = routine.trajectory(trajName, 1);
@@ -375,8 +375,8 @@ public class AutoModeBase {
 												.repeatedly()))),
 				score.cmd()
 						.andThen(Commands.either(
-								autoScoreWithPrepFromTraj(wantedBranch, wantedLevel),
-								autoScoreWithPrep(wantedBranch, wantedLevel),
+								autoScoreWithPrepFromTraj(wantedBranch, wantedLevel), //robot follows pre-planned path
+								autoScoreWithPrep(wantedBranch, wantedLevel), //robot uses enums and/or target position to get to the target
 								() -> useTraj)));
 	}
 
@@ -398,7 +398,7 @@ public class AutoModeBase {
 										DriveConstants.mAutoAlignTippyTranslationController,
 										DriveConstants.mAutoAlignTippyHeadingController)
 								.beforeStarting(() -> Superstructure.mInstance.setDriveReady(false))
-								.until(() -> Superstructure.mInstance.getDriveReady()))
+								.until(() -> Superstructure.mInstance.getDriveReady())) 
 				.andThen(Superstructure.mInstance.netScore().asProxy())
 				.withName("Autonomous L4 Score Without Choreo");
 	}

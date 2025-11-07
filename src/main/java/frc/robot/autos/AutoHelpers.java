@@ -37,8 +37,8 @@ public class AutoHelpers {
 		return new DeferredCommand(
 				() -> {
 					Pose2d scoringPose = FieldLayout.handleAllianceFlip(
-							FieldLayout.getCoralScoringPose(wantedBranch), RobotConstants.isRedAlliance);
-					return new FollowSyncedPIDToPose(scoringPose, level);
+							FieldLayout.getCoralScoringPose(wantedBranch), RobotConstants.isRedAlliance); //checks if on red or blue alliance (handles switch from there)
+					return new FollowSyncedPIDToPose(scoringPose, level); 
 				},
 				Set.of(Drive.mInstance));
 	}
@@ -50,9 +50,9 @@ public class AutoHelpers {
 							FieldLayout.getCoralScoringPose(wantedBranch), RobotConstants.isRedAlliance);
 
 					Trajectory traj = TrajectoryHelpers.generateGamepieceBasedTrajectoryFromDrive(
-							scoringPose, Units.Degrees.of(0.0), level);
+							scoringPose, Units.Degrees.of(0.0), level); //dynamically generating a path to a game piece using game piece coordinates from gpd
 
-					return new FollowSyncedTrajectory(traj);
+					return new FollowSyncedTrajectory(traj); //follows the trajectory generated to follow based on a target pose
 				},
 				Set.of(Drive.mInstance));
 	}
@@ -61,7 +61,7 @@ public class AutoHelpers {
 		Pose2d scoringPose = FieldLayout.handleAllianceFlip(
 				FieldLayout.getCoralScoringPose(wantedBranch), RobotConstants.isRedAlliance);
 
-		return new FollowSyncedPIDToPose(scoringPose, level);
+		return new FollowSyncedPIDToPose(scoringPose, level); //implements "drive-to-pose" from PIDtoPoseCommand
 	}
 
 	public static Command getPrepAndScoreForLevel(Level level) {
