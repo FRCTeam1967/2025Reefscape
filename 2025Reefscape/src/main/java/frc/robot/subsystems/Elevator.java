@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -16,11 +17,13 @@ public class Elevator extends SubsystemBase {
   private TalonFX motorOne;
   private TalonFX motorTwo;
   private TalonFXConfiguration talonFXConfigs;
+  private double rotations;
 
   /** Creates a new Elevator. */
   public Elevator() {
     motorOne = new TalonFX(Constants.Elevator.MOTOR_ID_ONE);
     motorTwo = new TalonFX(Constants.Elevator.MOTOR_ID_TWO);
+    rotations = 0.0;
 
     talonFXConfigs = new TalonFXConfiguration();
 
@@ -45,8 +48,17 @@ public class Elevator extends SubsystemBase {
     motorOne.getConfigurator().apply(talonFXConfigs);
     motorTwo.getConfigurator().apply(talonFXConfigs);
 
-    //resetEncoders();
-    setBrakeMode();
+  }
+
+  public void moveTo(double rotations) {
+    MotionMagicVoltage request = new MotionMagicVoltage(rotations);
+    motorOne.setControl(request);
+    motorTwo.setControl(request);
+  }
+
+  public double getPosition() {
+    double average = (motorOne.getRotorPosition().getValueAsDouble() + motorTwo.getRotorPosition().getValueAsDouble())/2.0;
+    return average;
   }
 
   @Override
