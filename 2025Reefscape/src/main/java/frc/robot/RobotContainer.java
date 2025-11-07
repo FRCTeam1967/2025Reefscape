@@ -62,6 +62,7 @@ public class RobotContainer {
     public static SendableChooser<Command> autoChooser;
 
     public Trigger algaeStartTrigger;
+    public Trigger algaeHoldTrigger;
     public Trigger algaeEndTrigger;
 
     public RobotContainer() {
@@ -84,9 +85,9 @@ public class RobotContainer {
             .withWidget(BuiltInWidgets.kComboBoxChooser);
 
         //double pivotPosition = pivot.getPosition()/Constants.Pivot.GEAR_RATIO*360;
-        algaeStartTrigger = new Trigger(() -> (pivot.getPosition() >= Constants.Pivot.ALGAE_INTAKE) && (pivot.getPosition() < Constants.Pivot.ALGAE_STEP_8)); 
-        //algaeEndTrigger= new Trigger(() -> (pivot.getPosition() < Constants.Pivot.ALGAE_STEP_8));
-
+        algaeStartTrigger = new Trigger(() -> (pivot.getPosition() > Constants.Pivot.ALGAE_INTAKE_THRESHOLD));
+        algaeEndTrigger= new Trigger(() -> (pivot.getPosition() < Constants.Pivot.ALGAE_STEP_3));
+        algaeHoldTrigger= new Trigger(() -> (pivot.getPosition() < Constants.Pivot.ALGAE_STEP_4));
 
         configureBindings();
         intake.configDashboard(matchTab);
@@ -136,69 +137,30 @@ public class RobotContainer {
         );
 
         // PROCESSOR SCORING SEQUENCE
-        algaeStartTrigger.whileTrue(
-            new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED)
+        operatorController.leftTrigger().and(algaeStartTrigger.and(algaeEndTrigger)).whileTrue(
+          new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED)
+        );
+
+        operatorController.leftTrigger().and(algaeHoldTrigger).whileTrue(
+          new RunIntake(intake, 0.0)
         );
 
         operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
             new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE).withTimeout(2.0),
             new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_2).withTimeout(0.5),
             new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_3).withTimeout(0.5),
-            new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_4).withTimeout(0.5),
-            new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_5).withTimeout(0.5),
-            new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_6).withTimeout(0.5),
-            new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_7).withTimeout(0.5),
-            new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_8)
+            new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_4)//.withTimeout(0.5),
+            //new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_5).withTimeout(0.5),
+            //new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_6).withTimeout(0.5),
+            //new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_7).withTimeout(0.5),
+            //new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_8)
         ));
 
-        /*
-        operatorController.leftTrigger().whileTrue(new SequentialCommandGroup(
-            new ParallelRaceGroup(
-                new MovePivot(pivot, Constants.Pivot.ALGAE_INTAKE).withTimeout(2.0),
-                new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED)
-            ),
-            new ParallelRaceGroup(
-                new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_2).withTimeout(0.5),
-                new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED)
-            ),
-            new ParallelRaceGroup(
-                new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_3).withTimeout(0.5),
-                new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED)
-            ),
-            new ParallelRaceGroup(
-                new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_4).withTimeout(0.5),
-                new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED)
-            ),
-            new ParallelRaceGroup(
-                new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_5).withTimeout(0.5),
-                new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED)
-            ),
-            new ParallelRaceGroup(
-                new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_6).withTimeout(0.5),
-                new RunIntake(intake, Constants.Intake.ALGAE_INTAKE_SPEED)
-            ),
-            new ParallelRaceGroup(
-                new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_7).withTimeout(0.5),
-                new RunIntake(intake, Constants.Intake.ALGAE_IDLE_SPEED)
-            ),
-            new ParallelRaceGroup(
-                new MovePivot(pivot, Constants.Pivot.ALGAE_STEP_8).withTimeout(0.5),
-                new RunIntake(intake, Constants.Intake.ALGAE_IDLE_SPEED)
-            ),
-            new WaitCommand(7),
-            new ParallelRaceGroup(
-                new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR).withTimeout(2.0),
-                new RunIntake(intake, Constants.Intake.ALGAE_EJECT_SPEED)
-            )
-        ));
-        */
-
-        /*
         //ALGAE PROCESSOR
-        operatorController.rightBumper().whileTrue(new SequentialCommandGroup(
-            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR),
-            new RunIntake(intake, Constants.Intake.INTAKE_SPEED))
-        );*/
+        operatorController.povLeft().whileTrue(new SequentialCommandGroup(
+            new MovePivot(pivot, Constants.Pivot.ALGAE_PROCESSOR).withTimeout(2),
+            new RunIntake(intake, Constants.Intake.ALGAE_EJECT_SPEED))
+        );
 
         //ALGAE DESCORE
         operatorController.povDown().whileTrue(new SequentialCommandGroup(

@@ -80,8 +80,8 @@ public class Pivot extends SubsystemBase {
 
    
    public double getPosition() {      
-      double pivot1 = Math.abs((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
-      double pivot2 = Math.abs((pivotMotor2.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
+      double pivot1 = ((pivotMotor1.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
+      double pivot2 = ((pivotMotor2.getRotorPosition().getValueAsDouble()/Constants.Pivot.GEAR_RATIO)*360);
       double average = (pivot1 + pivot2) / 2;
 
       return average;
@@ -96,10 +96,8 @@ public class Pivot extends SubsystemBase {
     * @param - tab
     */
    public void configDashboard(ShuffleboardTab tab) {
-      tab.addNumber("PivotRelPosDeg",() -> ((pivotMotor1.getRotorPosition()
-      .getValueAsDouble())/Constants.Pivot.GEAR_RATIO)*360)
-      .withWidget(BuiltInWidgets.kTextView)
-      .withPosition(7, 0).withSize(1, 1);
+      tab.addDouble("PivotRelPosDeg",() -> getPosition());
+
 
       tab.addBoolean("Pivot At Target", () -> isReached()).withWidget(BuiltInWidgets.kBooleanBox)
       .withPosition(0, 1).withSize(1, 1);
