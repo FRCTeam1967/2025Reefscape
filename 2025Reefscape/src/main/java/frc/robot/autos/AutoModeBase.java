@@ -1,9 +1,14 @@
 package frc.robot.autos;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
+import com.ctre.phoenix6.swerve.SwerveRequest;
+
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
-import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -35,9 +40,6 @@ import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.endeffector.EndEffector;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.SuperstructureConstants;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 public class AutoModeBase {
 	private static AutoRoutine routine;
@@ -110,7 +112,7 @@ public class AutoModeBase {
 	 * @param trajectory
 	 */
 	public static Command cmdWithAccuracy(AutoTrajectory trajectory, Distance epsilonDist) {
-		return cmdWithAccuracy(trajectory, AutoConstants.kDefaultTrajectoryTimeout, epsilonDist);
+		return cmdWithAccuracy(trajectory, AutoConstants.kDefaultTrajectoryTimeout, epsilonDist); //threshold value that defines margin of error instead of seeing if the currentPos = targetPos
 	}
 
 	public static Command cmdWithAccuracy(AutoTrajectory trajectory) {
@@ -142,7 +144,7 @@ public class AutoModeBase {
 				"Choreo/Distance Away Inches",
 				currentPose.getTranslation().getDistance(finalPose.getTranslation()) * 39.37);
 
-		return currentPose.getTranslation().getDistance(finalPose.getTranslation()) < epsilonDist.in(Units.Meters);
+		return currentPose.getTranslation().getDistance(finalPose.getTranslation()) < epsilonDist.in(Units.Meters); //threshold value in comparison to target position
 	}
 
 	private static boolean isFinished(AutoTrajectory trajectory, Distance epsilonDist) {
@@ -150,16 +152,16 @@ public class AutoModeBase {
 		boolean rotationCompleted = rotationIsFinished(trajectory);
 
 		SmartDashboard.putBoolean("Choreo/Translation Completed", translationCompleted);
-		SmartDashboard.putBoolean("Choreo/Rotation Completed", rotationCompleted);
+		SmartDashboard.putBoolean("Choreo/Rotation Completed", rotationCompleted); //helpful boolean values to check if the translation/rotation has happened on choreo
 
 		if (translationCompleted && rotationCompleted) {
 			stopwatch.startIfNotRunning();
-			if (stopwatch.getTime().gte(AutoConstants.kDelayTime)) {
+			if (stopwatch.getTime().gte(AutoConstants.kDelayTime)) { //starts the stopwatch when the robot is at the target position
 				stopwatch.reset();
 				return true;
-			}
+			} 
 		} else if (!translationCompleted || !rotationCompleted) {
-			stopwatch.reset();
+			stopwatch.reset(); //resets the stopwatch if the target position has not been reached yet
 		}
 
 		SmartDashboard.putNumber("Choreo/Stopwatch Time", stopwatch.getTimeAsDouble());
@@ -183,7 +185,7 @@ public class AutoModeBase {
 	public static Command autoScoreGivenPrep(Branch wantedBranch, Level wantedLevel) {
 		return Commands.parallel(
 						Commands.sequence(
-								Superstructure.mInstance.waitUntilDriveReadyToScoreAndStable(),
+								Superstructure.mInstance.waitUntilDriveReadyToScoreAndStable(), //checks if the robot is ready to score based on pivot's velocity and degrees
 								Superstructure.mInstance.coralScore(Level.L4).asProxy()),
 						AutoHelpers.getAutoScorePathFromDrivePose(wantedBranch, wantedLevel))
 				.withDeadline(Commands.waitUntil(() -> Superstructure.mInstance.getSuperstructureDone()))
@@ -375,8 +377,8 @@ public class AutoModeBase {
 												.repeatedly()))),
 				score.cmd()
 						.andThen(Commands.either(
-								autoScoreWithPrepFromTraj(wantedBranch, wantedLevel),
-								autoScoreWithPrep(wantedBranch, wantedLevel),
+								autoScoreWithPrepFromTraj(wantedBranch, wantedLevel), //robot follows pre-planned path
+								autoScoreWithPrep(wantedBranch, wantedLevel), //robot uses enums and/or target position to get to the target
 								() -> useTraj)));
 	}
 

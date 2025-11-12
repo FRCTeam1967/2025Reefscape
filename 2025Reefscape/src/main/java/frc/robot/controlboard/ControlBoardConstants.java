@@ -10,5 +10,5 @@ public class ControlBoardConstants {
 
 	public static final Time kIntakeRumbleTime = Units.Seconds.of(0.2);
 
-	public static final double stickDeadband = 0.05;
+	public static final double stickDeadband = 0.05; //control stability and prevent accidental movement
 }

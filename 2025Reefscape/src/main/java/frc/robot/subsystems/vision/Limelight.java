@@ -27,7 +27,7 @@ public class Limelight extends LimelightSubsystem<VisionIOLimelight> {
 			if (ioPose != lastPose) { // compares limelight pose to the drivetrain pose
 				if (Drive.mInstance.getPose().getTranslation().getDistance(ioPose.getTranslation())
 						< LimelightConstants.agreedTranslationUpdateEpsilon.in(Units.Meters)) {
-					numPoseStableUpdates++; // if the difference in translation is less than a certain constant, accept pose update
+					numPoseStableUpdates++; // if the difference in translation of the limelight pos and drivetrain pos is less than a certain constant, accept pose update
 				} else {
 					numPoseStableUpdates = 0;
 				}

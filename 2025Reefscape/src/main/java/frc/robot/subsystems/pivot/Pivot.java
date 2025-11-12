@@ -1,6 +1,7 @@
 package frc.robot.subsystems.pivot;
 
 import com.ctre.phoenix6.hardware.CANcoder;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
@@ -52,6 +53,8 @@ public class Pivot extends ServoMotorSubsystem<MotorIOTalonFX> {
 	private CANcoder gearedCancoder;
 	public CANcoder directCancoder;
 
+	//A debouncer is a filter that is used to eliminate unwanted quick on/off cycles on sensors
+	//Debouncers have 3 modes: Rising(default), falling, and both 
 	private Debouncer resetDebouncer = new Debouncer(0.1, DebounceType.kRising);
 	private boolean lastShouldReset = false;
 
@@ -74,6 +77,7 @@ public class Pivot extends ServoMotorSubsystem<MotorIOTalonFX> {
 		}
 	}
 
+	//Publish the pose of the pivot to the network tables
 	public static final StructPublisher<Pose3d> publisher = NetworkTableInstance.getDefault()
 			.getStructTopic("Mechanisms/Pivot", Pose3d.struct)
 			.publish();
@@ -95,6 +99,7 @@ public class Pivot extends ServoMotorSubsystem<MotorIOTalonFX> {
 	}
 
 	@Override
+	//sending encoders and absolute position of pivot in degrees to dashboard
 	public void initSendable(SendableBuilder builder) {
 		super.initSendable(builder);
 
@@ -114,6 +119,7 @@ public class Pivot extends ServoMotorSubsystem<MotorIOTalonFX> {
 		}
 	}
 
+	//get position of pivot in absolute value
 	public Angle getAbsolutePosition() {
 		Angle positionRemainder = directCancoder.getAbsolutePosition().getValue();
 		Angle gearedEncoderPos = gearedCancoder.getAbsolutePosition().getValue();

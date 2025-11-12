@@ -1,6 +1,11 @@
 package frc.robot.subsystems.superstructure;
 
+import java.util.Set;
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -49,9 +54,6 @@ import frc.robot.subsystems.endeffector.EndEffector;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotConstants;
 import frc.robot.subsystems.superstructure.SuperstructureConstants.BeamBreakConstants;
-import java.util.Set;
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 public class Superstructure extends SubsystemBase {
 	public static final Superstructure mInstance = new Superstructure();
@@ -86,11 +88,13 @@ public class Superstructure extends SubsystemBase {
 
 	public boolean readyToRaiseElevator = false;
 
+	//i'm assuming gulp means taking in a coral or algae
 	public void setForceGulp(boolean gulp) {
 		forceGulp = gulp;
 	}
 
 	@Override
+	//updating the target branch, face and the reef intake
 	public void periodic() {
 		if (!isPathFollowing) {
 			updateTargetedBranch();
@@ -99,6 +103,7 @@ public class Superstructure extends SubsystemBase {
 		}
 	}
 
+	//updating which branch they are targeting 
 	public void updateTargetedBranch() {
 		SwerveDriveState currentState = Drive.mInstance.getState();
 		Transform2d speedsPose = new Transform2d(
@@ -110,10 +115,12 @@ public class Superstructure extends SubsystemBase {
 		targetingBranch = FieldLayout.Branch.getClosestBranch(lookeaheadPose, RobotConstants.isRedAlliance);
 	}
 
+	//updating which face they are targeting 
 	public void updateTargetedFace() {
 		targetingFace = targetingBranch.getKey().face();
 	}
 
+	//updating the side of the reef they are intaking/outaking from?
 	public void updateTargetedReefIntake() {
 		targetingL3ReefIntake = switch (targetingFace) {
 			case NEAR_CENTER, FAR_LEFT, FAR_RIGHT -> true;
@@ -121,6 +128,7 @@ public class Superstructure extends SubsystemBase {
 	}
 
 	@Override
+	//send information to their dashboard
 	public void initSendable(SendableBuilder builder) {
 		super.initSendable(builder);
 		coralRollersCurrentSpike.initSendable(builder);
@@ -160,6 +168,8 @@ public class Superstructure extends SubsystemBase {
 		builder.addDoubleProperty("Battery Voltage", () -> RobotController.getBatteryVoltage(), null);
 	}
 
+	//CONTEXT: either is a method that can run two things depending on a boolean value
+	//decides whether or not to tuck in or hold their coral intake based on the beambreak on the end effector
 	public Command tuckOrHold() {
 		return Commands.either(stowCoralHold(), tuck(), () -> endEffectorCoralBreak.getDebounced());
 	}
@@ -175,6 +185,7 @@ public class Superstructure extends SubsystemBase {
 				.withName("Idle Intakes");
 	}
 
+	//stow their algae and coral intakes in robot
 	public Command stowIntakes() {
 		return Commands.parallel(
 						AlgaeDeploy.mInstance.setpointCommandWithWait(AlgaeDeploy.STOW),
@@ -209,6 +220,7 @@ public class Superstructure extends SubsystemBase {
 				.withName("Liberate Coral Deploy");
 	}
 
+	//command to spit out coral and stop wheels after
 	public Command spit() {
 		return Commands.parallel(
 						CoralDeploy.mInstance.setpointCommand(CoralDeploy.EXHAUST),

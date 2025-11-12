@@ -14,6 +14,7 @@ import frc.lib.io.MotorIO.Setpoint;
 import frc.lib.io.MotorIOTalonFX;
 
 public class CoralDeploy extends ServoMotorSubsystem<MotorIOTalonFX> {
+	//setting points where the coral intake will need to go at times
 	public static final Setpoint STOW_FULL = Setpoint.withMotionMagicSetpoint(CoralDeployConstants.kFullStowPosition);
 	public static final Setpoint STOW_CLEAR = Setpoint.withMotionMagicSetpoint(CoralDeployConstants.kStowClearPosition);
 	public static final Setpoint DEPLOY = Setpoint.withMotionMagicSetpoint(CoralDeployConstants.kDeployPosition);
