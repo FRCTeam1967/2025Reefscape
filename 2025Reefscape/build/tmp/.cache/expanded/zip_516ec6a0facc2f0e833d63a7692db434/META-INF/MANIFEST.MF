@@ -1,0 +1,56 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1710619079903
+Build-Jdk-Spec: 11
+Built-By: William Bittle
+Bundle-Description: Java Collision Detection and Physics Engine
+Bundle-DocURL: http://www.dyn4j.org
+Bundle-License: http://www.opensource.org/licenses/BSD-3-Clause
+Bundle-ManifestVersion: 2
+Bundle-Name: dyn4j
+Bundle-SymbolicName: org.dyn4j
+Bundle-Vendor: dyn4j
+Bundle-Version: 5.0.2
+Created-By: Apache Maven Bundle Plugin 5.1.8
+Export-Package: org.dyn4j;version="5.0.2",org.dyn4j.exception;version=
+ "5.0.2",org.dyn4j.dynamics;uses:="org.dyn4j,org.dyn4j.collision,org.d
+ yn4j.geometry";version="5.0.2",org.dyn4j.dynamics.joint;uses:="org.dy
+ n4j,org.dyn4j.collision,org.dyn4j.dynamics,org.dyn4j.geometry";versio
+ n="5.0.2",org.dyn4j.dynamics.contact;uses:="org.dyn4j.collision,org.d
+ yn4j.collision.continuous,org.dyn4j.collision.manifold,org.dyn4j.dyna
+ mics,org.dyn4j.geometry";version="5.0.2",org.dyn4j.world;uses:="org.d
+ yn4j,org.dyn4j.collision,org.dyn4j.collision.broadphase,org.dyn4j.col
+ lision.continuous,org.dyn4j.collision.manifold,org.dyn4j.collision.na
+ rrowphase,org.dyn4j.dynamics,org.dyn4j.dynamics.contact,org.dyn4j.dyn
+ amics.joint,org.dyn4j.geometry,org.dyn4j.world.listener,org.dyn4j.wor
+ ld.result";version="5.0.2",org.dyn4j.world.result;uses:="org.dyn4j,or
+ g.dyn4j.collision,org.dyn4j.collision.continuous,org.dyn4j.collision.
+ narrowphase";version="5.0.2",org.dyn4j.world.listener;uses:="org.dyn4
+ j.collision,org.dyn4j.collision.continuous,org.dyn4j.dynamics,org.dyn
+ 4j.dynamics.contact,org.dyn4j.dynamics.joint,org.dyn4j.world";version
+ ="5.0.2",org.dyn4j.collision.broadphase;uses:="org.dyn4j.collision,or
+ g.dyn4j.geometry";version="5.0.2",org.dyn4j.collision.manifold;uses:=
+ "org.dyn4j,org.dyn4j.collision.narrowphase,org.dyn4j.geometry";versio
+ n="5.0.2",org.dyn4j.collision;uses:="org.dyn4j,org.dyn4j.geometry";ve
+ rsion="5.0.2",org.dyn4j.collision.continuous;uses:="org.dyn4j,org.dyn
+ 4j.collision.narrowphase,org.dyn4j.geometry";version="5.0.2",org.dyn4
+ j.collision.narrowphase;uses:="org.dyn4j,org.dyn4j.geometry";version=
+ "5.0.2",org.dyn4j.geometry;uses:="org.dyn4j";version="5.0.2",org.dyn4
+ j.geometry.hull;uses:="org.dyn4j.geometry";version="5.0.2",org.dyn4j.
+ geometry.simplify;uses:="org.dyn4j.geometry";version="5.0.2",org.dyn4
+ j.geometry.decompose;uses:="org.dyn4j.geometry";version="5.0.2"
+Implementation-Title: dyn4j
+Implementation-Vendor: dyn4j
+Implementation-Vendor-Id: org.dyn4j
+Implementation-Version: 5.0.2
+Import-Package: org.dyn4j,org.dyn4j.collision,org.dyn4j.collision.broa
+ dphase,org.dyn4j.collision.continuous,org.dyn4j.collision.manifold,or
+ g.dyn4j.collision.narrowphase,org.dyn4j.dynamics,org.dyn4j.dynamics.c
+ ontact,org.dyn4j.dynamics.joint,org.dyn4j.exception,org.dyn4j.geometr
+ y,org.dyn4j.world,org.dyn4j.world.listener,org.dyn4j.world.result
+Main-Class: org.dyn4j.Version
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.6))"
+Specification-Title: dyn4j
+Specification-Vendor: dyn4j
+Specification-Version: 5.0
+Tool: Bnd-6.3.1.202206071316
+
