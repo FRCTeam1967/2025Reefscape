@@ -74,6 +74,7 @@ public class TrajectoryHelpers {
 	 * @param targetPose The wanted ending pose (x, y, heading).
 	 * @return The OTF trajectory to follow based on your current pose and target pose.
 	 */
+	
 	public static Trajectory generateTrajectoryFromDrive(Pose2d targetPose) {
 		List<Pose2d> waypoints = new ArrayList<>();
 		waypoints.add(
@@ -230,9 +231,10 @@ public class TrajectoryHelpers {
 	}
 
 	/**
-	 * Gets the wanted pose for the center of your robot from the End Effector.
+	 * Gets the wanted pose for the center of your robot from the End Effector >> transforms to final pose for PID to pose
+	 * Gives each face a set angle in the FieldLayout class
 	 *
-	 * @param endEffectorPose The pose to transform to a robot pose.
+	 * @param endEffectorPose The pose to transform to a robot pose. >> get end effector to this many inches away from the branch
 	 * @param idealApproachDeadband The allowed difference (+-) from the ideal heading that the trajectory is allowed to generate with.
 	 * @param level The wanted gamepiece level (L1, L2, L3, L4).
 	 * @return The transformed pose to pass to Drive.

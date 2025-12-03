@@ -85,12 +85,17 @@ public class AlgaeDeployConstants {
 		config.unit = Units.Degrees;
 		return config;
 	}
-
+	
+	/**
+	 * split robot IO into real and simulation </p>
+	 * IO -- takes physical values from sensors </p>
+	 * allows for taking in simulated/modeled values
+	 */
 	public static MotorIOTalonFX getMotorIO() {
 		if (Robot.isReal()) {
 			return new MotorIOTalonFX(getIOConfig());
 		} else {
-			return new MotorIOTalonFXSim(getIOConfig(), new PivotSim(getSimConstants()));
+			return new MotorIOTalonFXSim(getIOConfig(), new PivotSim(getSimConstants())); //simulate robot code (IO) without the physical side
 		}
 	}
 

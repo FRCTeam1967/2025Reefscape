@@ -142,6 +142,9 @@ public class Robot extends TimedRobot {
 		CommandScheduler.getInstance().setPeriod(0.02);
 	}
 
+	/**
+	 * Runs all commands periodically
+	 */
 	@Override
 	public void robotPeriodic() {
 		LoggedTracer.reset();

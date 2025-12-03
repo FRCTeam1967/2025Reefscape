@@ -99,7 +99,7 @@ public class FollowSyncedPIDToPose extends PIDToPoseCommand {
 		boolean shouldStartSlowing = distanceFromEnd().lte(distanceToStartSlowing);
 		if (shouldStartSlowing) {
 			Drive.mInstance.setSwerveRequest(DriveConstants.getPIDToPoseRequestUpdater(
-							finalPose, tippyTranslationController, tippyHeadingController)
+							finalPose, tippyTranslationController, tippyHeadingController) 
 					.apply(DriveConstants.PIDToPoseRequest));
 		} else {
 			super.execute();

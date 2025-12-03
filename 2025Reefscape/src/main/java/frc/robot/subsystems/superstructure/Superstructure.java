@@ -126,7 +126,7 @@ public class Superstructure extends SubsystemBase {
 			case NEAR_CENTER, FAR_LEFT, FAR_RIGHT -> true;
 			case FAR_CENTER, NEAR_LEFT, NEAR_RIGHT -> false;};
 	}
-
+//should we ask again about why no files and just methods i dont think he understood
 	@Override
 	//send information to their dashboard
 	public void initSendable(SendableBuilder builder) {

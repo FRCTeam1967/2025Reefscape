@@ -17,7 +17,7 @@ import frc.robot.subsystems.pivot.PivotConstants;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class MotionPlanner {
+public class MotionPlanner { //to get around their physical interferences btw algae and coral pivots)
 
 	public static boolean pivotInHighClearRange(Angle pivotAngle) {
 		return pivotAngle.gte(Units.Degrees.of(50.0)) && pivotAngle.lte(Units.Degrees.of(105.0));

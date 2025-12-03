@@ -24,8 +24,12 @@ import frc.robot.autos.single.BranchHAuto;
 import frc.robot.autos.single.BranchIAuto;
 
 public class AutoModeSelector {
-	private AutoChooser mAutoChooser = new AutoChooser();
+	private AutoChooser mAutoChooser = new AutoChooser(); //use elastic to pick which auto to run instead of shuffleboard
+	//takes 100 poses, decides which one is most accurate for starting pose
 
+	/**
+	 * gets called in autoInit to select auto
+	 */
 	public AutoModeSelector(AutoFactory factory) {
 		mAutoChooser.addRoutine("[CENTER] Net GH IJ KL", () -> new NetGHIJKL(factory).getRoutine());
 		mAutoChooser.addRoutine("[CENTER] Net GH IJ EF", () -> new NetGHIJEF(factory).getRoutine());

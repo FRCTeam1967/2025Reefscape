@@ -20,6 +20,8 @@ public class DetectionFCDE extends AutoModeBase {
 		Superstructure s = Superstructure.mInstance;
 		Detection d = Detection.mInstance;
 
+		// partial trajectories (for long paths), partial PIDToPose
+
 		AutoTrajectory leftStartToF = trajectory("leftStartToF");
 
 		// for coral-related ending action (no longer used)
@@ -32,12 +34,13 @@ public class DetectionFCDE extends AutoModeBase {
 
 		prepRoutine(
 				AutoHelpers.resetPoseIfWithoutEstimate(
-						leftStartToF.getInitialPose().get()),
-				leftStartToF.cmd().andThen(autoScoreWithPrepWithoutCoralHold(Branch.F, Level.L4)),
+						leftStartToF.getInitialPose().get()), // initialize auto position
+				leftStartToF.cmd().andThen(autoScoreWithPrepWithoutCoralHold(Branch.F, Level.L4)), // choreo command
+				//PID to Pose, divide area into slices and calculate on the fly which face they are closest to
 				intakeAndScoreGroundCoral("fToDetection", Branch.C, Level.L4),
 				intakeAndScoreGroundCoral("cToDetection", Branch.D, Level.L4),
-				intakeAndScoreGroundCoral("dToDetection", Branch.E, Level.L4, true),
-				Commands.either(
+				intakeAndScoreGroundCoral("dToDetection", Branch.E, Level.L4, true), //calculate on the fly offsets for where the rohot needs to be to score
+				Commands.either(//chooses end behavior of auto
 						Commands.deadline(
 								cmdWithAccuracy(eToGroundAlgae), s.tuck().asProxy()),
 						Commands.sequence(

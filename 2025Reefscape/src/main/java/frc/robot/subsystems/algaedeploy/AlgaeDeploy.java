@@ -16,6 +16,7 @@ public class AlgaeDeploy extends ServoMotorSubsystem<MotorIOTalonFX> {
 			.getStructTopic("Mechanisms/Algae Deploy", Pose3d.struct)
 			.publish();
 
+	//can use for motion magic profile
 	public static final Setpoint DEPLOY = Setpoint.withMotionMagicSetpoint(AlgaeDeployConstants.kDeployPosition);
 	public static final Setpoint CLEAR = Setpoint.withMotionMagicSetpoint(AlgaeDeployConstants.kClearPosition);
 	public static final Setpoint STOW = Setpoint.withMotionMagicSetpoint(AlgaeDeployConstants.kStowPosition);
@@ -32,17 +33,21 @@ public class AlgaeDeploy extends ServoMotorSubsystem<MotorIOTalonFX> {
 	public AlgaeDeploy() {
 		super(
 				AlgaeDeployConstants.getMotorIO(),
-				"Algae Deploy",
-				Units.Degrees.of(3.0),
+				"Algae Deploy", //for network tables
+				Units.Degrees.of(3.0), //epsilon: how much tolerance it has
 				AlgaeDeployConstants.getServoHomingConfig());
 		setCurrentPosition(AlgaeDeployConstants.kStowPosition);
 		applySetpoint(STOW);
 	}
 
+	/**
+	 * by subsystem, export CAD to simulation </p>
+	 * can use for visualization on field in AdvantageScope
+	 */
 	@Override
 	public void outputTelemetry() {
 		super.outputTelemetry();
-		publisher.set(AlgaeDeployConstants.kOffsetPose.plus(new Transform3d(
+		publisher.set(AlgaeDeployConstants.kOffsetPose.plus(new Transform3d( //simulate full robot using CAD
 				new Translation3d(), new Rotation3d(0.0, getPosition().in(Units.Radians), 0.0))));
 	}
 }

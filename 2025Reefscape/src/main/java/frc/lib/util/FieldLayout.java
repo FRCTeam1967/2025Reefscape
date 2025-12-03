@@ -161,6 +161,9 @@ public class FieldLayout {
 
 		private final BranchKey key;
 
+		/**
+		 * account for angle of the faces when endeffector is calculating poses for PIDToPose
+		 */
 		public static enum Face {
 			FAR_LEFT(Rotation2d.fromDegrees(240.0)), // IJ
 			NEAR_LEFT(Rotation2d.fromDegrees(300.0)), // KL

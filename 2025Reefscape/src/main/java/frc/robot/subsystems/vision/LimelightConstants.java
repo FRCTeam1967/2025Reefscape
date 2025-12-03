@@ -24,11 +24,18 @@ public class LimelightConstants {
 
 	public static Pose3d kRobotToCameraOffset;
 
+	/**
+	 * use cad measurements as baseline for limelight pos to robot
+	 * set up center of robot is at center of tag (known robot pos)
+	 * limelight calculate robot pose -> tune for actual pose
+	 * change rotation before translation
+	 */ 
 	static {
 		if (RobotConstants.isOmega) {
 			kRobotToCameraOffset = new Pose3d(
 					new Translation3d(Units.Inches.of(-5.344), Units.Inches.of(9.044), Units.Inches.of(8.438)),
-					new Rotation3d(Units.Degree.of(0), Units.Degree.of(-15.0), Units.Degree.of(160.0)));
+					new Rotation3d(Units.Degree.of(0), Units.Degree.of(-15.0), Units.Degree.of(160.0))); //set phone against ll with angle measurement thing
+					// pitch downward is negative, yaw clockwise is positive? "signs are weird"
 		} else {
 			kRobotToCameraOffset = new Pose3d(
 					new Translation3d(Units.Inches.of(-3.22), Units.Inches.of(9.443), Units.Inches.of(9.127)),

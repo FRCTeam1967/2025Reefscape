@@ -31,15 +31,15 @@ public class VisionIOLimelight extends VisionIO {
 		SmartDashboard.putNumber(config.name + "/FGPA Timestamp", Timer.getFPGATimestamp());
 		SmartDashboard.putNumber(
 				config.name + "/Estimate to FGPA Timestamp", Utils.fpgaToCurrentTime(poseEstimate.timestampSeconds));
-		if (poseEstimate.tagCount >= minTagNum) {
+		if (poseEstimate.tagCount >= minTagNum) { // mostly needed for mt1 because of tag ambiguity (mt2 uses gyro, so unnecessary)
 			latestEstimate = poseEstimate.pose;
 			latestEstimateTime = Units.Seconds.of(poseEstimate.timestampSeconds);
 			visPose.set(poseEstimate.pose);
 			Drive.mInstance.getGeneratedDrive();
-			Drive.mInstance.addVisionUpdate(
+			Drive.mInstance.addVisionUpdate( //UPDATE GYRO: get the gyro and update the robot orientation, ignore all non-reef tags
 					poseEstimate.pose,
 					Units.Seconds.of(poseEstimate.timestampSeconds),
-					LimelightConstants.enabledVisionStdDevs.times(poseEstimate.avgTagDist));
+					LimelightConstants.enabledVisionStdDevs.times(poseEstimate.avgTagDist)); //multiply stdevs with the distance away from tag
 		}
 	}
 

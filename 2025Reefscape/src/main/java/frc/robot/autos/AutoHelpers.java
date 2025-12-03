@@ -77,6 +77,7 @@ public class AutoHelpers {
 		return scoreCommand.asProxy();
 	}
 
+	/** only if no vision estimate, reset pose */
 	public static Command resetPoseIfWithoutEstimate(Pose2d pose) {
 		return Commands.runOnce(() -> Drive.mInstance.resetPose(pose));
 	}

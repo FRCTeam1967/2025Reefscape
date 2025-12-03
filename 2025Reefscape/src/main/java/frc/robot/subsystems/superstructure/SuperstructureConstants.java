@@ -188,6 +188,9 @@ public final class SuperstructureConstants {
 
 	public static final Distance kElevatorCenterOffset = Units.Inches.of(12.5);
 
+	/** how far our base needs to be from the pillar to score </p>
+	 * calculated through endeffector
+	*/
 	public static final Distance kAlgaeOffsetFactor = Units.Centimeters.of(10.0);
 	public static final Distance kAlgaeReadyOffsetFactor = Units.Centimeters.of(20.0);
 	public static final Distance kL4CoralOffsetFactor = Units.Centimeters.of(34.25);

@@ -72,6 +72,9 @@ public class ControlBoard extends SubsystemBase {
 		return !rightBumper.getAsBoolean() && !Superstructure.mInstance.getHasAlgae();
 	}
 
+	/**
+	 * configures all button binds, gets called in robotInit
+	 */
 	public void configureBindings() {
 		Drive.mInstance.setDefaultCommand(Drive.mInstance.followSwerveRequestCommand(
 				DriveConstants.teleopRequest, DriveConstants.teleopRequestUpdater));

@@ -46,6 +46,9 @@ public class AutoModeBase {
 	private static Stopwatch stopwatch = new Stopwatch();
 	private static AutoType side;
 
+	/**
+	 * choreo method(s)
+	 */
 	public AutoModeBase(AutoFactory factory, String name) {
 		routine = factory.newRoutine(name);
 	}
@@ -67,7 +70,8 @@ public class AutoModeBase {
 	}
 
 	/**
-	 * Runs an accuracy-based command for choreo following
+	 * Runs an accuracy-based command for choreo following </p>
+	 * takes a little longer, with tighter epsilons
 	 *
 	 * @param trajectory
 	 * @param timeout
@@ -405,7 +409,7 @@ public class AutoModeBase {
 				.withName("Autonomous L4 Score Without Choreo");
 	}
 
-	public void prepRoutine(Command... sequence) {
+	public void prepRoutine(Command... sequence) { //auto routine is a choreo class - acts as a commmand through the choreo auto factory
 		routine.active()
 				.onTrue(Commands.sequence(sequence)
 						.alongWith(EndEffector.mInstance
