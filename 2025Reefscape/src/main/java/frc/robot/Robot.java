@@ -4,18 +4,48 @@
 
 package frc.robot;
 
+import choreo.Choreo;
+import choreo.auto.AutoFactory;
+import choreo.auto.AutoRoutine;
+import choreo.auto.AutoTrajectory;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  private final AutoFactory autoFactory;
   private final RobotContainer m_robotContainer;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    var drive = m_robotContainer.drivetrain;
+
+    autoFactory = new AutoFactory(
+            drive::getPose, // A function that returns the current robot pose
+            drive::resetPose, // A function that resets the current robot pose to the provided Pose2d
+            drive::followTrajectory, // The drive subsystem trajectory follower 
+            true, // If alliance flipping should be enabled 
+            drive // The drive subsystem
+    );
   }
+  public AutoRoutine pickupAndScoreAuto() {
+    AutoRoutine routine = autoFactory.newRoutine("taxi");
+
+    // Load the routine's trajectories
+    AutoTrajectory driveToMiddle = routine.trajectory("driveToMiddle");
+
+    // When the routine begins, reset odometry and start the first trajectory (1)
+    routine.active().onTrue(
+        Commands.sequence(
+            driveToMiddle.resetOdometry(),
+            driveToMiddle.cmd()
+        )
+    );
+
+    return routine;
+}
 
   @Override
   public void robotPeriodic() {
