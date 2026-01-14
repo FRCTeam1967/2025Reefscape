@@ -5,18 +5,27 @@
 package frc.robot;
 
 import choreo.Choreo;
+import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private final AutoFactory autoFactory;
   private final RobotContainer m_robotContainer;
+  private final AutoChooser autoChooser;
+
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -29,7 +38,25 @@ public class Robot extends TimedRobot {
             true, // If alliance flipping should be enabled 
             drive // The drive subsystem
     );
-  }
+    autoChooser = new AutoChooser();
+
+    // Add options to the chooser
+    autoChooser.addRoutine("Center to F4", this::pickupAndScoreAuto);
+    //autoChooser.addCmd("Example Auto Command", this::exampleAutoCommand);
+
+    // Put the auto chooser on the dashboard
+   
+    
+
+    // Schedule the selected auto during the autonomous period
+    RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
+    }
+
+   
+    //private Command exampleAutoCommand() {
+        // ...
+   // }
+
   public AutoRoutine pickupAndScoreAuto() {
     AutoRoutine routine = autoFactory.newRoutine("taxi");
 
