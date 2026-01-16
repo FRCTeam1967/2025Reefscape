@@ -10,9 +10,9 @@ import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -21,14 +21,16 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+  private AutoRoutine m_autonomousCommand;
   private final AutoFactory autoFactory;
   private final RobotContainer m_robotContainer;
-  private final AutoChooser autoChooser;
+  public final AutoChooser autoChooser;
+  //public ShuffleboardTab matchTab;
 
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    //matchTab = Shuffleboard.getTab("match");
     var drive = m_robotContainer.drivetrain;
 
     autoFactory = new AutoFactory(
@@ -41,11 +43,11 @@ public class Robot extends TimedRobot {
     autoChooser = new AutoChooser();
 
     // Add options to the chooser
-    autoChooser.addRoutine("Center to F4", this::pickupAndScoreAuto);
-    //autoChooser.addCmd("Example Auto Command", this::exampleAutoCommand);
+    autoChooser.addRoutine("Center To F4", this::pickupAndScoreAuto);
 
     // Put the auto chooser on the dashboard
-   
+    SmartDashboard.putData(autoChooser);
+    //matchTab.add(autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
     
 
     // Schedule the selected auto during the autonomous period
@@ -61,7 +63,7 @@ public class Robot extends TimedRobot {
     AutoRoutine routine = autoFactory.newRoutine("taxi");
 
     // Load the routine's trajectories
-    AutoTrajectory driveToMiddle = routine.trajectory("driveToMiddle");
+    AutoTrajectory driveToMiddle = routine.trajectory("Center To F4");
 
     // When the routine begins, reset odometry and start the first trajectory (1)
     routine.active().onTrue(
@@ -90,10 +92,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = pickupAndScoreAuto();
 
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      m_autonomousCommand.cmd().schedule();
     }
   }
 
@@ -106,7 +108,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+      m_autonomousCommand.cmd().cancel();
     }
   }
 

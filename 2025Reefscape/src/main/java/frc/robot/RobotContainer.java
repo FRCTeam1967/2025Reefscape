@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.Robot;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -43,12 +44,12 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public static SendableChooser<Command> autoChooser; 
-    public ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
+    //public static SendableChooser<Command> autoChooser; 
+    //public ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
     
     public RobotContainer() {
         configureBindings();
-        matchTab.add(autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
+      // matchTab.add(Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
     }
     
     
@@ -70,6 +71,9 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
+        //reset gyro
+        joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        drivetrain.registerTelemetry(logger::telemeterize);
 
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
