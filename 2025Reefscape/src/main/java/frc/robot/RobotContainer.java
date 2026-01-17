@@ -49,7 +49,7 @@ public class RobotContainer {
     
     public RobotContainer() {
         configureBindings();
-      // matchTab.add(Robot.autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
+        //matchTab.add(autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
     }
     
     

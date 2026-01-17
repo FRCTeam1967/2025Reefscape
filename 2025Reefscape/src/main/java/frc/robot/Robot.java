@@ -21,12 +21,13 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends TimedRobot {
-  private AutoRoutine m_autonomousCommand;
+  public final ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
+  private AutoRoutine m_autonomousCommand; //AutoRoutine
   private final AutoFactory autoFactory;
   private final RobotContainer m_robotContainer;
   public final AutoChooser autoChooser;
   //public ShuffleboardTab matchTab;
-
+  
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -46,8 +47,8 @@ public class Robot extends TimedRobot {
     autoChooser.addRoutine("Center To F4", this::pickupAndScoreAuto);
 
     // Put the auto chooser on the dashboard
-    SmartDashboard.putData(autoChooser);
-    //matchTab.add(autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
+    //SmartDashboard.putData(autoChooser);
+    matchTab.add(autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
     
 
     // Schedule the selected auto during the autonomous period
@@ -92,9 +93,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = pickupAndScoreAuto();
+    //m_autonomousCommand = pickupAndScoreAuto();
+    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
+      //.schedule();
       m_autonomousCommand.cmd().schedule();
     }
   }
