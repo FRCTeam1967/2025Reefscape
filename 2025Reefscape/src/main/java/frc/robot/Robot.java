@@ -22,13 +22,12 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends TimedRobot {
   public final ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
-  private AutoRoutine m_autonomousCommand; //AutoRoutine
+  private Command m_autonomousCommand; //AutoRoutine
   private final AutoFactory autoFactory;
   private final RobotContainer m_robotContainer;
-  public final AutoChooser autoChooser;
+  private final AutoChooser autoChooser;
   //public ShuffleboardTab matchTab;
   
-
   public Robot() {
     m_robotContainer = new RobotContainer();
     //matchTab = Shuffleboard.getTab("match");
@@ -44,7 +43,7 @@ public class Robot extends TimedRobot {
     autoChooser = new AutoChooser();
 
     // Add options to the chooser
-    autoChooser.addRoutine("Center To F4", this::pickupAndScoreAuto);
+    autoChooser.addRoutine("pickupAndScore", this::centerToF4);
 
     // Put the auto chooser on the dashboard
     //SmartDashboard.putData(autoChooser);
@@ -60,22 +59,27 @@ public class Robot extends TimedRobot {
         // ...
    // }
 
-  public AutoRoutine pickupAndScoreAuto() {
-    AutoRoutine routine = autoFactory.newRoutine("taxi");
+  // AUTO FACTORY METHOD
+  private AutoRoutine centerToF4() {
+    AutoRoutine routine = autoFactory.newRoutine("F4");
 
     // Load the routine's trajectories
-    AutoTrajectory driveToMiddle = routine.trajectory("Center To F4");
+    AutoTrajectory driveToF4 = routine.trajectory("Center To F4");
 
     // When the routine begins, reset odometry and start the first trajectory (1)
     routine.active().onTrue(
         Commands.sequence(
-            driveToMiddle.resetOdometry(),
-            driveToMiddle.cmd()
+            driveToF4.resetOdometry(),
+            driveToF4.cmd()
         )
     );
 
     return routine;
 }
+
+// public void addToChooser(String title, AutoRoutine routine) {
+//   autoChooser.addRoutine(title, routine);
+// }
 
   @Override
   public void robotPeriodic() {
@@ -93,13 +97,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = pickupAndScoreAuto();
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    if (m_autonomousCommand != null) {
-      //.schedule();
-      m_autonomousCommand.cmd().schedule();
-    }
+    // //m_autonomousCommand = pickupAndScoreAuto();
+    // // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    // m_autonomousCommand = autoChooser.selectedCommand();
+  
+    // if (m_autonomousCommand != null) {
+    //   //autoChooser.selectedCommandScheduler();
+    //   m_autonomousCommand.schedule();
+    // }
   }
 
   @Override
@@ -111,7 +116,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.cmd().cancel();
+      m_autonomousCommand.cancel();
     }
   }
 
