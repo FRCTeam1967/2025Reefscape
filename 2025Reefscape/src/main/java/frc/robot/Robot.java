@@ -17,19 +17,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.GerryRig;
 
 public class Robot extends TimedRobot {
   public final ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
   private Command m_autonomousCommand; //AutoRoutine
   private final AutoFactory autoFactory;
   private final RobotContainer m_robotContainer;
+  private final GerryRig m_gerryRig; 
   private final AutoChooser autoChooser;
   //public ShuffleboardTab matchTab;
   
   public Robot() {
     m_robotContainer = new RobotContainer();
+    m_gerryRig = new GerryRig();
     //matchTab = Shuffleboard.getTab("match");
     var drive = m_robotContainer.drivetrain;
 
@@ -43,11 +47,12 @@ public class Robot extends TimedRobot {
     autoChooser = new AutoChooser();
 
     // Add options to the chooser
-    autoChooser.addRoutine("pickupAndScore", this::centerToF4);
+    autoChooser.addRoutine("centerToF4", this::centerToF4);
+    autoChooser.addRoutine("runMotor", this::runMotor);
 
     // Put the auto chooser on the dashboard
     //SmartDashboard.putData(autoChooser);
-    matchTab.add(autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
+    matchTab.add("auto chooser lol", autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
     
 
     // Schedule the selected auto during the autonomous period
@@ -73,8 +78,23 @@ public class Robot extends TimedRobot {
             driveToF4.cmd()
         )
     );
+    
 
     return routine;
+}
+
+private AutoRoutine runMotor() {
+  AutoRoutine routine = autoFactory.newRoutine("run");
+  // AutoTrajectory gerryMotor = routine.trajectory("run");
+  // autoFactory
+  //   .bind("runMotor",  new RunCommand(() -> m_gerryRig.runMotor(0.7), m_gerryRig));
+
+  // Load the routine's trajectories
+
+  // When the routine begins, reset odometry and start the first trajectory (1)
+  routine.active().onTrue(new RunCommand(() -> m_gerryRig.runMotor(0.7), m_gerryRig));
+
+  return routine;
 }
 
 // public void addToChooser(String title, AutoRoutine routine) {
