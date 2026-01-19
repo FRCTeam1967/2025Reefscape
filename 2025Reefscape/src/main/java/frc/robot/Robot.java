@@ -47,7 +47,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    //m_robotContainer.vision.setFiducials();
+    LimelightHelpers.SetIMUMode("limelight-front", 1);
+    LimelightHelpers.SetThrottle("limelight-front", 200);
   }
 
   @Override
@@ -55,11 +56,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-
+    LimelightHelpers.SetThrottle("limelight-front", 0);
   }
 
   @Override
   public void autonomousPeriodic() {
+    LimelightHelpers.SetIMUMode("limelight-front", 2);
   }
 
   @Override
@@ -67,10 +69,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    LimelightHelpers.SetThrottle("limelight-front", 0);
+    m_robotContainer.vision.setFirstVisionPose();
+
   }
 
   @Override
   public void teleopPeriodic() {
+    LimelightHelpers.SetIMUMode("limelight-front", 1);
   }
 
   @Override

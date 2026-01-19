@@ -11,7 +11,9 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -20,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.VisionUpdate;
+
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -36,10 +40,14 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public static ShuffleboardTab limelightTab = Shuffleboard.getTab("Limelight");
+    public ShuffleboardTab fieldTab = Shuffleboard.getTab("Field");
     
+    public VisionUpdate vision = new VisionUpdate(drivetrain);
+
     public RobotContainer() {
         configureBindings();
-        configLLTab(limelightTab);
+        configLLTab(limelightTab, fieldTab);
+        
     }
 
     private double limelight_aim_proportional() {
@@ -81,6 +89,8 @@ public class RobotContainer {
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
+
+        joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));//.seedFieldCentric()
 
         //POV buttons
         joystick.povUp().whileTrue(drivetrain.applyRequest(() ->
@@ -161,7 +171,7 @@ public class RobotContainer {
     //     return Commands.print("No autonomous command configured");
     // }
 
-    public void configLLTab(ShuffleboardTab tab) {
+    public void configLLTab(ShuffleboardTab tab, ShuffleboardTab fieldTab) {
         HttpCamera httpCamera1 = new HttpCamera("limelight-front", "http://10.19.67.11:5801/"); //http://10.19.67.202:5801/
         CameraServer.addCamera(httpCamera1);
         tab.add(httpCamera1).withWidget(BuiltInWidgets.kCameraStream).withPosition(0, 0)
@@ -174,6 +184,8 @@ public class RobotContainer {
         tab.addBoolean("LL isAligned", () -> isAligned(LimelightHelpers.getTX("limelight-front")))
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(6, 2)
         .withSize(1, 1);
+
+        fieldTab.add("Field", CommandSwerveDrivetrain.m_field).withWidget(BuiltInWidgets.kField).withSize(8, 4);
     }
 
     public boolean getInRange(double position) {
