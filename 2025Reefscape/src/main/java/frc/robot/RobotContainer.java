@@ -56,10 +56,18 @@ public class RobotContainer {
         // if it is too high, the robot will oscillate around.
         // if it is too low, the robot will never reach its target
         // if the robot never turns in the correct direction, kP should be inverted.
+        // int[] validIDs = {10, 25, 26};
+        // LimelightHelpers.SetFiducialIDFiltersOverride("limelight-front", validIDs);
+        
         double kP = 0.02; //0.035
+        double targetingAngularVelocity = 0.0; 
         // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of
         // your limelight 3 feed, tx should return roughly 31 degrees.
-        double targetingAngularVelocity = (LimelightHelpers.getTX("limelight-front") * kP);
+
+        if (LimelightHelpers.getFiducialID("limelight-front") == 10) {
+            targetingAngularVelocity = (LimelightHelpers.getTX("limelight-front") * kP);
+        }
+
         // convert to radians per second for our drive method
         targetingAngularVelocity *= MaxAngularRate;
         //invert since tx is positive when the target is to the right of the crosshair
