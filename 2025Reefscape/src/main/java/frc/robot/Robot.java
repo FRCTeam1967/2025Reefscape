@@ -12,7 +12,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.LimelightHelpers.PoseEstimate;
+import frc.robot.LimelightHelpers;
+//import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends TimedRobot {
@@ -43,11 +44,12 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     SignalLogger.stop();
-    LimelightHelpers.SetIMUMode("limelight-front", 1);
+    //m_robotContainer.drivetrain.getPigeon2().setYaw(LimelightHelpers.getBotPose3d_wpiBlue("limelight-front").getRotation().getAngle());
   }
 
   @Override
   public void disabledPeriodic() {
+    LimelightHelpers.SetIMUMode("limelight-front", 1);
     LimelightHelpers.SetThrottle("limelight-front", 200);
   }
 
@@ -57,11 +59,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     LimelightHelpers.SetThrottle("limelight-front", 0);
-    LimelightHelpers.SetIMUMode("limelight-front", 2);
   }
 
   @Override
   public void autonomousPeriodic() {
+    LimelightHelpers.SetIMUMode("limelight-front", 2);
   }
 
   @Override
@@ -70,14 +72,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     LimelightHelpers.SetThrottle("limelight-front", 0);
-    LimelightHelpers.SetIMUMode("limelight-front", 2);
     m_robotContainer.vision.setFirstVisionPose();
-
   }
 
   @Override
   public void teleopPeriodic() {
-    
+    LimelightHelpers.SetIMUMode("limelight-front", 2); //1
   }
 
   @Override
