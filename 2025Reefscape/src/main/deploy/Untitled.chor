@@ -1,6 +1,6 @@
 {
  "name":"Untitled",
- "version":1,
+ "version":2,
  "type":"Swerve",
  "variables":{
   "expressions":{},
@@ -9,35 +9,35 @@
  "config":{
   "frontLeft":{
    "x":{
-    "exp":"11 in",
-    "val":0.2794
+    "exp":"10.625 in",
+    "val":0.269875
    },
    "y":{
-    "exp":"11 in",
-    "val":0.2794
+    "exp":"10.625 in",
+    "val":0.269875
    }
   },
   "backLeft":{
    "x":{
-    "exp":"-11 in",
-    "val":-0.2794
+    "exp":"-10.625 in",
+    "val":-0.269875
    },
    "y":{
-    "exp":"11 in",
-    "val":0.2794
+    "exp":"10.625 in",
+    "val":0.269875
    }
   },
   "mass":{
-   "exp":"150 lbs",
-   "val":68.0388555
+   "exp":"74.9 lbs",
+   "val":33.974068513000006
   },
   "inertia":{
    "exp":"6 kg m ^ 2",
    "val":6.0
   },
   "gearing":{
-   "exp":"6.5",
-   "val":6.5
+   "exp":"6.75",
+   "val":6.75
   },
   "radius":{
    "exp":"2 in",
@@ -48,8 +48,8 @@
    "val":628.3185307179587
   },
   "tmax":{
-   "exp":"1.2 N * m",
-   "val":1.2
+   "exp":"7.09 N * m",
+   "val":7.09
   },
   "cof":{
    "exp":"1.5",
@@ -57,16 +57,16 @@
   },
   "bumper":{
    "front":{
-    "exp":"16 in",
-    "val":0.4064
+    "exp":"13.25 in",
+    "val":0.33654999999999996
    },
    "side":{
-    "exp":"16 in",
-    "val":0.4064
+    "exp":"13.25 in",
+    "val":0.33654999999999996
    },
    "back":{
-    "exp":"16 in",
-    "val":0.4064
+    "exp":"13.25 in",
+    "val":0.33654999999999996
    }
   },
   "differentialTrackWidth":{
@@ -74,5 +74,11 @@
    "val":0.5588
   }
  },
- "generationFeatures":[]
+ "generationFeatures":[],
+ "codegen":{
+  "root":"Users/sana/folders/vsc/janksters/2026Rebuilt/2026Rebuilt/src/main/deploy",
+  "genVars":true,
+  "genTrajData":true,
+  "useChoreoLib":true
+ }
 }

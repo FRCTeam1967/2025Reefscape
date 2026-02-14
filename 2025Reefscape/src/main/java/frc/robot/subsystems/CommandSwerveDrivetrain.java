@@ -9,14 +9,17 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveRequest.ForwardPerspectiveValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import choreo.trajectory.SwerveSample;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -77,6 +80,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 
     public static Field2d m_field = new Field2d();
+
+    private final PIDController xController = new PIDController(10.0, 0.0, 0.0);
+    private final PIDController yController = new PIDController(10.0, 0.0, 0.0);
+    private final PIDController headingController = new PIDController(7.5, 0.0, 0.0);
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
@@ -280,6 +287,39 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      */
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.dynamic(direction);
+    }
+
+    public Pose2d getPose() {
+        return getState().Pose;
+        
+    }
+
+    public void followTrajectory(SwerveSample sample) {
+        // Get the current pose of the robot
+        Pose2d pose = getPose();
+
+        DogLog.log("samples of trajectory", sample.getPose());
+
+        double velocityX = sample.vx + xController.calculate(pose.getX(), sample.x);
+        DogLog.log("PID controller X follow trajectory", velocityX);
+
+        // Generate and apply the next speeds for the robot
+        setControl(new SwerveRequest.FieldCentric()
+            .withVelocityX(velocityX)
+            .withVelocityY(sample.vy + yController.calculate(pose.getY(), sample.y))
+            .withRotationalRate(sample.omega + headingController.calculate(pose.getRotation().getRadians(), sample.heading))
+            .withForwardPerspective(ForwardPerspectiveValue.BlueAlliance));
+            //.withDriveRequestType(DriveRequestType.Velocity));
+
+
+       //ChassisSpeeds speeds = new ChassisSpeeds(
+            //,sample.vx + xController.calculate(pose.getX(), sample.x)
+            //sample.vy + yController.calculate(pose.getY(), sample.y),
+            //sample.omega + headingController.calculate(pose.getRotation().getRadians(), sample.heading)
+        //);
+
+        // Apply the generated speeds
+        // driveFieldRelative(speeds);
     }
 
 

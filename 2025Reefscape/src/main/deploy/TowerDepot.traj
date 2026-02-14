@@ -1,0 +1,65 @@
+{
+ "name":"TowerDepot",
+ "version":3,
+ "snapshot":{
+  "waypoints":[
+    {"x":2.522092819213867, "y":4.660451412200928, "heading":0.0, "intervals":7, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":1.092, "y":4.61, "heading":0.0, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
+  "constraints":[
+    {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
+    {"from":"last", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
+    {"from":"first", "to":"last", "data":{"type":"KeepInRectangle", "props":{"x":0.0, "y":0.0, "w":16.541, "h":8.0692}}, "enabled":false}],
+  "targetDt":0.05
+ },
+ "params":{
+  "waypoints":[
+    {"x":{"exp":"2.522092819213867 m", "val":2.522092819213867}, "y":{"exp":"4.660451412200928 m", "val":4.660451412200928}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":7, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"1.092 m", "val":1.092}, "y":{"exp":"4.61 m", "val":4.61}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
+  "constraints":[
+    {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
+    {"from":"last", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
+    {"from":"first", "to":"last", "data":{"type":"KeepInRectangle", "props":{"x":{"exp":"0 m", "val":0.0}, "y":{"exp":"0 m", "val":0.0}, "w":{"exp":"16.541 m", "val":16.541}, "h":{"exp":"8.0692 m", "val":8.0692}}}, "enabled":false}],
+  "targetDt":{
+   "exp":"0.05 s",
+   "val":0.05
+  }
+ },
+ "trajectory":{
+  "config":{
+   "frontLeft":{
+    "x":0.269875,
+    "y":0.269875
+   },
+   "backLeft":{
+    "x":-0.269875,
+    "y":0.269875
+   },
+   "mass":33.974068513000006,
+   "inertia":6.0,
+   "gearing":6.75,
+   "radius":0.0508,
+   "vmax":628.3185307179587,
+   "tmax":7.09,
+   "cof":1.5,
+   "bumper":{
+    "front":0.33654999999999996,
+    "side":0.33654999999999996,
+    "back":0.33654999999999996
+   },
+   "differentialTrackWidth":0.5588
+  },
+  "sampleType":"Swerve",
+  "waypoints":[0.0,0.63071],
+  "samples":[
+    {"t":0.0, "x":2.52209, "y":4.66045, "heading":0.0, "vx":0.0, "vy":0.0, "omega":0.0, "ax":-14.68341, "ay":-0.51801, "alpha":0.0, "fx":[-124.71381,-124.71381,-124.71381,-124.71381], "fy":[-4.39971,-4.39971,-4.39971,-4.39971]},
+    {"t":0.0901, "x":2.46249, "y":4.65835, "heading":0.0, "vx":-1.323, "vy":-0.04667, "omega":0.0, "ax":-14.67968, "ay":-0.51788, "alpha":0.0, "fx":[-124.68214,-124.68214,-124.68214,-124.68214], "fy":[-4.39859,-4.39859,-4.39859,-4.39859]},
+    {"t":0.1802, "x":2.2837, "y":4.65204, "heading":0.0, "vx":-2.64567, "vy":-0.09333, "omega":0.0, "ax":-14.66849, "ay":-0.51748, "alpha":0.0, "fx":[-124.58711,-124.58711,-124.58711,-124.58711], "fy":[-4.39524,-4.39524,-4.39524,-4.39524]},
+    {"t":0.27031, "x":1.98578, "y":4.64153, "heading":0.0, "vx":-3.96732, "vy":-0.13996, "omega":0.0, "ax":0.0, "ay":0.0, "alpha":0.0, "fx":[0.0,0.0,0.0,0.0], "fy":[0.0,0.0,0.0,0.0]},
+    {"t":0.36041, "x":1.62832, "y":4.62892, "heading":0.0, "vx":-3.96732, "vy":-0.13996, "omega":0.0, "ax":14.66849, "ay":0.51748, "alpha":0.0, "fx":[124.58711,124.58711,124.58711,124.58711], "fy":[4.39524,4.39524,4.39524,4.39524]},
+    {"t":0.45051, "x":1.33039, "y":4.61841, "heading":0.0, "vx":-2.64567, "vy":-0.09333, "omega":0.0, "ax":14.67968, "ay":0.51788, "alpha":0.0, "fx":[124.68214,124.68214,124.68214,124.68214], "fy":[4.39859,4.39859,4.39859,4.39859]},
+    {"t":0.54061, "x":1.1516, "y":4.6121, "heading":0.0, "vx":-1.323, "vy":-0.04667, "omega":0.0, "ax":14.68341, "ay":0.51801, "alpha":0.0, "fx":[124.71381,124.71381,124.71381,124.71381], "fy":[4.39971,4.39971,4.39971,4.39971]},
+    {"t":0.63071, "x":1.092, "y":4.61, "heading":0.0, "vx":0.0, "vy":0.0, "omega":0.0, "ax":0.0, "ay":0.0, "alpha":0.0, "fx":[0.0,0.0,0.0,0.0], "fy":[0.0,0.0,0.0,0.0]}],
+  "splits":[0]
+ },
+ "events":[]
+}

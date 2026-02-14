@@ -192,7 +192,7 @@ public final class Constants {
 
    }
 
-  public static class Vision {
+   public static class Vision {
     public static final double DEGREE_ERROR = 4.0;
 
     public static final double LIMELIGHT_ANGLE_DEGREES = 0; //need to verify
