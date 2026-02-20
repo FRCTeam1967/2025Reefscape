@@ -9,13 +9,17 @@ import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
@@ -24,6 +28,8 @@ import edu.wpi.first.networktables.IntegerPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class VisionUpdate extends SubsystemBase {
   /** Creates a new VisionUpdate. */
@@ -60,6 +66,22 @@ public class VisionUpdate extends SubsystemBase {
     fpgaTimestamp = table.getDoubleTopic("fpga timestamp").publish();
     LLtoFPGA = table.getDoubleTopic("LL converted to fpga").publish();
 
+    Optional<Alliance> ally = DriverStation.getAlliance(); 
+    final StructPublisher<Pose2d> towerPublisher = NetworkTableInstance.getDefault().getTable("alignment").getStructTopic("tower", Pose2d.struct).publish();  
+    Pose2d towerPose = new Pose2d();
+
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Red) {
+          towerPose = new Pose2d(15.56, 2.98, new Rotation2d(0));
+          //DogLog.log("Tower Pose: ", towerPose);
+      }
+      if (ally.get() == Alliance.Blue) {
+          towerPose = new Pose2d(0.84, 4.8, new Rotation2d(Math.PI));
+          //DogLog.log("Tower Pose: ", towerPose);
+      }
+      towerPublisher.set(towerPose);
+      DogLog.log("Tower Pose: ", towerPose);  
+    }
   }
 
   public void setFirstVisionPose() {
@@ -124,9 +146,10 @@ public class VisionUpdate extends SubsystemBase {
     // if(Math.abs(drivetrain.getPigeon2().getRotation2d().getDegrees()) > 360) {
     //   doRejectUpdate = true;
     // }
-    
-    if(mt2.tagCount == 0) {
-      doRejectUpdate = true;
+    if(mt2 != null){
+      if(mt2.tagCount == 0) {
+        doRejectUpdate = true;
+      }
     }
     
     if(!doRejectUpdate){

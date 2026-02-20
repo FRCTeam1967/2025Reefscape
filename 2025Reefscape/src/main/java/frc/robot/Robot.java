@@ -76,6 +76,7 @@ public class Robot extends TimedRobot {
     autoChooser.addRoutine("TowerWrong", this::TowerWrong);
     autoChooser.addRoutine("TowerWronger", this::TowerWronger);
     autoChooser.addRoutine("TowerMcQueen", this::TowerMcQueen);
+    autoChooser.addRoutine("Leave C", this::LeaveC);
 
     //autoPublisher = NetworkTableInstance.getDefault().getTable("selected_auto");
 
@@ -324,6 +325,34 @@ public class Robot extends TimedRobot {
     return routine;
   }
 
+  private AutoRoutine LeaveC() {
+    AutoRoutine routine = autoFactory.newRoutine("Leave C");
+    // Load the routine's trajectories
+    // Optional<Trajectory<SwerveSample>> trajectory = Choreo.loadTrajectory("test");
+    AutoTrajectory test_path = routine.trajectory("Leave C");
+
+    // When the routine begins, reset odometry and start the first trajectory (1)
+    routine.active().onTrue(
+        Commands.sequence(
+            //step one: set gyro to starting heading (flips for alliance)
+            //new InstantCommand(() -> m_robotContainer.drivetrain.getPigeon2().setYaw(test_path.getInitialPose().get().getRotation().getDegrees())),
+
+            //step two: reset odometry to starting pose
+            test_path.resetOdometry(),
+
+            //step three: set LL heading to gyro (aka starting) heading
+            //new InstantCommand(() -> LimelightHelpers.SetRobotOrientation("limelight-front", m_robotContainer.drivetrain.getPigeon2().getRotation2d().getDegrees(), 0, 0, 0, 0, 0)),
+              
+            //step four: run the path!
+            test_path.cmd(),
+            new AlignTowerPose(m_robotContainer.drivetrain)
+        )
+    );
+
+    //m_robotContainer.drivetrain.getPigeon2().setYaw(test_path.getInitialPose().get().getRotation().getDegrees());
+    return routine;
+  }
+
 
   @Override
   public void robotPeriodic() {
@@ -361,18 +390,18 @@ public class Robot extends TimedRobot {
     LimelightHelpers.SetIMUMode("limelight-front", 0);
     LimelightHelpers.SetThrottle("limelight-front", 200);
     
-    AutoRoutine routine = autoFactory.newRoutine("TowerMcQueen");
-    // Load the routine's trajectories
-    // Optional<Trajectory<SwerveSample>> trajectory = Choreo.loadTrajectory("test");
-    //AutoTrajectory test_path = routine.trajectory("TowerMcQueen");
+    // AutoRoutine routine = autoFactory.newRoutine("TowerMcQueen");
+    // // Load the routine's trajectories
+    // // Optional<Trajectory<SwerveSample>> trajectory = Choreo.loadTrajectory("test");
+    // //AutoTrajectory test_path = routine.trajectory("TowerMcQueen");
 
-    AutoTrajectory test_path = routine.trajectory("TowerMcQueen");
+    // AutoTrajectory test_path = routine.trajectory("TowerMcQueen");
 
-    new InstantCommand(() -> m_robotContainer.drivetrain.getPigeon2().setYaw(test_path.getInitialPose().get().getRotation().getDegrees()));
-    //step two: reset odometry to starting pose
-    test_path.resetOdometry();
-    //step three: set LL heading to gyro (aka starting) heading
-    new InstantCommand(() -> LimelightHelpers.SetRobotOrientation("limelight-front", m_robotContainer.drivetrain.getPigeon2().getRotation2d().getDegrees(), 0, 0, 0, 0, 0));
+    // new InstantCommand(() -> m_robotContainer.drivetrain.getPigeon2().setYaw(test_path.getInitialPose().get().getRotation().getDegrees()));
+    // //step two: reset odometry to starting pose
+    // test_path.resetOdometry();
+    // //step three: set LL heading to gyro (aka starting) heading
+    // new InstantCommand(() -> LimelightHelpers.SetRobotOrientation("limelight-front", m_robotContainer.drivetrain.getPigeon2().getRotation2d().getDegrees(), 0, 0, 0, 0, 0));
   }
 
   @Override
@@ -396,23 +425,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     LimelightHelpers.SetThrottle("limelight-front", 0);
     m_robotContainer.vision.setFirstVisionPose();
-
-    Optional<Alliance> ally = DriverStation.getAlliance(); 
-    final StructPublisher<Pose2d> towerPublisher = NetworkTableInstance.getDefault().getTable("alignment").getStructTopic("tower", Pose2d.struct).publish();  
-    Pose2d towerPose = new Pose2d();
-
-    if (ally.isPresent()) {
-      if (ally.get() == Alliance.Red) {
-          towerPose = new Pose2d(15.56, 2.98, new Rotation2d(0));
-          //DogLog.log("Tower Pose: ", towerPose);
-      }
-      if (ally.get() == Alliance.Blue) {
-          towerPose = new Pose2d(0.84, 4.8, new Rotation2d(Math.PI));
-          //DogLog.log("Tower Pose: ", towerPose);
-      }
-      towerPublisher.set(towerPose);
-      DogLog.log("Tower Pose: ", towerPose);  
-    }
   }
 
   @Override
