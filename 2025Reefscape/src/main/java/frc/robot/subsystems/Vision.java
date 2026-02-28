@@ -3,10 +3,7 @@ package frc.robot.subsystems;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -78,16 +75,17 @@ public class Vision extends SubsystemBase {
   }
 
   /** updates value of isInRange */
-  public void alignAngleX(){
+  public boolean alignAngleX(){
     updateValues();
     if (xOffset > -Constants.Vision.DEGREE_ERROR && xOffset < Constants.Vision.DEGREE_ERROR){
-      isInRange = false;
+      isInRange = true;
       SmartDashboard.putBoolean("Range", false);
     } else {
-      isInRange = true;
+      isInRange = false;
       SmartDashboard.putBoolean("Range", true);
-      
     }
+
+    return isInRange;
   }
 
   // public void alignAngleZ(){
