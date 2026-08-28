@@ -66,7 +66,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean m_hasAppliedOperatorPerspective = false;
 
-    private final Pigeon2 gyro = new Pigeon2(Constants.Swerve.PIGEON_GYRO, "Canivore");
+    private final Pigeon2 gyro = new Pigeon2(Constants.Swerve.PIGEON_GYRO, "CANivore");
 
     /** Swerve request to apply during robot-centric path following */
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
