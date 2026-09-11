@@ -68,7 +68,12 @@ public class AlgaeIntake extends SubsystemBase {
 
   public void stopIntake(){
     motor.stopMotor();
- }
+  }
+
+  // use to find out when intaken completely
+  public double getIntakeCurrent() {
+    return motor.getStatorCurrent().getValueAsDouble();
+  } 
 
   @Override
   public void periodic() {

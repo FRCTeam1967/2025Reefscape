@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import dev.doglog.DogLog;
 import com.ctre.phoenix6.Utils;
 
@@ -23,6 +25,7 @@ public class VisionUpdate extends SubsystemBase {
   private final CommandSwerveDrivetrain drivetrain;
   private final SwerveDrivePoseEstimator m_poseEstimator;
   private final StructPublisher<Pose2d> limelightPublisher;
+  private RobotContainer robotContainer;
 
   private long odometryUpdates = 0;
   private long odometryDiscards = 0;
@@ -75,6 +78,8 @@ public class VisionUpdate extends SubsystemBase {
     DogLog.log("VisionUpdate/tagCount", mt2 != null ? mt2.tagCount : 0);
     DogLog.log("VisionUpdate/drivetrainRawHeading", rawHeading);
     DogLog.log("VisionUpdate/drivetrainPose", robotPose);
+    DogLog.log("VisionUpdate/algae target angle speed", robotContainer.algae_aim_proportional());
+    DogLog.log("VisionUpdate/algae target forward speed", robotContainer.algae_range_proportional());
 
     // If we don't see any tags, the pose can't be good
     if(mt2.tagCount == 0) {
@@ -92,6 +97,8 @@ public class VisionUpdate extends SubsystemBase {
 
     DogLog.log("VisionUpdate/acceptedUpdate", !doRejectUpdate);
   }
+
+
 
     // //This method will be called once per scheduler run
     // LimelightHelpers.PoseEstimate poseEstimator = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-santos");    

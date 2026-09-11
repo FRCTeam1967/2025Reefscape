@@ -115,6 +115,8 @@ public class Robot extends TimedRobot {
     DogLog.log("TeleopPeriodic/drivetrainRawHeading", drivetrainState.RawHeading);
     DogLog.log("TeleopPeriodic/pigeonYas", drivetrain.getPigeon2().getRotation2d());
     DogLog.log("TeleopPeriodic/operatorForwardDirection", drivetrain.getOperatorForwardDirection());
+    DogLog.log("TeleopPeriodic/algae target angle speed", m_robotContainer.algae_aim_proportional());
+    DogLog.log("TeleopPeriodic/algae target forward speed", m_robotContainer.algae_range_proportional());
 
     m_robotContainer.algaeMechanism.logAlgaePivot();
     m_robotContainer.coralPivot.logCoralPivot();

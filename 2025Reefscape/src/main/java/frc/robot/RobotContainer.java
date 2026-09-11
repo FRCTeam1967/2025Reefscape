@@ -372,19 +372,39 @@ public class RobotContainer {
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
-        //DRIVER CONTROLLER VISION ALIGNMENT
-        joystick.rightBumper().onTrue(new SequentialCommandGroup(
-            //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-            new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
-            new AlignBranch(drivetrain, vision, false, false)));
-
-        joystick.leftBumper().onTrue(new SequentialCommandGroup(
-            //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
-            new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism),
-            new AlignBranch(drivetrain, vision, false, false)));
-
         //DISABLE VISION
         joystick.x().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
+
+        // game piece detection
+        /***
+        joystick.rightTrigger().whileTrue(
+            new ParallelCommandGroup(
+                drivetrain.applyRequest(() -> drive
+                    .withVelocityX(0) //algae_range_proportional())
+                    .withVelocityY(0) 
+                    .withRotationalRate(algae_aim_proportional()) 
+                ),
+
+                new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT), // seems to not reach this point, not getting to target rotational speed?
+                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_DEFAULT_SPEED)
+            )
+            //.until(() -> intake.getIntakeCurrent() > 30.0)
+        );
+
+        joystick.rightBumper().whileTrue(
+            new ParallelCommandGroup(
+                drivetrain.applyRequest(() -> drive
+                    .withVelocityX(algae_range_proportional())
+                    .withVelocityY(0) 
+                    .withRotationalRate(0) 
+                ),
+
+                new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT),
+                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_DEFAULT_SPEED)
+            )
+            //.until(() -> intake.getIntakeCurrent() > 30.0)
+        );
+        */
         
         //SCORE PROCESSOR
         buttonBoxR.button(11).or(operatorController.R1()).or(operatorXbox.rightBumper()).whileTrue(new SequentialCommandGroup(
@@ -548,28 +568,47 @@ public class RobotContainer {
 
     // //limelight methods for alignment
     // //for X alignment (how rotational it should align)
-    // private double limelight_aim_proportional() {
-    //     double kP = 0.1; //test -> fix large errors
-    //     double kI = 0.2; //test -> reduce steady-state error (+ oscillation)
-    //     double kD = 0.2; //test -> slow down when reaching target (stability)
-        
-    //     //TX -> x-axis offset in degrees, multiply by angular speed to be radians/second
-    //     double targetingAngularVelocity = (LimelightHelpers.getTX("limelight") * kP) * CommandSwerveDrivetrain.kMaxAngularSpeed;
-        
-    //     targetingAngularVelocity *= 1.0;
-    //     return targetingAngularVelocity;
-    // }
+    public double algae_aim_proportional() {        
+        double kP = -1; //0.035
+        double targetingAngularVelocity = 0.0; 
+        // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of
+        // your limelight 3 feed, tx should return roughly 31 degrees.
+
+        if (LimelightHelpers.getTV("limelight-front")) {
+            DogLog.log("Visabelle/can see algae?", true);
+            String detectedClass = LimelightHelpers.getDetectorClass("limelight-front");
+            
+            if (detectedClass != null && detectedClass.equals("algae")) { 
+                targetingAngularVelocity = (LimelightHelpers.getTX("limelight-front") * kP); 
+            }
+        }
+        else {
+            DogLog.log("Visabelle/can see algae?", false);
+        }
+
+        // convert to radians per second for our drive method
+        targetingAngularVelocity *= MaxAngularRate;
+        //invert since tx is positive when the target is to the right of the crosshair
+        //targetingAngularVelocity *= -1.0;
+        DogLog.log("Visabelle/target algae angle", targetingAngularVelocity);
+        return targetingAngularVelocity;
+    }
 
     // //for Y alignment (how forward/backward it should go)
-    // private double limelight_range_proportional() {    
-    //     double kP = 0.02; //test
+    public double algae_range_proportional() { 
+        double kP = -0.7; 
+        double targetingForwardSpeed = 0.0; 
 
-    //     //TY -> y-axis offset in degrees, multiply by angular speed to be raidans/second
-    //     double targetingForwardSpeed = (LimelightHelpers.getTY("limelight") * kP) * CommandSwerveDrivetrain.kMaxSpeed;
-
-    //     targetingForwardSpeed *= -1.0;
-    //     return targetingForwardSpeed;
-    // }
+        if (LimelightHelpers.getTV("limelight-front")) {
+            double error = -16.0 - LimelightHelpers.getTY("limelight-front"); 
+            
+            targetingForwardSpeed = error * kP; 
+            targetingForwardSpeed *= MaxSpeed; 
+        }
+        
+        DogLog.log("Visabelle/target algae forward", targetingForwardSpeed);
+        return targetingForwardSpeed; 
+    }
 
     // //drive for robot container
     // public void drive(boolean fieldRelative) {
