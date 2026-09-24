@@ -376,7 +376,6 @@ public class RobotContainer {
         joystick.x().onTrue(new InstantCommand(() -> vision.disableVision(), vision));
 
         // game piece detection
-        /***
         joystick.rightTrigger().whileTrue(
             new ParallelCommandGroup(
                 drivetrain.applyRequest(() -> drive
@@ -404,7 +403,6 @@ public class RobotContainer {
             )
             //.until(() -> intake.getIntakeCurrent() > 30.0)
         );
-        */
         
         //SCORE PROCESSOR
         buttonBoxR.button(11).or(operatorController.R1()).or(operatorXbox.rightBumper()).whileTrue(new SequentialCommandGroup(
@@ -569,7 +567,7 @@ public class RobotContainer {
     // //limelight methods for alignment
     // //for X alignment (how rotational it should align)
     public double algae_aim_proportional() {        
-        double kP = -1; //0.035
+        double kP = 0.035;
         double targetingAngularVelocity = 0.0; 
         // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of
         // your limelight 3 feed, tx should return roughly 31 degrees.
@@ -586,24 +584,26 @@ public class RobotContainer {
             DogLog.log("Visabelle/can see algae?", false);
         }
 
-        // convert to radians per second for our drive method
+        // convert to actual rad/s for our drive method
         targetingAngularVelocity *= MaxAngularRate;
-        //invert since tx is positive when the target is to the right of the crosshair
-        //targetingAngularVelocity *= -1.0;
+        // invert if the robot turns away from the target instead of toward it
+        // targetingAngularVelocity *= -1.0;
         DogLog.log("Visabelle/target algae angle", targetingAngularVelocity);
         return targetingAngularVelocity;
     }
 
     // //for Y alignment (how forward/backward it should go)
     public double algae_range_proportional() { 
-        double kP = -0.7; 
+        double kP = -0.1; 
         double targetingForwardSpeed = 0.0; 
 
         if (LimelightHelpers.getTV("limelight-front")) {
-            double error = -16.0 - LimelightHelpers.getTY("limelight-front"); 
-            
-            targetingForwardSpeed = error * kP; 
-            targetingForwardSpeed *= MaxSpeed; 
+            String detectedClass = LimelightHelpers.getDetectorClass("limelight-front");
+            if (detectedClass != null && detectedClass.equals("algae")) {
+                double error = -16.0 - LimelightHelpers.getTY("limelight-front"); 
+                targetingForwardSpeed = error * kP; 
+                targetingForwardSpeed *= MaxSpeed; 
+            }
         }
         
         DogLog.log("Visabelle/target algae forward", targetingForwardSpeed);
