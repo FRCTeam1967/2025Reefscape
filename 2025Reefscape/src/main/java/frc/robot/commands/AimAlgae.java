@@ -49,6 +49,7 @@ public class AimAlgae extends Command {
       String detectedClass = LimelightHelpers.getDetectorClass("limelight-front");
 
       if (detectedClass != null && detectedClass.equals("algae")) {
+        DogLog.log("tx", LimelightHelpers.getTX("limelight-front"));
         targetingAngularVelocity = LimelightHelpers.getTX("limelight-front") * kP;
       }
     }

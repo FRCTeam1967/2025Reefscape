@@ -385,7 +385,7 @@ public class RobotContainer {
                 ),
 
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT), // seems to not reach this point, not getting to target rotational speed?
-                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_DEFAULT_SPEED)
+                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
             )
             //.until(() -> intake.getIntakeCurrent() > 30.0)
         );
@@ -577,6 +577,7 @@ public class RobotContainer {
             String detectedClass = LimelightHelpers.getDetectorClass("limelight-front");
             
             if (detectedClass != null && detectedClass.equals("algae")) { 
+                DogLog.log("algae tx", LimelightHelpers.getTX("limelight-front"));
                 targetingAngularVelocity = (LimelightHelpers.getTX("limelight-front") * kP); 
             }
         }
@@ -585,9 +586,15 @@ public class RobotContainer {
         }
 
         // convert to actual rad/s for our drive method
-        targetingAngularVelocity *= MaxAngularRate;
+        targetingAngularVelocity *= MaxAngularRate; // requested speed = |tx| * 0.035 * MaxAngularRate
+        // rotational deadband = 0.1 * MaxAngularRate
+
+        // should move when |tx| * 0.035 * MaxAngularRate > 0.1 * MaxAngularRate
+        // 0.035 * |tx| > 0.1
+        // |tx| > 2.86
+
         // invert if the robot turns away from the target instead of toward it
-        // targetingAngularVelocity *= -1.0;
+        targetingAngularVelocity *= -1.0;
         DogLog.log("Visabelle/target algae angle", targetingAngularVelocity);
         return targetingAngularVelocity;
     }
