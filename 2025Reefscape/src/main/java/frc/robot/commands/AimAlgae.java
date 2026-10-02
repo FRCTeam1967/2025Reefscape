@@ -23,13 +23,8 @@ public class AimAlgae extends Command {
   private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
   private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
-  // Swapped FieldCentricFacingAngle -> FieldCentric.
-  // FieldCentricFacingAngle expects an absolute field-relative heading to hold,
-  // which is what getAngleToHub() gave you. tx from the neural detector is a
-  // relative offset, not a heading, so it needs to drive a rotational RATE
-  // instead — same pattern as algae_aim_proportional().
   private final SwerveRequest.FieldCentric driveAtAngle = new SwerveRequest.FieldCentric()
-      .withDeadband(MaxSpeed * 0.1) // 0.1 = deadband
+      .withDeadband(MaxSpeed * 0.0) // 0.1 = deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   public AimAlgae(CommandSwerveDrivetrain swerve) {
@@ -48,21 +43,35 @@ public class AimAlgae extends Command {
       // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of
       // your limelight 3 feed, tx should return roughly 31 degrees.
 
-      if (LimelightHelpers.getTV("limelight-front")) {
-          DogLog.log("Visabelle/can see algae?", true);
-          String detectedClass = LimelightHelpers.getDetectorClass("limelight-front");
+    // for algae
+    //   if (LimelightHelpers.getTV("limelight-front")) {
+    //       DogLog.log("Visabelle/can see algae?", true);
+    //       String detectedClass = LimelightHelpers.getDetectorClass("limelight-front");
           
-          if (detectedClass != null && detectedClass.equals("algae")) { 
-              DogLog.log("algae tx", LimelightHelpers.getTX("limelight-front"));
-              targetingAngularVelocity = (LimelightHelpers.getTX("limelight-front") * kP); 
-          }
+    //       if (detectedClass != null && detectedClass.equals("algae")) { 
+    //           DogLog.log("algae tx", LimelightHelpers.getTX("limelight-front"));
+    //           targetingAngularVelocity = (LimelightHelpers.getTX("limelight-front") * kP); 
+    //       }
+    //   }
+
+    // for apriltags; just to test
+      if (LimelightHelpers.getTV("limelight-front")) {
+            double tx = LimelightHelpers.getTX("limelight-front");
+        //   DogLog.log("Visabelle/can see algae?", true);
+        //   String detectedClass = LimelightHelpers.getDetectorClass("limelight-front");
+        
+        //   if (detectedClass != null && detectedClass.equals("algae")) { 
+            DogLog.log("algae tx", tx);
+            targetingAngularVelocity = tx * kP * MaxAngularRate;
+        //   }
       }
+
       else {
           DogLog.log("Visabelle/can see algae?", false);
       }
 
       // convert to actual rad/s for our drive method
-      targetingAngularVelocity *= MaxAngularRate; // requested speed = |tx| * 0.035 * MaxAngularRate
+      // requested speed = |tx| * 0.035 * MaxAngularRate
       // rotational deadband = 0.1 * MaxAngularRate
 
       // should move when |tx| * 0.035 * MaxAngularRate > 0.1 * MaxAngularRate
@@ -70,7 +79,9 @@ public class AimAlgae extends Command {
       // |tx| > 2.86
 
       // invert if the robot turns away from the target instead of toward it
-      targetingAngularVelocity *= -1.0;
+        targetingAngularVelocity *= -1.0;
+        targetingAngularVelocity = Math.max(-MaxAngularRate, Math.min(MaxAngularRate, targetingAngularVelocity));
+
       DogLog.log("Visabelle/target algae angle", targetingAngularVelocity);
       return targetingAngularVelocity;
   }
@@ -86,7 +97,10 @@ public class AimAlgae extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    swerve.setControl(driveAtAngle.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
+    DogLog.log("Visabelle/AimAlgae end", true);
+  }
 
   // Returns true when the command should end.
   @Override

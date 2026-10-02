@@ -377,30 +377,36 @@ public class RobotContainer {
 
         // game piece detection
         joystick.rightTrigger().whileTrue(
-            new ParallelCommandGroup(
-                drivetrain.applyRequest(() -> drive
-                    .withVelocityX(0) //algae_range_proportional())
-                    .withVelocityY(0) 
-                    .withRotationalRate(algae_aim_proportional()) 
-                ),
+            //new SequentialCommandGroup(
+                // drivetrain.applyRequest(() -> drive
+                //     .withVelocityX(0) //algae_range_proportional())
+                //     .withVelocityY(0) 
+                //     .withRotationalRate(algae_aim_proportional()) 
+                // ),
+                //new AimAlgae(drivetrain),
+                new AlignAlgae(drivetrain, vision)
 
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT), // seems to not reach this point, not getting to target rotational speed?
-                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
-            )
+                // new ParallelCommandGroup(
+                //     new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT), // seems to not reach this point, not getting to target rotational speed?
+                //     new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
+                // )
+            //)
             //.until(() -> intake.getIntakeCurrent() > 30.0)
         );
 
         joystick.rightBumper().whileTrue(
-            new ParallelCommandGroup(
-                drivetrain.applyRequest(() -> drive
-                    .withVelocityX(algae_range_proportional())
-                    .withVelocityY(0) 
-                    .withRotationalRate(0) 
-                ),
+            //new ParallelCommandGroup(
+                // drivetrain.applyRequest(() -> drive
+                //     .withVelocityX(algae_range_proportional())
+                //     .withVelocityY(0) 
+                //     .withRotationalRate(0) 
+                // ),
 
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT),
-                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_DEFAULT_SPEED)
-            )
+                new AimAlgae(drivetrain)
+
+                // new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT),
+                // new RunAlgaeIntake(intake, Constants.Algae.ALGAE_DEFAULT_SPEED)
+            //)
             //.until(() -> intake.getIntakeCurrent() > 30.0)
         );
         

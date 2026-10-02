@@ -202,17 +202,18 @@ public final class Constants {
     public static final double LIMELIGHT_ALIGN_RIGHT_OFFSET = 0.2;//0.18; //-11.5789194107 //-11.9671554656/0.15875; //0.17145 //0.1524 //0.1905; //0.18415; //0.1685 //0.1513 //0.2275-0.076 //0.2286, left, -.0658890 // 0.1885 // 0.1905
     public static final double LIMELIGHT_ALIGN_Z_OFFSET = 0.0; //LimelightHelpers.setFiducial3DOffset("limelight", 0.0, 0.0, 0.001);
     public static final double LIMELIGHT_ALIGN_CENTER_OFFSET = -0.1431036;
-    public static final double LIMELIGHT_AUTO_LEFT_OFFSET = -0.11;
+    public static final double LIMELIGHT_AUTO_LßFT_OFFSET = -0.11;
     public static final double LIMELIGHT_L4_LEFT_OFFSET = -0.1;
     public static final double ALIGNMENT_SPEED = (Math.abs(Math.pow(0.5, 3))> 0 ? Math.pow(0.5, 3) : 0) * Swerve.SWERVE_MAX_SPEED; //0.43 //0.425
-    public static final double ALIGNMENT_THRESHOLD = 1.0;
-    public static final double FORWARD_ALIGNMENT_THRESHOLD = 0.0;
+    public static final double ALIGNMENT_THRESHOLD = 1.0; //1.0
+    public static final double FORWARD_ALIGNMENT_THRESHOLD = 0.7;
     public static final double ALIGNMENT_LEFT_OFFSET = 9.2; //10.54;//10.74;//1.0; //1.1; //9.76; //TODO: test at EPA
     public static final double ALIGNMENT_RIGHT_OFFSET = -9.2;//-11.86;//-0.8; //-1.0; //-1.1; //-13.1; //in LL degrees //TODO: test at EPA
     public static final double ALIGNMENT_FORWARD_OFFSET = 0.0; //TODO: test at EPA //-5.16 center for left branch aligned
 
-    public static final double ALIGNMENT_X_KP = -0.17;  //0.708 // Used for aligning Robot X (forward), which is "ty" in Limelight terms
+    public static final double ALIGNMENT_X_KP = -0.05;  //-0.17 //0.708 // Used for aligning Robot X (forward), which is "ty" in Limelight terms
     public static final double ALIGNMENT_Y_KP = -0.03;  //-0.05 // Used for aligning Robot Y (side-side), which is "tx" in Limelight terms
+    public static final double ALIGNMENT_ROT_KP = -0.07; // Used for aligning rotationally using tx
   }
 
   public static class Auto {
