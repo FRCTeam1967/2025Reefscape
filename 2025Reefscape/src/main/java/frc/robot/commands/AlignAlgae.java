@@ -64,8 +64,16 @@ public class AlignAlgae extends Command {
   private PIDResult calculateAlignSpeed(double offset, double kP, double threshold) {
     double error = offset;
     double alignSpeed = error * kP * Constants.Swerve.SWERVE_MAX_SPEED;
-    double clampedSpeed = MathUtil.clamp(alignSpeed, -Constants.Vision.ALIGNMENT_SPEED,
-        Constants.Vision.ALIGNMENT_SPEED);
+    double clampedSpeed = MathUtil.clamp(Math.abs(alignSpeed), -Constants.Vision.ALIGNMENT_SPEED, Constants.Vision.ALIGNMENT_SPEED);
+    boolean isInRange = Math.abs(error) < threshold;
+
+    return new PIDResult(clampedSpeed, isInRange);
+  }
+
+  private PIDResult calculateRotSpeed(double offset, double kP, double threshold) {
+    double error = offset;
+    double alignSpeed = error * kP * Constants.Swerve.SWERVE_MAX_SPEED;
+    double clampedSpeed = MathUtil.clamp(alignSpeed, -Constants.Vision.ALIGNMENT_SPEED, Constants.Vision.ALIGNMENT_SPEED);
     boolean isInRange = Math.abs(error) < threshold;
 
     return new PIDResult(clampedSpeed, isInRange);
@@ -90,7 +98,7 @@ public class AlignAlgae extends Command {
     }
 
     var resultX = calculateAlignSpeed(forwardOffset, Constants.Vision.ALIGNMENT_X_KP, Constants.Vision.FORWARD_ALIGNMENT_THRESHOLD);
-    var resultROT = calculateAlignSpeed(alignmentOffset, Constants.Vision.ALIGNMENT_ROT_KP, Constants.Vision.ALIGNMENT_THRESHOLD); //rot kp -0.1
+    var resultROT = calculateRotSpeed(alignmentOffset, Constants.Vision.ALIGNMENT_ROT_KP, Constants.Vision.ALIGNMENT_THRESHOLD); //rot kp -0.1
 
     DogLog.log("AlignAlgae/offset", alignmentOffset);
 

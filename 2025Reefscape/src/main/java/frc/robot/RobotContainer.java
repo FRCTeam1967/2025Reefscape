@@ -339,7 +339,7 @@ public class RobotContainer {
 
         //DEFAULT COMMANDS
         algaeMechanism.setDefaultCommand(new MoveAlgaePivot(algaeMechanism, Constants.Algae.SAFE));
-        elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism));
+        //elevator.setDefaultCommand(new MoveElevator(elevator, Constants.Elevator.SAFE, algaeMechanism));
         coralPivot.setDefaultCommand(new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE));
         intake.setDefaultCommand(new RunAlgaeIntake(intake, -0.03));
         led.setDefaultCommand(new BlackLED(led));
@@ -405,42 +405,42 @@ public class RobotContainer {
         
         //SCORE PROCESSOR
         buttonBoxR.button(11).or(operatorController.R1()).or(operatorXbox.rightBumper()).whileTrue(new SequentialCommandGroup(
-            new MoveElevator(elevator, Constants.Elevator.PROCESSOR_HEIGHT, algaeMechanism),
+            //new MoveElevator(elevator, Constants.Elevator.PROCESSOR_HEIGHT, algaeMechanism),
             new ParallelCommandGroup(
                 new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT), 
                 new RunAlgaeIntake(intake, Constants.Algae.ALGAE_DEFAULT_SPEED)).withTimeout(0.75),
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_OUTTAKE_SPEED).withTimeout(2)
         ));
 
-        //CORAL INTAKE
-        buttonBoxL.button(11).or(operatorController.R2()).or(operatorXbox.rightTrigger()).whileTrue(new SequentialCommandGroup(
-            new ParallelRaceGroup(
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_INTAKE),
-                new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY)
-            ),
-            new ParallelCommandGroup(
-                new RunCoralIntakeBack(coralIntake, Constants.CoralIntake.REVERSE_VELOCITY),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_REVERSE_INTAKE)
-            ),
-            new RumbleController(joystick, operatorController).withTimeout(2)
-            //new WaitCommand(0.1),
-            //new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
-            //new RunCoralSecondIntake(coralIntake, Constants.CoralIntake.VELOCITY)
-        ));
+    //     //CORAL INTAKE
+    //     buttonBoxL.button(11).or(operatorController.R2()).or(operatorXbox.rightTrigger()).whileTrue(new SequentialCommandGroup(
+    //         new ParallelRaceGroup(
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_INTAKE),
+    //             new RunCoralIntake(coralIntake, Constants.CoralIntake.VELOCITY)
+    //         ),
+    //         new ParallelCommandGroup(
+    //             new RunCoralIntakeBack(coralIntake, Constants.CoralIntake.REVERSE_VELOCITY),
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.CORAL_REVERSE_INTAKE)
+    //         ),
+    //         new RumbleController(joystick, operatorController).withTimeout(2)
+    //         //new WaitCommand(0.1),
+    //         //new StageCoral(coralIntake, Constants.CoralIntake.INTAKE_ENCODER_STOP_VAL)
+    //         //new RunCoralSecondIntake(coralIntake, Constants.CoralIntake.VELOCITY)
+    //     ));
         
-        //ALGAE L2 REMOVAL
-        buttonBoxL.button(2).or(operatorController.povDown()).or(operatorXbox.povDown()).whileTrue(new SequentialCommandGroup(
-            new MoveElevator(elevator, Constants.Elevator.ALGAE_L2_HEIGHT, algaeMechanism),
-            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
-            new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
-        ));
+    //     //ALGAE L2 REMOVAL
+    //     buttonBoxL.button(2).or(operatorController.povDown()).or(operatorXbox.povDown()).whileTrue(new SequentialCommandGroup(
+    //         new MoveElevator(elevator, Constants.Elevator.ALGAE_L2_HEIGHT, algaeMechanism),
+    //         new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
+    //         new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
+    //     ));
 
-        //ALGAE L3 REMOVAL
-        buttonBoxL.button(3).or(operatorController.povUp()).or(operatorXbox.povUp()).whileTrue(new SequentialCommandGroup(
-            new MoveElevator(elevator, Constants.Elevator.ALGAE_L3_HEIGHT, algaeMechanism),
-            new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
-            new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
-        ));
+    //     //ALGAE L3 REMOVAL
+    //     buttonBoxL.button(3).or(operatorController.povUp()).or(operatorXbox.povUp()).whileTrue(new SequentialCommandGroup(
+    //         new MoveElevator(elevator, Constants.Elevator.ALGAE_L3_HEIGHT, algaeMechanism),
+    //         new ParallelRaceGroup(new MoveAlgaePivot(algaeMechanism, Constants.Algae.ALGAE_DOWN), new RunAlgaeIntake(intake, -0.7)).withTimeout(0.75),
+    //         new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
+    //     ));
 
         //ALGAE GROUND INTAKE
         buttonBoxL.button(4).or(operatorController.L2()).or(operatorXbox.leftTrigger()).whileTrue(new SequentialCommandGroup(
@@ -449,111 +449,111 @@ public class RobotContainer {
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
         ));
 
-        //RIGHT BRANCH L2
-        buttonBoxR.button(7).or(operatorController.cross()).or(operatorXbox.a()).whileTrue(new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision, false, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
+    //     //RIGHT BRANCH L2
+    //     buttonBoxR.button(7).or(operatorController.cross()).or(operatorXbox.a()).whileTrue(new SequentialCommandGroup(
+    //         new SequentialCommandGroup(
+    //             //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+    //             new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
+    //             new ConditionalCommand(new AlignBranch(drivetrain, vision, false, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
+    //         new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
+    //         new ParallelCommandGroup(
+    //             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
+    //         new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
-        //RIGHT BRANCH L3
-        buttonBoxR.button(8).or(operatorController.square()).or(operatorXbox.x()).whileTrue(new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision, false, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
+    //     //RIGHT BRANCH L3
+    //     buttonBoxR.button(8).or(operatorController.square()).or(operatorXbox.x()).whileTrue(new SequentialCommandGroup(
+    //         new SequentialCommandGroup(
+    //             //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+    //             new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
+    //             new ConditionalCommand(new AlignBranch(drivetrain, vision, false, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
+    //         new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
+    //         new ParallelCommandGroup(
+    //             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
+    //         new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
-        //RIGHT BRANCH L4
-        buttonBoxR.button(9).or(operatorController.triangle()).or(operatorXbox.y()).whileTrue(new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision, false, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),//.asProxy()),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
-            new ParallelCommandGroup(
-                new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2))); //maybe change to 2.5
+    //     //RIGHT BRANCH L4
+    //     buttonBoxR.button(9).or(operatorController.triangle()).or(operatorXbox.y()).whileTrue(new SequentialCommandGroup(
+    //         new SequentialCommandGroup(
+    //             //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_RIGHT_OFFSET, 0.0)),
+    //             new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
+    //             new ConditionalCommand(new AlignBranch(drivetrain, vision, false, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),//.asProxy()),
+    //         new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
+    //         new ParallelCommandGroup(
+    //             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(0.5)),
+    //         new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
+    //         new ParallelCommandGroup(
+    //             new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
+    //         ).withTimeout(2))); //maybe change to 2.5
 
-        //LEFT BRANCH L2
-        (operatorController.cross().or(operatorXbox.a())).and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision, true, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
+    //     //LEFT BRANCH L2
+    //     (operatorController.cross().or(operatorXbox.a())).and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
+    //         new SequentialCommandGroup(
+    //             //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_ALIGN_LEFT_OFFSET, 0.0)),
+    //             new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
+    //             new ConditionalCommand(new AlignBranch(drivetrain, vision, true, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
+    //         new MoveElevator(elevator, Constants.Elevator.CORAL_L2_HEIGHT, algaeMechanism),
+    //         new ParallelCommandGroup(
+    //             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
+    //         new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
-        joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
+    //     joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
 
-        //LEFT BRANCH L3
-        (operatorController.square().or(operatorXbox.x())).and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision, true, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
+    //     //LEFT BRANCH L3
+    //     (operatorController.square().or(operatorXbox.x())).and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
+    //         new SequentialCommandGroup(
+    //             new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
+    //             new ConditionalCommand(new AlignBranch(drivetrain, vision, true, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
+    //         new MoveElevator(elevator, Constants.Elevator.CORAL_L3_HEIGHT, algaeMechanism),
+    //         new ParallelCommandGroup(
+    //             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L2L3_CORAL_SCORING_ANGLE).withTimeout(1), 
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L2L3).withTimeout(0.5)),
+    //         new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
-        //LEFT BRANCH L4
-        (operatorController.triangle().or(operatorXbox.y())).and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
-            new SequentialCommandGroup(
-                //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET, 0.0)),
-                new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
-                new ConditionalCommand(new AlignBranch(drivetrain, vision, true, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
-            new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
-            new ParallelCommandGroup(
-                new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(0.5)),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
-            new ParallelCommandGroup(
-                new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
-            ).withTimeout(2))); //maybe change to 2.5
+    //     //LEFT BRANCH L4
+    //     (operatorController.triangle().or(operatorXbox.y())).and(operatorController.L1()).whileTrue(new SequentialCommandGroup(
+    //         new SequentialCommandGroup(
+    //             //new InstantCommand(() -> LimelightHelpers.setFiducial3DOffset("limelight", 0.0, Constants.Vision.LIMELIGHT_L4_LEFT_OFFSET, 0.0)),
+    //             new ConditionalCommand(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism), new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism), () -> !vision.isVisionDisabled()),
+    //             new ConditionalCommand(new AlignBranch(drivetrain, vision, true, false), new WaitCommand(0.0), () -> !vision.isVisionDisabled())),
+    //         new MoveElevator(elevator, Constants.Elevator.CORAL_L4_HEIGHT, algaeMechanism),
+    //         new ParallelCommandGroup(
+    //             new MoveAlgaePivot(algaeMechanism, Constants.Algae.L4_CORAL_SCORING_ANGLE).withTimeout(1), 
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.L4).withTimeout(0.5)),
+    //         new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1),
+    //         new ParallelCommandGroup(
+    //             new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH),
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.SAFE)
+    //         ).withTimeout(2))); //maybe change to 2.5
         
 
-        //BARGE SCORING 
-        buttonBoxL.button(8).or(operatorController.povLeft()).or(operatorXbox.povLeft()).whileTrue(
-            new ParallelCommandGroup(  
-                new MoveElevator(elevator, Constants.Elevator.BARGE_SCORING_HEIGHT, algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE),
-                new MoveCoralPivot(coralPivot, Constants.CoralPivot.BARGE_POSITION).withTimeout(5)
-            )
-        );
+    //     //BARGE SCORING 
+    //     buttonBoxL.button(8).or(operatorController.povLeft()).or(operatorXbox.povLeft()).whileTrue(
+    //         new ParallelCommandGroup(  
+    //             new MoveElevator(elevator, Constants.Elevator.BARGE_SCORING_HEIGHT, algaeMechanism, Constants.Algae.BARGE_SCORING_ANGLE),
+    //             new MoveCoralPivot(coralPivot, Constants.CoralPivot.BARGE_POSITION).withTimeout(5)
+    //         )
+    //     );
 
-        //buttonBoxL.button(8).or(operatorController.povLeft()).or(operatorXbox.povLeft()).and(bargeTrigger).whileTrue
-        bargeTrigger.and(operatorController.povLeft()).whileTrue(
-            new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE).withTimeout(5)
-        );
+    //     //buttonBoxL.button(8).or(operatorController.povLeft()).or(operatorXbox.povLeft()).and(bargeTrigger).whileTrue
+    //     bargeTrigger.and(operatorController.povLeft()).whileTrue(
+    //         new RunAlgaeIntake(intake, Constants.Algae.ALGAE_BARGE_OUTTAKE).withTimeout(5)
+    //     );
 
 
-        joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
+    //     joystick.b().whileTrue(new MoveElevator(elevator, Constants.Elevator.VISION_HEIGHT, algaeMechanism));
         
-        //L1 SCORING 
-        buttonBoxR.button(1).or(operatorController.circle()).or(operatorXbox.b()).whileTrue(new SequentialCommandGroup(
-            new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1).withTimeout(1),
-            new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
+    //     //L1 SCORING 
+    //     buttonBoxR.button(1).or(operatorController.circle()).or(operatorXbox.b()).whileTrue(new SequentialCommandGroup(
+    //         new MoveCoralPivot(coralPivot, Constants.CoralPivot.L1).withTimeout(1),
+    //         new RunCoralOuttake(coralIntake, Constants.CoralIntake.HIGH).withTimeout(1)));
 
-        //BARGE SCORING
-        //operatorController.circle().whileTrue(new BargeScoring(algaeMechanism, elevator, intake));
+    //     //BARGE SCORING
+    //     //operatorController.circle().whileTrue(new BargeScoring(algaeMechanism, elevator, intake));
     } 
     
 
