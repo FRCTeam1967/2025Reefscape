@@ -377,19 +377,12 @@ public class RobotContainer {
 
         // game piece detection
         joystick.rightTrigger().whileTrue(
-            //new SequentialCommandGroup(
-                // drivetrain.applyRequest(() -> drive
-                //     .withVelocityX(0) //algae_range_proportional())
-                //     .withVelocityY(0) 
-                //     .withRotationalRate(algae_aim_proportional()) 
-                // ),
-                //new AimAlgae(drivetrain),
-                new AlignAlgae(drivetrain, vision)
+            new ParallelCommandGroup(
+                new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT),
+                new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED),
 
-                // new ParallelCommandGroup(
-                //     new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT), // seems to not reach this point, not getting to target rotational speed?
-                //     new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
-                // )
+                new AlignAlgae(drivetrain, vision)
+                )
             //)
             //.until(() -> intake.getIntakeCurrent() > 30.0)
         );
@@ -402,7 +395,7 @@ public class RobotContainer {
                 //     .withRotationalRate(0) 
                 // ),
 
-                new AimAlgae(drivetrain)
+                new AlignAlgae(drivetrain, vision)
 
                 // new MoveAlgaePivot(algaeMechanism, Constants.Algae.PROCESSOR_HEIGHT),
                 // new RunAlgaeIntake(intake, Constants.Algae.ALGAE_DEFAULT_SPEED)
@@ -451,7 +444,7 @@ public class RobotContainer {
 
         //ALGAE GROUND INTAKE
         buttonBoxL.button(4).or(operatorController.L2()).or(operatorXbox.leftTrigger()).whileTrue(new SequentialCommandGroup(
-            new MoveElevator(elevator, Constants.Elevator.ALGAE_GROUND_HEIGHT, algaeMechanism), // elevator safe -> algae ground height
+            //new MoveElevator(elevator, Constants.Elevator.ALGAE_GROUND_HEIGHT, algaeMechanism), // elevator safe -> algae ground height
             new MoveAlgaePivot(algaeMechanism, Constants.Algae.GROUND_INTAKE_HEIGHT),
             new RunAlgaeIntake(intake, Constants.Algae.ALGAE_INTAKE_SPEED)
         ));
