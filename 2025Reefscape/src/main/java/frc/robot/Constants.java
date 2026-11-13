@@ -211,9 +211,9 @@ public final class Constants {
     public static final double ALIGNMENT_RIGHT_OFFSET = -9.2;//-11.86;//-0.8; //-1.0; //-1.1; //-13.1; //in LL degrees //TODO: test at EPA
     public static final double ALIGNMENT_FORWARD_OFFSET = 0.0; //TODO: test at EPA //-5.16 center for left branch aligned
 
-    public static final double ALIGNMENT_X_KP = 0.05;  //-0.17 //0.708 // Used for aligning Robot X (forward), which is "ty" in Limelight terms
+    public static final double ALIGNMENT_X_KP = 0.04;  //-0.17 //0.708 // Used for aligning Robot X (forward), which is "ty" in Limelight terms
     public static final double ALIGNMENT_Y_KP = -0.03;  //-0.05 // Used for aligning Robot Y (side-side), which is "tx" in Limelight terms
-    public static final double ALIGNMENT_ROT_KP = -0.07; // Used for aligning rotationally using tx
+    public static final double ALIGNMENT_ROT_KP = -0.035; // Used for aligning rotationally using tx
   }
 
   public static class Auto {

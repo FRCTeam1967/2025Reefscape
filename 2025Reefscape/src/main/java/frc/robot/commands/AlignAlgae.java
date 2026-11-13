@@ -20,10 +20,10 @@ public class AlignAlgae extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
   private SwerveRequest.ApplyRobotSpeeds request = new SwerveRequest.ApplyRobotSpeeds();
-  private static ChassisSpeeds alignmentSpeed = new ChassisSpeeds();
-  private double alignmentOffset = 0.0;
-  private double forwardOffset = 0.0;
-  boolean canSeeAlgae = false;
+  public static ChassisSpeeds alignmentSpeed = new ChassisSpeeds();
+  public static double alignmentOffset = 0.0;
+  public static double forwardOffset = 0.0;
+  public static boolean canSeeAlgae = false;
 
   // Create a simple helper class to we can return two values from a method
   // nicely.
@@ -62,7 +62,7 @@ public class AlignAlgae extends Command {
   // second (boolean) indicates whether the
   // robot is considered in range in this dimension.
   private PIDResult calculateAlignSpeed(double offset, double kP, double threshold) {
-    double error = offset;
+    double error = offset+10;
     double alignSpeed = error * kP * Constants.Swerve.SWERVE_MAX_SPEED;
     double clampedSpeed = MathUtil.clamp(Math.abs(alignSpeed), -Constants.Vision.ALIGNMENT_SPEED, Constants.Vision.ALIGNMENT_SPEED);
     boolean isInRange = Math.abs(error) < threshold;
@@ -71,7 +71,7 @@ public class AlignAlgae extends Command {
   }
 
   private PIDResult calculateRotSpeed(double offset, double kP, double threshold) {
-    double error = offset;
+    double error = offset+6;
     double alignSpeed = error * kP * Constants.Swerve.SWERVE_MAX_SPEED;
     double clampedSpeed = MathUtil.clamp(alignSpeed, -Constants.Vision.ALIGNMENT_SPEED, Constants.Vision.ALIGNMENT_SPEED);
     boolean isInRange = Math.abs(error) < threshold;
@@ -90,7 +90,7 @@ public class AlignAlgae extends Command {
     }
     
     LimelightHelpers.getTV("limelight-front");
-    DogLog.log("AlignAlgae/seesAlgae", canSeeAlgae);
+    
 
     if (LimelightHelpers.getDetectorClass("limelight-front").equals("algae")) {
       alignmentOffset = LimelightHelpers.getTX("limelight-front");
@@ -99,12 +99,11 @@ public class AlignAlgae extends Command {
 
     var resultX = calculateAlignSpeed(forwardOffset, Constants.Vision.ALIGNMENT_X_KP, Constants.Vision.FORWARD_ALIGNMENT_THRESHOLD);
     var resultROT = calculateRotSpeed(alignmentOffset, Constants.Vision.ALIGNMENT_ROT_KP, Constants.Vision.ALIGNMENT_THRESHOLD); //rot kp -0.1
-
-    DogLog.log("AlignAlgae/offset", alignmentOffset);
+    
 
     alignmentSpeed = new ChassisSpeeds(resultX.speed, 0.0, resultROT.speed);
     drivetrain.setControl(request.withSpeeds(alignmentSpeed));
-    DogLog.log("AlignAlgae/appliedChassisSpeeds", alignmentSpeed);
+    
 
     if (resultX.inRange && resultROT.inRange) {
         vision.setInRangeTrue();

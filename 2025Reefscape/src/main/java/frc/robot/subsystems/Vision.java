@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.commands.AlignAlgae;
 import frc.robot.commands.AlignBranch;
 
 public class Vision extends SubsystemBase {
@@ -120,6 +122,7 @@ public class Vision extends SubsystemBase {
 
     tab.addDouble("alignment z fiducial", () -> Constants.Vision.LIMELIGHT_ALIGN_Z_OFFSET).withWidget(BuiltInWidgets.kTextView);
   }
+  
 
   /**
    * Changes pipeline
@@ -216,6 +219,10 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     updateAlignmentValues();
-    updateOdometryValues();
+    //updateOdometryValues();
+    DogLog.log("AlignAlgae/seesAlgae", AlignAlgae.canSeeAlgae);
+    DogLog.log("AlignAlgae/alignmentOffset", AlignAlgae.alignmentOffset);
+    DogLog.log("AlignAlgae/forwardOffset", AlignAlgae.alignmentOffset);
+    DogLog.log("AlignAlgae/appliedChassisSpeeds", AlignAlgae.alignmentSpeed);
   }
 }

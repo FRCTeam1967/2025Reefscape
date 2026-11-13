@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import frc.robot.commands.AlignAlgae;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
@@ -80,6 +81,7 @@ public class VisionUpdate extends SubsystemBase {
     DogLog.log("VisionUpdate/drivetrainPose", robotPose);
     DogLog.log("VisionUpdate/algae target angle speed", robotContainer.algae_aim_proportional());
     DogLog.log("VisionUpdate/algae target forward speed", robotContainer.algae_range_proportional());
+    
 
     // If we don't see any tags, the pose can't be good
     if(mt2.tagCount == 0) {
